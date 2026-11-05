@@ -64,13 +64,13 @@ class SpiderBrain:
     
     def _decide(self, detected_npcs: List[Dict]) -> List[SpiderAction]:
         """Decide what actions to take"""
-        # Priority 1: Hunt if hungry
-        if self.state.hunger > 40:
-            return self._hunting_actions(detected_npcs)
-        
-        # Priority 2: Rest if low energy
+        # Priority 1: Rest if critically low energy
         if self.state.energy < 30:
             return [SpiderAction(action_type="rest", duration=30.0)]
+        
+        # Priority 2: Hunt if hungry
+        if self.state.hunger > 40:
+            return self._hunting_actions(detected_npcs)
         
         # Default: Wander
         return self._wander_actions()

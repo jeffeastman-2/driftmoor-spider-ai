@@ -77,6 +77,44 @@ class ActionExecutor:
             
         return actions
     
+    def _apply_movement(self, current_pos: Tuple[float, float],
+                         action: SpiderAction,
+                         speed_limit: float = 5.0) -> Tuple[float, float]:
+        """Apply movement action with speed limit
+        
+        Args:
+            current_pos: Current position
+            action: Movement action
+            speed_limit: Maximum units per timestep
+            
+        Returns:
+            New position after applying movement
+        """
+        if action.target_position is None:
+            return current_pos
+        
+        target_pos = action.target_position
+        
+        # Calculate direction and distance
+        dx = target_pos[0] - current_pos[0]
+        dy = target_pos[1] - current_pos[1]
+        distance = np.sqrt(dx**2 + dy**2)
+        
+        # Apply speed limit
+        if distance > speed_limit:
+            # Move only up to speed limit
+            dx_normalized = dx / distance
+            dy_normalized = dy / distance
+            new_pos = (
+                current_pos[0] + dx_normalized * speed_limit,
+                current_pos[1] + dy_normalized * speed_limit
+            )
+        else:
+            # Can reach target in one step
+            new_pos = target_pos
+        
+        return new_pos
+    
     def select_target(self, detected_npcs: List[Dict],
                      spider_state: Dict) -> Optional[int]:
         """Select an NPC target for hunting
