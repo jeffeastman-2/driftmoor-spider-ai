@@ -187,3 +187,57 @@ Next research choices: inspect validation-only closed-loop failures, collect
 better-covered action sequences, and test longer-horizon planning on a NEW
 held-out evaluation split. Preserve this first result; do not tune against it
 and continue calling it an untouched test.
+
+## Why v1 misperforms: validation-only diagnostics
+
+The v1 network, scoring function and test results were frozen. Diagnostics
+use validation seeds 10000–10029 only (420 decision states). Every candidate
+action is resolved on a deep copy of the engine state and its RNG; selected
+fork outcomes are checked against the live episode. Exact future outcomes
+are privileged diagnostic information, never controller inputs.
+
+```bash
+python3 experiments/diagnose_world_model.py \
+  --driftmoor-root ../Driftmoor-spider-sim \
+  --run-dir /tmp/driftmoor-world-model-v1 \
+  --output-dir /tmp/driftmoor-world-model-v1-diagnostics
+```
+
+Full candidate traces go to diagnostics.json; aggregate results to summary.json.
+The tracked aggregate is results/world-model-v1-diagnostics.json.
+
+Confirmed findings:
+- Chosen actions: 381 waits, 29 bites, 10 turns, no moves.
+- Only 5 of those bites were admitted. Nineteen failed the bite arc; five
+  failed reach. Mean predicted admission was 66.5%, actual admission 17.2%.
+- One rejected bite (seed 10025, turn 10) had predicted admission 96.6%.
+  Twenty-one chosen bites had probability >=0.5, so the lower decision
+  threshold alone does not explain the failure.
+- Admission Brier error was 0.011 on recorded validation attack actions but
+  0.390 on attacks selected by the controller. Selection exposes errors
+  that an average recorded-data score conceals.
+- Replacing predictions with exact engine outcomes under the SAME one-step
+  objective still chooses wait in 415 states and bite in five. Thus perfect
+  immediate predictions alone cannot fix this objective on these states.
+- A direct second-step probe found 38 states where turn-then-bite is admitted
+  but wait-then-bite is not. The one-step score penalizes the enabling turn
+  without valuing the subsequent bite. These are states, not 38 independent
+  episodes. The probe follows the same scripted opponent response.
+- Training had 30 admitted attacks among 305 bite commands, across 2,240
+  transitions. Same-action nearest-training-input distance averaged 1.32
+  for chosen closed-loop bites versus 0.40 for recorded validation bites.
+  These distances use the fixed normalized feature coordinates; they are
+  coverage indicators, not a causal proof or a calibrated uncertainty measure.
+
+Conclusions: both action-conditioned prediction errors and a myopic
+objective contribute. The controller exploits optimistic predictions on
+poorly covered states, while its objective fails to reward preparation.
+The same-state rule comparator would turn in 255 states, illustrating the
+different incentive, not proving all those turns are optimal.
+
+Recommended next experiment: add targeted training examples spanning close
+targets with varied roll/pitch/heading (valid bites and matched hard
+negatives), and evaluate two-step planning that credits a prepared bite.
+Choose changes using validation only and reserve NEW test episodes for v2.
+Do not merely raise the probability threshold, add more epochs, or replace
+the current model with a larger network without measuring these failures.

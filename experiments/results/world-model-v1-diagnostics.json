@@ -1,0 +1,150 @@
+{
+  "preparation_probe": {
+    "orient_enables_bite_but_wait_does_not": 38,
+    "move_enables_bite_but_wait_does_not": 0,
+    "examples": [
+      {
+        "seed": 10000,
+        "turn": 7,
+        "preparation": "orient",
+        "chosen": "wait",
+        "one_step_wait_score": -0.041666666666666664,
+        "one_step_preparation_score": -0.06666666666666667
+      },
+      {
+        "seed": 10000,
+        "turn": 9,
+        "preparation": "orient",
+        "chosen": "attack",
+        "one_step_wait_score": -0.041666666666666664,
+        "one_step_preparation_score": -0.06666666666666667
+      },
+      {
+        "seed": 10000,
+        "turn": 10,
+        "preparation": "orient",
+        "chosen": "attack",
+        "one_step_wait_score": -0.041666666666666664,
+        "one_step_preparation_score": -0.06666666666666667
+      },
+      {
+        "seed": 10000,
+        "turn": 11,
+        "preparation": "orient",
+        "chosen": "attack",
+        "one_step_wait_score": -0.041666666666666664,
+        "one_step_preparation_score": -0.06666666666666667
+      },
+      {
+        "seed": 10000,
+        "turn": 12,
+        "preparation": "orient",
+        "chosen": "attack",
+        "one_step_wait_score": -0.041666666666666664,
+        "one_step_preparation_score": -0.06666666666666667
+      }
+    ]
+  },
+  "validation_seeds": [
+    10000,
+    10029
+  ],
+  "steps": 420,
+  "chosen_actions": {
+    "wait": 381,
+    "attack": 29,
+    "orient": 10
+  },
+  "oracle_one_step_actions": {
+    "wait": 415,
+    "attack": 5
+  },
+  "rule_actions_on_same_states": {
+    "wait": 153,
+    "orient": 255,
+    "attack": 5,
+    "move": 7
+  },
+  "chosen_attacks": {
+    "count": 29,
+    "admitted": 5,
+    "mean_predicted_probability": 0.6647928860680811,
+    "brier": 0.39044543376830215,
+    "predicted_at_least_half": 21,
+    "rejection_reasons": {
+      "out_of_range_or_unarmed": 5,
+      "outside_attack_arc": 19
+    }
+  },
+  "all_candidate_attacks": {
+    "count": 267,
+    "admitted": 5,
+    "mean_predicted_probability": 0.07891814933661323,
+    "brier": 0.04318455967072058,
+    "predicted_at_least_half": 21,
+    "rejection_reasons": {
+      "out_of_range_or_unarmed": 230,
+      "outside_attack_arc": 32
+    }
+  },
+  "mean_actual_score_regret": 0.03488095238095238,
+  "score_agreement": 0.919047619047619,
+  "oracle_scope": "Privileged exact one-step outcome under the same v1 objective; diagnostic only",
+  "training_counts": {
+    "transitions": 2240,
+    "actions": {
+      "wait": 936,
+      "move": 425,
+      "orient": 574,
+      "attack": 305
+    },
+    "admitted_attacks": 30.0
+  },
+  "recorded_validation_attacks": {
+    "count": 57,
+    "admitted": 6.0,
+    "brier": 0.01132940652018864
+  },
+  "same_action_training_distances": {
+    "recorded_validation": {
+      "wait": {
+        "count": 160,
+        "mean_distance": 0.21166126430034637,
+        "max_distance": 1.63760244846344
+      },
+      "orient": {
+        "count": 115,
+        "mean_distance": 0.38475027680397034,
+        "max_distance": 1.9461442232131958
+      },
+      "move": {
+        "count": 88,
+        "mean_distance": 0.2887878715991974,
+        "max_distance": 1.393072485923767
+      },
+      "attack": {
+        "count": 57,
+        "mean_distance": 0.4025481045246124,
+        "max_distance": 1.1399174928665161
+      }
+    },
+    "closed_loop_validation": {
+      "wait": {
+        "count": 381,
+        "mean_distance": 0.459164023399353,
+        "max_distance": 2.2488386631011963
+      },
+      "orient": {
+        "count": 10,
+        "mean_distance": 0.650377094745636,
+        "max_distance": 1.0172284841537476
+      },
+      "attack": {
+        "count": 29,
+        "mean_distance": 1.3248454332351685,
+        "max_distance": 2.156721830368042
+      }
+    }
+  },
+  "frozen_checkpoint_sha256": "4c8f116932a37cdafafd592494af0e3244dc8c6aae8cb29a58885d28d98f0a5c"
+}
