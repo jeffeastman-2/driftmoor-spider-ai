@@ -104,3 +104,86 @@ python3 -m pytest -q tests/test_body_geometry.py tests/test_spider_experiment.py
 Tests cover geometry transforms, body-surface reach, direction, elevations,
 actual combat damage, visibility, activation, movement/collision, stable
 records, deterministic encounters and RNG isolation.
+
+## Observation-driven control and first learned predictor
+
+Run the complete experiment from the spider project:
+
+```bash
+python3 experiments/run_world_model.py \
+  --driftmoor-root ../Driftmoor-spider-sim \
+  --output-dir /tmp/driftmoor-world-model-v1
+```
+
+Defaults: 160 training episodes, 30 validation episodes, 40 test episodes;
+14 decision slots per episode; 140 training epochs. Episode seeds are split
+0+, 10000+, 20000+, respectively. Whole encounters stay in one split.
+The validation loss selects the checkpoint; test results do not select or
+tune the controller. The first result is preserved in
+results/world-model-v1.json.
+
+Files in output-dir: train/validation/test JSONL, predictor.pt, report.json.
+Keep generated data and checkpoints outside Git. Training uses installed CPU
+PyTorch, one thread and seed 7; there are no model downloads or API charges.
+
+The controller receives current/previous contacts and its own pose, position,
+body dimensions, HP, and bite reach. Candidate destinations are computed from
+coarse sensed direction/range and own position, not exact player coordinates.
+Its geometric target proxy is an explicit humanoid estimate. Own body and
+heading are proprioceptive inputs. No activation state, episode family, target
+HP, resolver geometry, player commands or ground-truth positions enter the
+numeric predictor. Vision is still omnidirectional; no new camera simulation
+is claimed.
+
+Actions: wait, face a contact, move up to eight feet toward it, or bite.
+The engine rejects invalid attacks regardless of the controller's prediction.
+A successfully executed experimental attack reveals the spider.
+The rule controller uses estimated surface reach and facing.
+The zone comparator runs that SAME rule controller only after chamber entry;
+it is not a recreation of the production creature's LLM choices.
+The learned controller scores candidate actions using predicted next contact
+range/presence and probability that a bite is admitted, with explicit effort
+costs. This is one-step scoring, not multi-step planning.
+
+The neural model is a small two-hidden-layer MLP. Inputs concatenate two
+17-value observations and a 10-value action encoding. Outputs predict the
+next 17-value observation plus an attack-admission logit. Training uses
+observation MSE and binary cross entropy. The next observation includes the
+scripted player's subsequent response, whose command is never an input.
+This is a structured-state dynamics experiment, NOT JEPA, V-JEPA2,
+a learned visual encoder, or a full LeCun-style autonomous architecture.
+
+First run: 2,240 training, 420 validation, 560 test transitions. Prediction
+metrics on held-out recorded transitions:
+- Visible range MAE: neural 9.54 ft, persistence 11.43 ft, constant 15.59 ft.
+- Admission precision 0.833, recall 0.938, with only 16 positive test labels.
+
+Closed-loop comparison on the same 40 held-out seeds:
+- Zone-gated rules: 38 bite commands, 34 admitted, 22 hits, 153 damage.
+- Observation rules: 24 bite commands, 19 admitted, 11 hits, 87 damage.
+- Learned scoring: 34 bite commands, 4 admitted, 2 hits, 21 damage.
+
+This is a NEGATIVE control result: offline prediction improves, but the
+learned action chooser is not an improvement. It made no repositioning moves
+and issued many rejected bites. Distribution shift from exploratory training
+and the short-sighted scoring objective are hypotheses to investigate, not
+established explanations. Do not replace the production spider with it.
+
+The opponent follows seeded approach, retreat, pause, sidestep and feint
+scripts and does not attack the spider. There are no distractions from
+additional actors, no injury tradeoff, and no claim of generalization to new
+maps or behavior families. Dice seeds alone do not count as scene diversity.
+
+Additional tests:
+```bash
+# In Driftmoor-spider-sim
+python3 -m pytest -q tests/test_spider_controller.py
+
+# In driftmoor-spider-ai
+python3 -m pytest -q experiments/test_world_model.py
+```
+
+Next research choices: inspect validation-only closed-loop failures, collect
+better-covered action sequences, and test longer-horizon planning on a NEW
+held-out evaluation split. Preserve this first result; do not tune against it
+and continue calling it an untouched test.

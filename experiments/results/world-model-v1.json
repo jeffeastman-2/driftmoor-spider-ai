@@ -1,0 +1,88 @@
+{
+  "experiment": "world-model-v1",
+  "configuration": {
+    "train_episodes": 160,
+    "validation_episodes": 30,
+    "test_episodes": 40,
+    "steps": 14,
+    "epochs": 140,
+    "training_seed": 7
+  },
+  "scope": "Structured-observation one-step predictor; not JEPA/V-JEPA or a full autonomous agent",
+  "split": "Whole episodes; train seeds 0+, validation 10000+, test 20000+",
+  "selected_epoch": 32,
+  "validation_loss": 0.032969847321510315,
+  "predictor": {
+    "observation_mse": 0.03064129687845707,
+    "visible_range_mae_ft": 9.537879943847656,
+    "attack_brier": 0.004888332914561033,
+    "attack_precision": 0.8333333333333334,
+    "attack_recall": 0.9375,
+    "admitted_attack_labels": 16,
+    "transitions": 560
+  },
+  "constant_baseline": {
+    "observation_mse": 0.12832148373126984,
+    "visible_range_mae_ft": 15.587516784667969,
+    "attack_brier": 0.02798548713326454,
+    "attack_precision": 0.0,
+    "attack_recall": 0.0,
+    "admitted_attack_labels": 16,
+    "transitions": 560
+  },
+  "persistence_baseline": {
+    "observation_mse": 0.07188868522644043,
+    "visible_range_mae_ft": 11.426886558532715,
+    "attack_brier": 0.02798548713326454,
+    "attack_precision": 0.0,
+    "attack_recall": 0.0,
+    "admitted_attack_labels": 16,
+    "transitions": 560
+  },
+  "controllers": {
+    "zone": {
+      "attacks": 38,
+      "admitted_attacks": 34,
+      "hits": 22,
+      "damage": 153,
+      "rejected_attacks": 4,
+      "pre_entry_orientations": 0,
+      "movement_ft": 11.22,
+      "steps": 560
+    },
+    "rule": {
+      "attacks": 24,
+      "admitted_attacks": 19,
+      "hits": 11,
+      "damage": 87,
+      "rejected_attacks": 5,
+      "pre_entry_orientations": 138,
+      "movement_ft": 1495.25,
+      "steps": 560
+    },
+    "learned": {
+      "attacks": 34,
+      "admitted_attacks": 4,
+      "hits": 2,
+      "damage": 21,
+      "rejected_attacks": 30,
+      "pre_entry_orientations": 6,
+      "movement_ft": 0.0,
+      "steps": 560
+    }
+  },
+  "limitations": [
+    "Scripted non-attacking player; no self-preservation evaluation",
+    "Single player and cavern; doors assumed open; movement and occlusion remain simplified",
+    "One-step candidate scoring, not multi-step model-predictive control",
+    "Success label is attack admission, not dice hit",
+    "Coarse contacts can cause rejected attacks despite predicted reach",
+    "Same behavior families, disjoint episode seeds; no claim of new-world generalization"
+  ],
+  "conclusion": "Offline prediction improves over constant and persistence; learned closed-loop control underperforms both rule comparators.",
+  "checkpoint_provenance": {
+    "driftmoor_foundation": "04bf63d",
+    "runner_foundation": "1546e38",
+    "note": "Controllers/predictor were new local changes during the run; committed after evaluation."
+  }
+}
