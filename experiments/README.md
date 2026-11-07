@@ -341,3 +341,7 @@ python3 -m pytest -q tests/test_spider_v2.py
 # Spider project
 python3 -m pytest -q experiments/test_world_model.py experiments/test_world_model_v2.py
 ```
+
+## Two private neural agents
+
+See [RECURRENT_AGENTS.md](RECURRENT_AGENTS.md) for training, evaluation, architecture, and fixture limitations.
