@@ -1,4 +1,4 @@
-# Downloaded model checkpoints and extracted weights
+# Generated model checkpoints (keep weights outside Git)
 /models/
 
 # Python-generated files
