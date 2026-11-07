@@ -1,0 +1,106 @@
+{
+  "stage": "fresh_test",
+  "episode_seeds": [
+    30000,
+    30039
+  ],
+  "pose_seeds": [
+    60000,
+    60039
+  ],
+  "prediction": {
+    "transitions": 2090,
+    "immediate": {
+      "positives": 25,
+      "brier": 0.006740631069988012,
+      "precision": 0.5897435897435898,
+      "recall": 0.92
+    },
+    "followup": {
+      "positives": 146,
+      "brier": 0.035191867500543594,
+      "precision": 0.6549707602339181,
+      "recall": 0.7671232876712328
+    }
+  },
+  "controllers": {
+    "zone": {
+      "attacks": 43,
+      "admitted_attacks": 42,
+      "hits": 22,
+      "damage": 179,
+      "rejected_attacks": 1,
+      "orientations": 75,
+      "movement_ft": 0.0
+    },
+    "rule": {
+      "attacks": 20,
+      "admitted_attacks": 17,
+      "hits": 8,
+      "damage": 61,
+      "rejected_attacks": 3,
+      "orientations": 220,
+      "movement_ft": 1385.58
+    },
+    "v1": {
+      "attacks": 29,
+      "admitted_attacks": 6,
+      "hits": 5,
+      "damage": 44,
+      "rejected_attacks": 23,
+      "orientations": 11,
+      "movement_ft": 0.0
+    },
+    "v2_one_step": {
+      "attacks": 13,
+      "admitted_attacks": 13,
+      "hits": 7,
+      "damage": 51,
+      "rejected_attacks": 0,
+      "orientations": 7,
+      "movement_ft": 0.0
+    },
+    "v2_two_step": {
+      "attacks": 25,
+      "admitted_attacks": 24,
+      "hits": 10,
+      "damage": 73,
+      "rejected_attacks": 1,
+      "orientations": 34,
+      "movement_ft": 7.99
+    }
+  },
+  "selection": "Configuration frozen after validation, before generating these episodes",
+  "v1_checkpoint_sha256": "4c8f116932a37cdafafd592494af0e3244dc8c6aae8cb29a58885d28d98f0a5c",
+  "v2_checkpoint_sha256": "69ba3bde25c3e7e96409ceab5a305d4f99fc1904641d7c260a4d28633fe05aed",
+  "scope": "Direct two-step action outcome prediction for sequences [candidate, bite-or-wait]; not autoregressive latent planning, JEPA, or an LLM",
+  "conclusion": "V2 two-step improves over v1 and v2 one-step, but not the zone-gated rule baseline.",
+  "paired_comparisons": {
+    "resamples": 10000,
+    "seed": 23,
+    "unit": "whole paired episode",
+    "comparisons": {
+      "v1": {
+        "mean_extra_valid_bites_per_episode": 0.45,
+        "paired_bootstrap_95_percent_interval": [
+          0.1,
+          0.85
+        ]
+      },
+      "v2_one_step": {
+        "mean_extra_valid_bites_per_episode": 0.275,
+        "paired_bootstrap_95_percent_interval": [
+          0.025,
+          0.575
+        ]
+      },
+      "zone": {
+        "mean_extra_valid_bites_per_episode": -0.45,
+        "paired_bootstrap_95_percent_interval": [
+          -0.75,
+          -0.175
+        ]
+      }
+    }
+  }
+}

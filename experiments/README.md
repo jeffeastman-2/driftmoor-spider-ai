@@ -241,3 +241,103 @@ negatives), and evaluate two-step planning that credits a prepared bite.
 Choose changes using validation only and reserve NEW test episodes for v2.
 Do not merely raise the probability threshold, add more epochs, or replace
 the current model with a larger network without measuring these failures.
+
+## V2: covered training and two-step preparation
+
+V1 code, checkpoint and results remain frozen. V2 adds:
+- Every candidate action is labeled at sampled training states, not only
+  the action chosen by the behavior policy.
+- Matched close-target cases vary roll, pitch and heading at identical
+  initial target positions, with scene variants kept in the same split.
+- A second learned head predicts admission of a follow-up bite after the
+  candidate action and the scripted player response.
+- Planning compares sequences [candidate, bite-or-wait], discounting the
+  optional second bite reward by 0.8. It replans after real observations.
+
+This is DIRECT two-step outcome prediction, not autoregressive latent
+rollout, an unrestricted action search, JEPA, V-JEPA2 or an LLM. It permits
+a bounded test of preparation value without claiming the broader architecture.
+
+Run fit/validation first, inspect its report, then invoke the fresh test:
+
+```bash
+python3 experiments/run_world_model_v2.py --stage fit \
+  --driftmoor-root ../Driftmoor-spider-sim \
+  --v1-checkpoint /tmp/driftmoor-world-model-v1/predictor.pt \
+  --output-dir /tmp/driftmoor-world-model-v2
+
+python3 experiments/run_world_model_v2.py --stage test \
+  --driftmoor-root ../Driftmoor-spider-sim \
+  --v1-checkpoint /tmp/driftmoor-world-model-v1/predictor.pt \
+  --output-dir /tmp/driftmoor-world-model-v2
+```
+
+Fit refuses to overwrite a checkpoint, and test refuses to overwrite an
+existing test report. Use a new experiment directory for a changed version.
+Weights and datasets remain outside Git.
+
+Protocol:
+- Training encounters 1000–1159; matched pose groups 40000–40199.
+- Validation encounters 11000–11029; pose groups 50000–50039.
+- Fresh test encounters 30000–30039; pose groups 60000–60039.
+- All candidate branches and pose variants share their scene's group ID.
+- Two hidden layers of 96 units, 160 epochs, Adam 0.002, training seed 17.
+- Validation loss selects epoch 102. No objective/hyperparameter changes
+  were made after seeing this validation result or the fresh test.
+- Training had 8,854 transitions, 139 immediate and 774 follow-up positives.
+- Comparing v2_one_step and v2_two_step holds the trained model/data fixed,
+  isolating lookahead scoring. Comparing v1 with v2_one_step combines data
+  coverage and the extra training head; it does NOT isolate data alone.
+
+Validation valid bites / commands:
+- Zone-gated rules: 20/28.
+- Sensory rules: 17/22.
+- V1: 1/12.
+- V2 one-step: 5/6.
+- V2 two-step: 16/20.
+
+Fresh test, 40 whole encounters:
+
+| Controller | Bite commands | Valid bites | Rejected | Turns | Damage |
+|---|---:|---:|---:|---:|---:|
+| Zone-gated rules | 43 | 42 | 1 | 75 | 179 |
+| Sensory rules | 20 | 17 | 3 | 220 | 61 |
+| V1 | 29 | 6 | 23 | 11 | 44 |
+| V2 one-step | 13 | 13 | 0 | 7 | 51 |
+| V2 two-step | 25 | 24 | 1 | 34 | 73 |
+
+V2 two-step improves strongly over v1 and finds more valid opportunities
+than the same v2 model scored one step ahead. It still loses to the
+chamber-gated rule comparator. That comparator is the experimental rule
+controller behind the original trigger, not production Driftmoor LLM AI.
+
+Fresh offline prediction precision/recall at 0.5:
+- Immediate admission: 0.590 / 0.920 (25 positive labels).
+- Follow-up admission: 0.655 / 0.767 (146 positive labels).
+These are over all candidate test actions, not only selected policy actions.
+The decrease from validation precision shows prediction errors remain;
+24/25 selected valid bites must not be read as universal model accuracy.
+
+A paired episode bootstrap (10,000 samples, seed 23) estimates extra valid
+bites per episode for v2 two-step: +0.45 vs v1 (95% interval 0.10–0.85),
++0.275 vs v2 one-step (0.025–0.575), and -0.45 vs zone rules (-0.75–-0.175).
+These describe these scripted encounters, not real gameplay effectiveness.
+
+Reports: results/world-model-v2-validation.json and
+results/world-model-v2-test.json. Full episodes, datasets and checkpoints
+live in the run directory. The validation/test checkpoint SHA256 matches.
+
+Limits remain: non-attacking scripted player, same cavern and behavior
+families, coarse sensory observations, no support/attachment dynamics,
+no injury tradeoff or full 3D collision. Matched poses are explicit fixtures,
+not simulated climbing. Next investigate the ambush baseline's remaining
+advantage and longer planning without tuning on this now-used test split.
+
+Additional tests:
+```bash
+# Driftmoor experimental checkout
+python3 -m pytest -q tests/test_spider_v2.py
+
+# Spider project
+python3 -m pytest -q experiments/test_world_model.py experiments/test_world_model_v2.py
+```
