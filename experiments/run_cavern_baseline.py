@@ -2,8 +2,12 @@
 import argparse
 import json
 from pathlib import Path
-import subprocess
 import sys
+
+if __package__:
+    from .game_runtime import game_root, run_game
+else:
+    from game_runtime import game_root, run_game
 
 
 def main():
@@ -16,25 +20,21 @@ def main():
     if not 1 <= args.seeds <= 1000:
         parser.error("--seeds must be between 1 and 1000")
     root = args.driftmoor_root.expanduser().resolve()
-    if not (root / "engine/spider_experiment.py").is_file():
-        parser.error("Checkout must contain engine/spider_experiment.py")
-    # Separate interpreter avoids the spider project's src and model modules
-    # colliding with Driftmoor's engine/models packages.
+    if not (root / "engine/md_loader.py").is_file():
+        parser.error("Checkout must contain engine/md_loader.py")
+    # Run against the selected game's authored data in an isolated interpreter.
     function = "run_resolved_approach" if args.mode == "resolved" else "run_approach"
     if args.mode == "encounters":
         code = (
-            "import json; from engine.spider_experiment import run_encounters; "
+            "import json; from spider_sim.spider_experiment import run_encounters; "
             f"print(json.dumps([r for seed in range({args.seeds}) for r in run_encounters(seed)]))"
         )
     else:
         code = (
-            f"import json; from engine.spider_experiment import {function}; "
+            f"import json; from spider_sim.spider_experiment import {function}; "
             f"print(json.dumps({function}()))"
         )
-    result = subprocess.run(
-        [sys.executable, "-c", code],
-        cwd=root, text=True, capture_output=True,
-    )
+    result = run_game(root, code)
     if result.returncode:
         sys.stderr.write(result.stderr)
         raise SystemExit(result.returncode)

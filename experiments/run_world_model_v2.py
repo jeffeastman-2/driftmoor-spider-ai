@@ -3,8 +3,12 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 import sys
+
+if __package__:
+    from .game_runtime import game_root, run_game
+else:
+    from game_runtime import game_root, run_game
 
 import torch
 from torch import nn
@@ -18,7 +22,7 @@ HERE = Path(__file__).resolve().parent
 
 
 def engine(root,code):
-    result = subprocess.run([sys.executable,"-c",code],cwd=root,text=True,capture_output=True)
+    result = run_game(root, code)
     if result.returncode:
         raise RuntimeError(result.stderr)
     return json.loads(result.stdout)
@@ -72,7 +76,7 @@ def main():
     root = args.driftmoor_root.expanduser().resolve()
     original = args.v1_checkpoint.expanduser().resolve()
     output = args.output_dir.expanduser().resolve()
-    if not (root/"engine/spider_v2.py").exists() or not original.is_file():
+    if not (root/"engine/md_loader.py").exists() or not original.is_file():
         parser.error("Experimental checkout and existing v1 checkpoint required")
     if args.epochs<1:
         parser.error("--epochs must be positive")
@@ -84,7 +88,7 @@ def main():
             parser.error("Use a new output directory; preserve fitted checkpoints")
         print("Collecting covered training and validation actions...",flush=True)
         code = imports(original)+(
-            "from engine.spider_v2 import collect_covered,collect_pose_pairs; "
+            "from spider_sim.spider_v2 import collect_covered,collect_pose_pairs; "
             "print(json.dumps({"
             "'train':collect_covered(160,1000,v1)+collect_pose_pairs(200,40000),"
             "'validation':collect_covered(30,11000,v1)+collect_pose_pairs(40,50000)"
@@ -126,7 +130,7 @@ def main():
         predictions = torch.tensor(predictor(vx.tolist()))
         print("Comparing controllers on validation only...",flush=True)
         comparison = engine(root,imports(original,checkpoint)+(
-            "from engine.spider_v2 import evaluate_v2; "
+            "from spider_sim.spider_v2 import evaluate_v2; "
             "print(json.dumps(evaluate_v2(range(11000,11030),v1,v2)))"
         ))
         report = {
@@ -151,7 +155,7 @@ def main():
             parser.error("Fresh-test report already exists; preserve it")
         print("Evaluating the frozen model on fresh seeds 30000-30039...",flush=True)
         data = engine(root,imports(original,checkpoint)+(
-            "from engine.spider_v2 import collect_covered,collect_pose_pairs,evaluate_v2; "
+            "from spider_sim.spider_v2 import collect_covered,collect_pose_pairs,evaluate_v2; "
             "print(json.dumps({"
             "'rows':collect_covered(40,30000,v1)+collect_pose_pairs(40,60000),"
             "'controllers':evaluate_v2(range(30000,30040),v1,v2)}))"

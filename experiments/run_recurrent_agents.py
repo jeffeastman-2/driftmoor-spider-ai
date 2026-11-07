@@ -4,6 +4,11 @@ import copy
 import json
 from pathlib import Path
 import sys
+
+if __package__:
+    from .game_runtime import game_root, run_game
+else:
+    from game_runtime import game_root, run_game
 import torch
 import torch.nn.functional as F
 from experiments.recurrent_agents import Agent,save
@@ -77,8 +82,8 @@ def main():
     args=parser.parse_args()
     if not 1 <= args.train_episodes <= 1000 or args.epochs < 1:
         parser.error("Use 1..1000 training episodes and at least one epoch.")
-    sys.path.insert(0,str(args.driftmoor_root.resolve()))
-    from engine.dual_encounter import collect,ACTORS,neural_encounters
+    game_root(args.driftmoor_root)
+    from spider_sim.dual_encounter import collect,ACTORS,neural_encounters
     torch.set_num_threads(1)
     args.output.mkdir(parents=True,exist_ok=True)
     splits={"train":collect(args.train_episodes,70000),"validation":collect(24,71000),"test":collect(32,72000)}

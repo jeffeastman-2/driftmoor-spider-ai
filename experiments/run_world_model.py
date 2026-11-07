@@ -2,8 +2,12 @@
 import argparse
 import json
 from pathlib import Path
-import subprocess
 import sys
+
+if __package__:
+    from .game_runtime import game_root, run_game
+else:
+    from game_runtime import game_root, run_game
 
 import torch
 from torch import nn
@@ -17,9 +21,7 @@ HERE = Path(__file__).resolve().parent
 
 
 def driftmoor(root, code):
-    result = subprocess.run(
-        [sys.executable,"-c",code],cwd=root,text=True,capture_output=True,
-    )
+    result = run_game(root, code)
     if result.returncode:
         raise RuntimeError(result.stderr)
     return json.loads(result.stdout)
@@ -75,14 +77,14 @@ def main():
     if args.train_episodes >= 10000 or args.validation_episodes >= 10000:
         parser.error("Counts would overlap reserved seed splits")
     root = args.driftmoor_root.expanduser().resolve()
-    if not (root/"engine/spider_learning.py").is_file():
+    if not (root/"engine/md_loader.py").is_file():
         parser.error("Choose the experimental Driftmoor checkout")
     output = args.output_dir.expanduser().resolve()
     output.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(1)
     torch.manual_seed(7)
     code = (
-        "import json; from engine.spider_learning import collect; "
+        "import json; from spider_sim.spider_learning import collect; "
         f"print(json.dumps({{'train':collect({args.train_episodes},0),"
         f"'validation':collect({args.validation_episodes},10000),"
         f"'test':collect({args.test_episodes},20000)}}))"
@@ -140,7 +142,7 @@ def main():
         f"s=importlib.util.spec_from_file_location('spider_predictor',{module_path!r}); "
         "m=importlib.util.module_from_spec(s); s.loader.exec_module(m); "
         f"predictor=m.load_predictor({str(checkpoint_path)!r}); "
-        "from engine.spider_learning import evaluate; "
+        "from spider_sim.spider_learning import evaluate; "
         f"print(json.dumps(evaluate(range(20000,{20000+args.test_episodes}),predictor)))"
     )
     comparison = driftmoor(root,eval_code)

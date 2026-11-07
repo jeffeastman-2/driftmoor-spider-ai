@@ -23,6 +23,9 @@ from an encounter remain in the same split. Output includes full demonstration
 sequences, four small checkpoints, private observation rollout traces, and a
 report. Keep these artifacts outside Git.
 
+The encounter and teacher implementation is now in `spider_sim/dual_encounter.py`
+in this project. Its game dependency is selected through `spider_sim/runtime.py`.
+
 ## What is learned
 
 Each actor receives 41 numbers: sensory availability and measurement masks,

@@ -1,7 +1,8 @@
 # Echoing Caverns spider experiment
 
-Driftmoor runs from the isolated checkout on `codex/spider-world-model`.
-The original main checkout and the old toy simulation are not used for changes.
+All experiment code now lives in this project under `spider_sim/` and
+`experiments/`. The isolated Driftmoor worktree on `codex/spider-world-model`
+supplies game mechanics and authored scene data. The original main checkout is unchanged.
 
 ## Run
 
@@ -345,3 +346,7 @@ python3 -m pytest -q experiments/test_world_model.py experiments/test_world_mode
 ## Two private neural agents
 
 See [RECURRENT_AGENTS.md](RECURRENT_AGENTS.md) for training, evaluation, architecture, and fixture limitations.
+
+## Project layout
+
+Encounter runners, teachers, controllers, diagnostics, and their tests moved from the game worktree to `spider_sim/` and `tests/` in this project. See the root README for VS Code setup.

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Cavern baseline",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "experiments.run_cavern_baseline",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--driftmoor-root",
+        "${workspaceFolder}/../Driftmoor-spider-sim",
+        "--output",
+        "/tmp/cavern-baseline.jsonl"
+      ]
+    },
+    {
+      "name": "Train two recurrent agents",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "experiments.run_recurrent_agents",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--driftmoor-root",
+        "${workspaceFolder}/../Driftmoor-spider-sim",
+        "--output",
+        "/tmp/driftmoor-recurrent-agents"
+      ]
+    }
+  ]
+}

@@ -2,8 +2,12 @@
 import argparse
 import json
 from pathlib import Path
-import subprocess
 import sys
+
+if __package__:
+    from .game_runtime import game_root, run_game
+else:
+    from game_runtime import game_root, run_game
 
 HERE = Path(__file__).resolve().parent
 
@@ -22,11 +26,11 @@ def main():
         f"s=importlib.util.spec_from_file_location('spider_predictor',{str(HERE/'world_model.py')!r}); "
         "m=importlib.util.module_from_spec(s); s.loader.exec_module(m); "
         f"p=m.load_predictor({str(run/'predictor.pt')!r}); "
-        "from engine.spider_diagnostics import diagnose; "
+        "from spider_sim.spider_diagnostics import diagnose; "
         "print(json.dumps(diagnose(p)))"
     )
     print("Forking validation states to compare candidate actions...",flush=True)
-    result = subprocess.run([sys.executable,"-c",code],cwd=root,text=True,capture_output=True)
+    result = run_game(root, code)
     if result.returncode:
         raise RuntimeError(result.stderr)
     report = json.loads(result.stdout)
@@ -39,7 +43,7 @@ def main():
         "admitted_attacks":sum(r["target"][-1] for r in training),
     }
     import torch
-    from world_model import load_predictor
+    from experiments.world_model import load_predictor
     predictor = load_predictor(run/"predictor.pt")
     attack_rows = [r for r in validation if r["action"]["type"]=="attack"]
     prediction = predictor([r["input"] for r in attack_rows])
