@@ -16,7 +16,7 @@ def test_teacher_low_health_and_memory():
     obs=world.observation_for(SPIDER)
     obs["self"]["hp_fraction"]=.1
     memory=ContactMemory()
-    assert ACTIONS[memory.choose(SPIDER,obs)]=="retreat"
+    assert ACTIONS[memory.choose(SPIDER,obs)]=="wait"  # No observed threat bearing yet.
     obs["contact"]={"range_ft":20,"bearing_deg":45,"elevation_deg":None,"source":"vibration"}
     assert memory.update(obs)[0]==1
     obs["contact"]=None

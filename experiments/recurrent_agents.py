@@ -45,11 +45,16 @@ class Session:
         logits,belief,_,self.hidden=self.agent(torch.tensor(values,dtype=torch.float32)[None,None],hidden=self.hidden)
         return int(logits[0,0].argmax()),belief[0,0].tolist()
 
-def save(agent,path):
-    torch.save({"kind":agent.kind,"state":agent.state_dict()},path)
+def save(agent,path,observation_schema="body-center-motion-v4"):
+    payload={"kind":agent.kind,"state":agent.state_dict()}
+    if observation_schema is not None:
+        payload["observation_schema"]=observation_schema
+    torch.save(payload,path)
 
-def load(path):
+def load(path,*,expected_schema="body-center-motion-v4"):
     payload=torch.load(path,map_location="cpu",weights_only=True)
+    if expected_schema is not None and payload.get("observation_schema")!=expected_schema:
+        raise ValueError("Checkpoint observation schema does not match this experiment")
     agent=Agent(payload["kind"])
     agent.load_state_dict(payload["state"])
     return agent.eval()

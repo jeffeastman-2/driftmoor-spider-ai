@@ -33,3 +33,14 @@ def test_padding_does_not_contribute_to_loss():
     assert torch.equal(loss,objective(agent,changed))
     loss.backward()
     assert agent.encoder[0].weight.grad is not None
+
+def test_checkpoint_observation_schema_is_checked(tmp_path):
+    import pytest
+    agent=Agent().eval()
+    path=tmp_path/"versioned.pt"
+    save(agent,path,observation_schema="body-center-v2")
+    assert load(path,expected_schema="body-center-v2").kind=="gru"
+    with pytest.raises(ValueError,match="observation schema"):
+        load(path)  # Old action meanings require explicit historical inspection.
+    with pytest.raises(ValueError,match="observation schema"):
+        load(path,expected_schema="anchor-v1")

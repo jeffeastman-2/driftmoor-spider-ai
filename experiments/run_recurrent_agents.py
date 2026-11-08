@@ -89,7 +89,7 @@ def main():
     splits={"train":collect(args.train_episodes,70000),"validation":collect(24,71000),"test":collect(32,72000)}
     for name,episodes in splits.items():
         (args.output/(name+".json")).write_text(json.dumps(episodes))
-    report={"method":"supervised imitation plus sensory-memory and action-conditioned next-observation prediction","epochs":args.epochs,"splits":{k:[e["episode_id"] for e in v] for k,v in splits.items()},"agents":{}}
+    report={"observation_schema":"body-center-motion-v4","method":"supervised imitation plus sensory-memory and action-conditioned next-observation prediction","epochs":args.epochs,"splits":{k:[e["episode_id"] for e in v] for k,v in splits.items()},"agents":{}}
     trained={}
     for kind in ("mlp","gru"):
         trained[kind]={}
@@ -98,7 +98,7 @@ def main():
             agent,result=train(kind,role,*(batch(splits[k],role) for k in ("train","validation","test")),args.epochs)
             trained[kind][role]=agent
             report["agents"][kind][role]=result
-            save(agent,args.output/(kind+"-"+role+".pt"))
+            save(agent,args.output/(kind+"-"+role+".pt"),observation_schema="body-center-motion-v4")
             print(kind,role,json.dumps(result),flush=True)
     report["rollouts"]={}
     for kind,agents in trained.items():

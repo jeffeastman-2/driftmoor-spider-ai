@@ -10,17 +10,15 @@ from engine.loadout import draw
 from models.body_geometry import Orientation, ActionSocket
 from models.senses import resolve_senses
 from models.space_time import Position
+from engine.loadout import wielded_weapons
+from spider_sim.encounter_teacher import ContactMemory, LegacyTeacher, ACTIONS, action_orientation, predicted_orientation
 
 ACTORS = (SPIDER, PLAYER)
-ACTIONS = ("wait","advance","retreat","turn_left","turn_right","look_up","look_down","attack")
 # Sensory numbers; prior-action one-hot and feedback follow these 30 values.
 BASE_SIZE = 30
 INPUT_SIZE = BASE_SIZE+len(ACTIONS)+3
 MEMORY_SIZE = 5
-
-
-def angle_difference(a,b):
-    return (a-b+180)%360-180
+OBSERVATION_SCHEMA = "body-center-motion-v4"
 
 
 class DualEncounter(ResolvedCavernExperiment):
@@ -30,7 +28,7 @@ class DualEncounter(ResolvedCavernExperiment):
     entrance web curtain at x=81, occasional explicit sensor outages, and
     concealment broken by spider movement or an admitted attack.
     """
-    def __init__(self,seed=0,outages=True):
+    def __init__(self,seed=0,outages=True,scenario="mixed"):
         super().__init__(seed=seed)
         self.seed = seed
         self.tick = 0
@@ -51,7 +49,7 @@ class DualEncounter(ResolvedCavernExperiment):
         self.concealed = self.heights[SPIDER]>0
         self.active = set(self.config.characters)
         for cid in ACTORS:
-            ratio = rng.choice((0.25,0.6,1.0,1.0))
+            ratio = rng.choice((0.1,0.25,0.6,1.0,1.0))
             self.config.characters[cid].character.current_hp = max(1,round(self.max_hp[cid]*ratio))
         gil = self.config.characters[PLAYER]
         # Explicit equipment fixture: draw an existing proficient weapon.
@@ -62,6 +60,40 @@ class DualEncounter(ResolvedCavernExperiment):
         self.sockets[PLAYER]["bite"] = ActionSocket(
             (body.depth/2,0,body.height*0.6),(1,0,0),
         )  # Compatibility slot, but sword reach originates from the hand.
+
+        self.scenario = scenario
+        if scenario not in ("mixed","ground","ceiling","wounded_spider","wounded_gil","facing_away","critical_spider","critical_gil"):
+            raise ValueError("Unknown encounter scenario")
+        if scenario in ("ground","facing_away"):
+            self.heights[SPIDER] = 0
+            self.orientations[SPIDER] = Orientation(heading=0)
+            self.concealed = False
+        if scenario == "ceiling":
+            self.heights[SPIDER] = 10
+            self.orientations[SPIDER] = Orientation(roll=180,heading=0)
+            self.concealed = True
+        if scenario == "facing_away":
+            self.orientations[PLAYER] = Orientation(heading=0)
+
+        if scenario in ("wounded_spider","wounded_gil","critical_spider","critical_gil"):
+            # Close, visible encounter: a threat is sensed before withdrawing.
+            self.positions[SPIDER] = (70,195,"Secret Chamber")
+            self.positions[PLAYER] = (76,195,"Secret Chamber")
+            self.heights[SPIDER] = 0
+            self.orientations[SPIDER] = Orientation(heading=0)
+            self.orientations[PLAYER] = Orientation(heading=180)
+            self.concealed = False
+            hurt = SPIDER if scenario.endswith("spider") else PLAYER
+            ratio = 0.1 if scenario.startswith("critical") else 0.25
+            for cid in ACTORS:
+                self.config.characters[cid].character.current_hp = (
+                    max(1,round(self.max_hp[cid]*ratio)) if cid==hurt else self.max_hp[cid])
+
+    def attack_profile(self,actor):
+        """Own equipment and socket are self-knowledge, fixed per role here."""
+        weapons = [w for w in wielded_weapons(self.config.characters[actor]) if not w.is_ranged]
+        return {"reach_ft":max((w.reach for w in weapons),default=0),
+                "origin_local_ft":list(self.sockets[actor]["bite"].origin)}
 
     @staticmethod
     def in_web(xy):
@@ -109,18 +141,29 @@ class DualEncounter(ResolvedCavernExperiment):
         )
         contact = None
         if visible or vibration:
+            measured_distance, measured_bearing, measured_elevation = distance,bearing,elevation
+            dimensions = None
+            if visible:
+                body = self.bodies[other]
+                orientation = self.orientations[other]
+                offset = orientation.rotate((0,0,body.height/2))
+                cx,cy,cz = dx+offset[0],dy+offset[1],dz+offset[2]
+                measured_distance = math.sqrt(cx*cx+cy*cy+cz*cz)
+                measured_bearing = math.degrees(math.atan2(cy,cx))%360
+                measured_elevation = math.degrees(math.atan2(cz,math.hypot(cx,cy)))
+                # Visible silhouette's world-axis bounding extents; no identity
+                # or hidden anchor/orientation is supplied to the controller.
+                axes = [orientation.rotate(v) for v in (
+                    (body.depth,0,0),(0,body.width,0),(0,0,body.height))]
+                extents = [sum(abs(v[i]) for v in axes) for i in range(3)]
+                dimensions = [max(0.5,round(extents[i]*2)/2) for i in (1,0,2)]
             step = 15 if visible else 45
             contact = {
                 "source":"vision" if visible else "vibration",
-                "range_ft":round(distance/5)*5,
-                "bearing_deg":(round(bearing/step)*step)%360,
-                "elevation_deg":round(elevation/15)*15 if visible else None,
-                # No body estimate from vibration, and no entity/species ID.
-                "dimensions_ft": [
-                    round(value*2)/2 for value in (
-                        self.bodies[other].width,self.bodies[other].depth,self.bodies[other].height
-                    )
-                ] if visible else None,
+                "range_ft":round(measured_distance) if visible else round(distance/5)*5,
+                "bearing_deg":(round(measured_bearing/step)*step)%360,
+                "elevation_deg":round(measured_elevation/15)*15 if visible else None,
+                "dimensions_ft":dimensions,
             }
         pose = self.orientations[actor]
         own_body = self.bodies[actor]
@@ -155,6 +198,7 @@ class DualEncounter(ResolvedCavernExperiment):
             "self":{
                 "hp_fraction":hp,"orientation_roll_pitch_heading_deg":[pose.roll,pose.pitch,pose.heading],
                 "anchor_xy":list(own[:2]),
+                "attack_profile":self.attack_profile(actor),
             },
         }
 
@@ -165,39 +209,45 @@ class DualEncounter(ResolvedCavernExperiment):
             return "target_not_observable",{"attempted":False,"hit":None,"damage":0},[]
         return super()._stationary_attack(actor_id,target_id)
 
-    def act(self,actor,action_index):
+    def act(self,actor,action_index,*,orientation=None):
         if not 0<=action_index<len(ACTIONS):
             raise ValueError("Unknown action index")
         action = ACTIONS[action_index]
         pose = self.orientations[actor]
         destination = None
-        orientation = None
+        if orientation is None:
+            orientation = action_orientation(self.observation_for(actor),action_index)
+        orientation = (orientation if isinstance(orientation,Orientation) else Orientation(*orientation)) if orientation is not None else None
         kind = action
         target_id = None
         before_hp = {cid:self.config.characters[cid].character.current_hp for cid in ACTORS}
-        if action in ("advance","retreat"):
-            direction = 1 if action=="advance" else -1
+        if action in ("advance","retreat","flee"):
+            direction = -1 if action=="retreat" else 1
             x,y,_ = self.positions[actor]
-            heading = math.radians(pose.heading)
+            heading = math.radians((orientation or pose).heading)
             destination = (x+direction*6*math.cos(heading),y+direction*6*math.sin(heading))
             kind = "move"
-        elif action in ("turn_left","turn_right","look_up","look_down"):
+        elif action in ("face","look_up","look_down"):
             heading,pitch = pose.heading,pose.pitch
-            if action=="turn_left":
-                heading += 30
-            if action=="turn_right":
-                heading -= 30
             if action=="look_up":
                 pitch = max(-90,pitch-30)
             if action=="look_down":
                 pitch = min(90,pitch+30)
-            orientation = Orientation(pose.roll,pitch,heading%360)
+            orientation = orientation if action=="face" else Orientation(pose.roll,pitch,heading%360)
             kind = "orient"
         elif action=="attack":
             target_id = PLAYER if actor==SPIDER else SPIDER
-        result = super().step(
-            actor,kind,destination,target_id=target_id,orientation=orientation,
-        )
+        previous_pose = self.orientations[actor]
+        if kind=="move" and orientation is not None:
+            self.orientations[actor] = orientation
+        try:
+            result = super().step(
+                actor,kind,destination,target_id=target_id,
+                orientation=orientation if kind=="orient" else None,
+            )
+        except Exception:
+            self.orientations[actor] = previous_pose
+            raise
         self.tick += 1
         self.last_action[actor] = action
         combat = result["outcome"]["combat"] or {}
@@ -213,60 +263,18 @@ class DualEncounter(ResolvedCavernExperiment):
             if suffered:
                 self.feedback[cid][2] = suffered/self.max_hp[cid]
         return {"action":action,"status":result["outcome"]["status"],
-                "admitted":bool(combat.get("attempted",False)),"damage":damage}
+                "admitted":bool(combat.get("attempted",False)),"damage":damage,
+                "duration_seconds":6,"distance_moved_ft":result["outcome"]["distance_moved_ft"],
+                "movement_budget_ft":result["outcome"]["movement_budget_ft"]}
 
 
-class ContactMemory:
-    """Demonstration memory built only from this actor's observations."""
-    def __init__(self):
-        self.contact = None
-        self.age = 100
 
-    def update(self,observation):
-        self.age += 1
-        if observation["contact"]:
-            self.contact = dict(observation["contact"])
-            self.age = 0
-        if self.age>6:
-            self.contact = None
-        if self.contact is None:
-            return [0,0,0,0,0]
-        c = self.contact
-        bearing = math.radians(c["bearing_deg"])
-        return [1,c["range_ft"]/60,math.cos(bearing),math.sin(bearing),
-                (c.get("elevation_deg") or 0)/90]
-
-    def choose(self,actor,observation):
-        own = observation["self"]
-        # Distinct authored survival thresholds; learned through imitation.
-        threshold = 0.35 if actor==SPIDER else 0.45
-        if own["hp_fraction"]<threshold:
-            return ACTIONS.index("retreat")
-        c = observation["contact"] or self.contact
-        roll,pitch,heading = own["orientation_roll_pitch_heading_deg"]
-        if c:
-            delta = angle_difference(c["bearing_deg"],heading)
-            if abs(delta)>20:
-                return ACTIONS.index("turn_left" if delta>0 else "turn_right")
-            desired = -(c.get("elevation_deg") or 0)
-            if desired-pitch>20:
-                return ACTIONS.index("look_down")
-            if desired-pitch<-20:
-                return ACTIONS.index("look_up")
-            visible = observation["contact"] and observation["contact"]["source"]=="vision"
-            if visible and c["range_ft"]<=15:
-                return ACTIONS.index("attack")
-            return ACTIONS.index("advance" if actor==PLAYER or c["range_ft"]>15 else "wait")
-        if actor==PLAYER:
-            if observation["web_evidence"] and pitch>-30:
-                return ACTIONS.index("look_up")
-            return ACTIONS.index("advance")
-        return ACTIONS.index("wait")
-
-
-def demonstration(seed,rounds=18,exploration=0.15):
-    world = DualEncounter(seed)
-    memories = {cid:ContactMemory() for cid in ACTORS}
+def demonstration(seed,rounds=18,exploration=0.15,teacher="sensory",scenario="mixed"):
+    if teacher not in ("sensory","legacy"):
+        raise ValueError("Unknown teacher")
+    teacher_name = teacher
+    world = DualEncounter(seed,scenario=scenario)
+    memories = {cid:(LegacyTeacher() if teacher=="legacy" else ContactMemory()) for cid in ACTORS}
     randomizer = random.Random(seed+900000)
     records = {cid:[] for cid in ACTORS}
     for turn in range(rounds):
@@ -276,11 +284,15 @@ def demonstration(seed,rounds=18,exploration=0.15):
             obs = world.observation_for(cid)
             belief = memories[cid].update(obs)
             teacher = memories[cid].choose(cid,obs)
+            teacher_pose = (memories[cid].decision(cid,obs)["orientation"]
+                            if teacher_name!="legacy" else action_orientation(obs,teacher))
             executed = randomizer.randrange(len(ACTIONS)) if randomizer.random()<exploration else teacher
-            feedback = world.act(cid,executed)
+            feedback = world.act(cid,executed,orientation=teacher_pose if executed==teacher else None)
             records[cid].append({
                 "observation":obs["values"],"teacher_action":teacher,"executed_action":executed,
                 "memory_target":belief,"contact_missing":obs["contact"] is None,
+                "teacher_intent":memories[cid].intent(cid,obs) if teacher_name!="legacy" else None,
+                "teacher_orientation":teacher_pose,
                 "feedback":[float(feedback["admitted"]),feedback["damage"]/20],
             })
     for cid,rows in records.items():
@@ -288,11 +300,14 @@ def demonstration(seed,rounds=18,exploration=0.15):
             row["next_observation"] = (
                 rows[i+1]["observation"] if i+1<len(rows) else world.observation_for(cid)["values"]
             )
-    return {"episode_id":seed,"actors":records}
+    return {"episode_id":seed,"teacher":teacher_name,"scenario":scenario,"actors":records}
 
 
-def collect(count,start):
-    return [demonstration(seed) for seed in range(start,start+count)]
+def collect(count,start,scenarios=("mixed",)):
+    if not scenarios:
+        raise ValueError("At least one collection scenario is required")
+    return [demonstration(seed,scenario=scenarios[i%len(scenarios)])
+            for i,seed in enumerate(range(start,start+count))]
 
 
 def neural_encounters(seeds,agents):
@@ -310,7 +325,7 @@ def neural_encounters(seeds,agents):
                     break
                 observation = world.observation_for(cid)
                 action,belief = sessions[cid].choose(observation["values"])
-                result = world.act(cid,action)
+                result = world.act(cid,action,orientation=predicted_orientation(observation,action,belief))
                 item = totals[cid]
                 item["actions"][ACTIONS[action]] += 1
                 item["attacks"] += int(ACTIONS[action]=="attack")

@@ -9,7 +9,9 @@ dependency; you do not need to open a second VS Code project.
 
 | Location | Purpose |
 | --- | --- |
-| `spider_sim/dual_encounter.py` | Two-actor sensory fixture, ContactMemory teacher, demonstrations and neural rollouts |
+| `spider_sim/dual_encounter.py` | Two-actor sensory fixture, demonstrations and neural rollouts |
+| `spider_sim/encounter_teacher.py` | Observation-only teachers, distinct retreat/flee behaviors |
+| `spider_sim/encounter_evaluation.py` | Matched encounter scoring and behavior-specific metrics |
 | `spider_sim/spider_experiment.py` | Scene adapter, observations, movement and combat execution |
 | `spider_sim/spider_controller.py` | Earlier observation-driven rules and candidate scoring |
 | `spider_sim/spider_learning.py` | Earlier scripted episodes and collection |
@@ -75,3 +77,15 @@ Refactor verification: 67 tests pass here and 43 generic body/senses tests pass
 in Driftmoor. All 32 saved test demonstrations and all 16 trained-GRU rollout
 totals match the pre-refactor artifacts exactly. Baseline, v1 training, neural
 training, diagnostics, and v2 evaluation entry points were smoke-tested.
+
+## Improved teacher experiment
+
+See [teacher evaluation](experiments/TEACHER_EXPERIMENT.md) for the new reach/facing teacher, matched MLP/GRU comparisons, results, and review guide.
+
+## Retreat and flee
+
+The current teacher distinguishes maintaining focus while backing away from turning away to flee. See [behavior, training, and results](experiments/RETREAT_AND_FLEE.md). The network still has eight motor outputs. All current changes remain uncommitted pending review.
+
+## Corrected turn-and-move timing
+
+Retreat and flee now turn and move in one actor slot. See [current action semantics, results, and 5e considerations](experiments/TURN_AND_MOVE.md). Earlier turn-slot survival reports are historical.

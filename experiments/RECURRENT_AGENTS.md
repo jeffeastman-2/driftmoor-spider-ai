@@ -1,5 +1,8 @@
 # Two private recurrent encounter agents
 
+This page describes the initial v1 experiment. For the current teacher and
+body-center sensor schema, see [TURN_AND_MOVE.md](TURN_AND_MOVE.md).
+
 This experiment trains **separate spider and Gilthaness networks**, without an
 LLM, images, V-JEPA, or a shared transcript. It is supervised imitation, not
 reinforcement learning or a completed JEPA architecture.

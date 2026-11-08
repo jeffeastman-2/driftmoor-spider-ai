@@ -1,0 +1,374 @@
+{
+  "method": "observation-only body/reach teacher; unchanged neural architectures",
+  "observation_schema": "body-center-v2",
+  "epochs": 160,
+  "architecture": {
+    "encoder": [
+      41,
+      32
+    ],
+    "gru_hidden": 48,
+    "actions": 8
+  },
+  "evaluation": {
+    "seeds": [
+      94000,
+      94001,
+      94002,
+      94003,
+      94004,
+      94005,
+      94006,
+      94007
+    ],
+    "scenarios": [
+      "mixed",
+      "ground",
+      "ceiling",
+      "wounded_spider",
+      "wounded_gil",
+      "facing_away"
+    ],
+    "rounds": 18
+  },
+  "agents": {
+    "mlp": {
+      "giant_spider": {
+        "validation_loss": 0.6846099495887756,
+        "test": {
+          "policy_accuracy": 0.7865961194038391,
+          "next_observation_mse": 0.05207117646932602,
+          "memory_validity_accuracy": 0.9470899701118469,
+          "missing_contact_recall_frames": 65,
+          "remembered_range_mae_ft": 8.141899108886719
+        }
+      },
+      "gilthaness": {
+        "validation_loss": 0.7531454563140869,
+        "test": {
+          "policy_accuracy": 0.7684210538864136,
+          "next_observation_mse": 0.03989466279745102,
+          "memory_validity_accuracy": 0.9263157844543457,
+          "missing_contact_recall_frames": 94,
+          "remembered_range_mae_ft": 4.548577308654785
+        }
+      }
+    },
+    "gru": {
+      "giant_spider": {
+        "validation_loss": 0.6559172868728638,
+        "test": {
+          "policy_accuracy": 0.7689594626426697,
+          "next_observation_mse": 0.05404249578714371,
+          "memory_validity_accuracy": 0.9929453134536743,
+          "missing_contact_recall_frames": 65,
+          "remembered_range_mae_ft": 7.8261799812316895
+        }
+      },
+      "gilthaness": {
+        "validation_loss": 0.7745891809463501,
+        "test": {
+          "policy_accuracy": 0.7789473533630371,
+          "next_observation_mse": 0.04087291285395622,
+          "memory_validity_accuracy": 0.9964912533760071,
+          "missing_contact_recall_frames": 94,
+          "remembered_range_mae_ft": 5.7095160484313965
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Synthetic body-center vision, coarse vibration, simplified 2.5D scene and movement",
+    "Legacy and improved teachers use the same revised sensory observations",
+    "Actor loadouts are fixed; Gil has a longsword and no spells",
+    "Identical initial seeds, but different action choices consume different combat dice",
+    "Survival includes actors starting at low health; no encounter completion reward",
+    "Learned policies imitate rules; prediction heads are not used for planning",
+    "Single training run and small held-out fixtures; no claim of statistical superiority"
+  ],
+  "training_episodes": 160,
+  "validation_episodes": 24,
+  "test_episodes": 32,
+  "encounters": {
+    "legacy": {
+      "giant_spider": {
+        "attacks": 63,
+        "admitted": 3,
+        "rejected_attacks": 60,
+        "attack_admission_rate": 0.047619047619047616,
+        "damage_dealt": 0,
+        "damage_received": 39,
+        "survived": 47,
+        "episodes": 48,
+        "escape_moves": 246,
+        "escape_separation_increase_rate": 0.21951219512195122,
+        "blocked_moves": 199
+      },
+      "gilthaness": {
+        "attacks": 90,
+        "admitted": 19,
+        "rejected_attacks": 71,
+        "attack_admission_rate": 0.2111111111111111,
+        "damage_dealt": 39,
+        "damage_received": 0,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 414,
+        "escape_separation_increase_rate": 0.9057971014492754,
+        "blocked_moves": 45
+      }
+    },
+    "teacher": {
+      "giant_spider": {
+        "attacks": 41,
+        "admitted": 39,
+        "rejected_attacks": 2,
+        "attack_admission_rate": 0.9512195121951219,
+        "damage_dealt": 185,
+        "damage_received": 68,
+        "survived": 45,
+        "episodes": 48,
+        "escape_moves": 224,
+        "escape_separation_increase_rate": 0.20982142857142858,
+        "blocked_moves": 180
+      },
+      "gilthaness": {
+        "attacks": 39,
+        "admitted": 32,
+        "rejected_attacks": 7,
+        "attack_admission_rate": 0.8205128205128205,
+        "damage_dealt": 68,
+        "damage_received": 185,
+        "survived": 47,
+        "episodes": 48,
+        "escape_moves": 412,
+        "escape_separation_increase_rate": 0.9150485436893204,
+        "blocked_moves": 40
+      }
+    },
+    "mlp": {
+      "giant_spider": {
+        "attacks": 29,
+        "admitted": 17,
+        "rejected_attacks": 12,
+        "attack_admission_rate": 0.5862068965517241,
+        "damage_dealt": 93,
+        "damage_received": 0,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 231,
+        "escape_separation_increase_rate": 0.19913419913419914,
+        "blocked_moves": 196
+      },
+      "gilthaness": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "attack_admission_rate": null,
+        "damage_dealt": 0,
+        "damage_received": 93,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 408,
+        "escape_separation_increase_rate": 0.9313725490196079,
+        "blocked_moves": 114
+      }
+    },
+    "gru": {
+      "giant_spider": {
+        "attacks": 41,
+        "admitted": 20,
+        "rejected_attacks": 21,
+        "attack_admission_rate": 0.4878048780487805,
+        "damage_dealt": 82,
+        "damage_received": 0,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 234,
+        "escape_separation_increase_rate": 0.18803418803418803,
+        "blocked_moves": 193
+      },
+      "gilthaness": {
+        "attacks": 2,
+        "admitted": 2,
+        "rejected_attacks": 0,
+        "attack_admission_rate": 1.0,
+        "damage_dealt": 0,
+        "damage_received": 82,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 387,
+        "escape_separation_increase_rate": 0.937984496124031,
+        "blocked_moves": 39
+      }
+    },
+    "legacy_spider_vs_teacher": {
+      "giant_spider": {
+        "attacks": 67,
+        "admitted": 39,
+        "rejected_attacks": 28,
+        "attack_admission_rate": 0.582089552238806,
+        "damage_dealt": 124,
+        "damage_received": 86,
+        "survived": 44,
+        "episodes": 48,
+        "escape_moves": 245,
+        "escape_separation_increase_rate": 0.23673469387755103,
+        "blocked_moves": 193
+      },
+      "gilthaness": {
+        "attacks": 37,
+        "admitted": 29,
+        "rejected_attacks": 8,
+        "attack_admission_rate": 0.7837837837837838,
+        "damage_dealt": 86,
+        "damage_received": 124,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 414,
+        "escape_separation_increase_rate": 0.9057971014492754,
+        "blocked_moves": 41
+      }
+    },
+    "legacy_gil_vs_teacher": {
+      "giant_spider": {
+        "attacks": 39,
+        "admitted": 27,
+        "rejected_attacks": 12,
+        "attack_admission_rate": 0.6923076923076923,
+        "damage_dealt": 119,
+        "damage_received": 11,
+        "survived": 47,
+        "episodes": 48,
+        "escape_moves": 225,
+        "escape_separation_increase_rate": 0.19555555555555557,
+        "blocked_moves": 186
+      },
+      "gilthaness": {
+        "attacks": 66,
+        "admitted": 12,
+        "rejected_attacks": 54,
+        "attack_admission_rate": 0.18181818181818182,
+        "damage_dealt": 11,
+        "damage_received": 119,
+        "survived": 47,
+        "episodes": 48,
+        "escape_moves": 412,
+        "escape_separation_increase_rate": 0.9150485436893204,
+        "blocked_moves": 54
+      }
+    },
+    "mlp_spider_vs_teacher": {
+      "giant_spider": {
+        "attacks": 52,
+        "admitted": 28,
+        "rejected_attacks": 24,
+        "attack_admission_rate": 0.5384615384615384,
+        "damage_dealt": 161,
+        "damage_received": 38,
+        "survived": 45,
+        "episodes": 48,
+        "escape_moves": 220,
+        "escape_separation_increase_rate": 0.22272727272727272,
+        "blocked_moves": 181
+      },
+      "gilthaness": {
+        "attacks": 25,
+        "admitted": 23,
+        "rejected_attacks": 2,
+        "attack_admission_rate": 0.92,
+        "damage_dealt": 38,
+        "damage_received": 161,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 423,
+        "escape_separation_increase_rate": 0.8959810874704491,
+        "blocked_moves": 55
+      }
+    },
+    "mlp_gil_vs_teacher": {
+      "giant_spider": {
+        "attacks": 35,
+        "admitted": 21,
+        "rejected_attacks": 14,
+        "attack_admission_rate": 0.6,
+        "damage_dealt": 120,
+        "damage_received": 0,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 228,
+        "escape_separation_increase_rate": 0.19736842105263158,
+        "blocked_moves": 185
+      },
+      "gilthaness": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "attack_admission_rate": null,
+        "damage_dealt": 0,
+        "damage_received": 120,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 398,
+        "escape_separation_increase_rate": 0.957286432160804,
+        "blocked_moves": 104
+      }
+    },
+    "gru_spider_vs_teacher": {
+      "giant_spider": {
+        "attacks": 19,
+        "admitted": 15,
+        "rejected_attacks": 4,
+        "attack_admission_rate": 0.7894736842105263,
+        "damage_dealt": 68,
+        "damage_received": 56,
+        "survived": 45,
+        "episodes": 48,
+        "escape_moves": 225,
+        "escape_separation_increase_rate": 0.18222222222222223,
+        "blocked_moves": 193
+      },
+      "gilthaness": {
+        "attacks": 30,
+        "admitted": 28,
+        "rejected_attacks": 2,
+        "attack_admission_rate": 0.9333333333333333,
+        "damage_dealt": 56,
+        "damage_received": 68,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 414,
+        "escape_separation_increase_rate": 0.9130434782608695,
+        "blocked_moves": 50
+      }
+    },
+    "gru_gil_vs_teacher": {
+      "giant_spider": {
+        "attacks": 41,
+        "admitted": 37,
+        "rejected_attacks": 4,
+        "attack_admission_rate": 0.9024390243902439,
+        "damage_dealt": 129,
+        "damage_received": 15,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 229,
+        "escape_separation_increase_rate": 0.2052401746724891,
+        "blocked_moves": 180
+      },
+      "gilthaness": {
+        "attacks": 7,
+        "admitted": 2,
+        "rejected_attacks": 5,
+        "attack_admission_rate": 0.2857142857142857,
+        "damage_dealt": 15,
+        "damage_received": 129,
+        "survived": 48,
+        "episodes": 48,
+        "escape_moves": 386,
+        "escape_separation_increase_rate": 0.9378238341968912,
+        "blocked_moves": 36
+      }
+    }
+  }
+}
