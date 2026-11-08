@@ -341,7 +341,13 @@ class ResolvedCavernExperiment(SpiderObservationBaseline):
             )
         finally:
             use_rng(previous_rng)
+        # Full Driftmoor sessions apply these deterministic updates after the
+        # resolver. This standalone adapter must do the same, including reactions.
+        from engine.combat_resolver import _TOOK_DAMAGE_DELTAS
+        session.condition.apply_delta(adj.condition_deltas)
         for cid, damage in adj.hp_damage.items():
+            if damage > 0:
+                self.config.characters[cid].condition.apply_delta(_TOOK_DAMAGE_DELTAS)
             char = self.config.characters[cid].character
             char.current_hp = max(0, char.current_hp - damage)
             if char.current_hp == 0:

@@ -1,0 +1,1727 @@
+{
+  "method": "Frozen one-step predictor versus repeated actual counterfactual outcomes",
+  "draws_per_action": 32,
+  "fixture_seeds": [
+    230000,
+    230001,
+    230002,
+    230003,
+    230004,
+    230005
+  ],
+  "dice_seeds": [
+    240000,
+    240001,
+    240002,
+    240003,
+    240004,
+    240005,
+    240006,
+    240007,
+    240008,
+    240009,
+    240010,
+    240011,
+    240012,
+    240013,
+    240014,
+    240015,
+    240016,
+    240017,
+    240018,
+    240019,
+    240020,
+    240021,
+    240022,
+    240023,
+    240024,
+    240025,
+    240026,
+    240027,
+    240028,
+    240029,
+    240030,
+    240031
+  ],
+  "cases": [
+    {
+      "role": "giant_spider",
+      "case": "healthy_close_idle",
+      "opponent": "idle",
+      "contact": {
+        "source": "vision",
+        "range_ft": 7,
+        "bearing_deg": 0,
+        "elevation_deg": 30,
+        "dimensions_ft": [
+          2.0,
+          1.0,
+          5.5
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "attack",
+      "learned_cost_action": "advance",
+      "reference_cost_action": "attack",
+      "reference_cost_without_prior": "attack",
+      "forecast_ranking_regret": 0.2972288131713867,
+      "mean_next_hp_absolute_error": 0.44225937128067017,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "face",
+          "reference_regret": 0.27727940678596497
+        },
+        "attack_feedback": {
+          "action": "advance",
+          "reference_regret": 0.2972288131713867
+        },
+        "contact_range": {
+          "action": "advance",
+          "reference_regret": 0.2972288131713867
+        },
+        "blocked_flight": {
+          "action": "advance",
+          "reference_regret": 0.2972288131713867
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 4.039129734039307,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.22885875403881073,
+          "predicted_next_hp": 0.48865610361099243,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.1779688596725464,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.525350570678711,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 2.462747812271118,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.17365631461143494,
+          "predicted_next_hp": 0.6854792237281799,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.17623668909072876,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.3293176293373108,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 3.94757080078125,
+          "reference_expected_cost": 0.34999996423721313,
+          "reference_score_with_prior": 0.48847275972366333,
+          "predicted_next_hp": 0.5025402307510376,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.11966712772846222,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.5126211643218994,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 3.1766927242279053,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.153706893324852,
+          "predicted_next_hp": 0.596582293510437,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.15118741989135742,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.7920801639556885,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 6.374389171600342,
+          "reference_expected_cost": 2.2730770111083984,
+          "reference_score_with_prior": 2.327474355697632,
+          "predicted_next_hp": 0.2435787320137024,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.06073979288339615,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.5770301222801208,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 2.651268720626831,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.23985376954078674,
+          "predicted_next_hp": 0.6682567000389099,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.06334960460662842,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.07245559245347977,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 3.3316802978515625,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.24238179624080658,
+          "predicted_next_hp": 0.5754548907279968,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.3061073422431946,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.2282596826553345,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 3.48793625831604,
+          "reference_expected_cost": -0.15855470299720764,
+          "reference_score_with_prior": -0.12357250601053238,
+          "predicted_next_hp": 0.5859922170639038,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.5466475486755371,
+          "reference_admission": 1.0,
+          "predicted_damage": 0.216131329536438,
+          "reference_damage": 3.09375
+        }
+      ]
+    },
+    {
+      "role": "giant_spider",
+      "case": "healthy_close_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 7,
+        "bearing_deg": 0,
+        "elevation_deg": 30,
+        "dimensions_ft": [
+          2.0,
+          1.0,
+          5.5
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "attack",
+      "learned_cost_action": "advance",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "retreat",
+      "forecast_ranking_regret": 0.10185019671916962,
+      "mean_next_hp_absolute_error": 0.3713458776473999,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "advance",
+          "reference_regret": 0.10185019671916962
+        },
+        "contact_range": {
+          "action": "advance",
+          "reference_regret": 0.10185019671916962
+        },
+        "blocked_flight": {
+          "action": "advance",
+          "reference_regret": 0.10185019671916962
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 4.039129734039307,
+          "reference_expected_cost": 0.9064102172851562,
+          "reference_score_with_prior": 1.1352689266204834,
+          "predicted_next_hp": 0.48865610361099243,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.1779688596725464,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.525350570678711,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 2.462747812271118,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.17365631461143494,
+          "predicted_next_hp": 0.6854792237281799,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.17623668909072876,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.3293176293373108,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 3.94757080078125,
+          "reference_expected_cost": -0.06666666269302368,
+          "reference_score_with_prior": 0.07180611789226532,
+          "predicted_next_hp": 0.5025402307510376,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.11966712772846222,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.5126211643218994,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 3.1766927242279053,
+          "reference_expected_cost": 0.9064102172851562,
+          "reference_score_with_prior": 1.0601171255111694,
+          "predicted_next_hp": 0.596582293510437,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.15118741989135742,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.7920801639556885,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 6.374389171600342,
+          "reference_expected_cost": 1.856410264968872,
+          "reference_score_with_prior": 1.9108076095581055,
+          "predicted_next_hp": 0.2435787320137024,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.06073979288339615,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.5770301222801208,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 2.651268720626831,
+          "reference_expected_cost": 0.9230769872665405,
+          "reference_score_with_prior": 1.1629307270050049,
+          "predicted_next_hp": 0.6682567000389099,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.06334960460662842,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.07245559245347977,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 3.3316802978515625,
+          "reference_expected_cost": 0.9230769872665405,
+          "reference_score_with_prior": 1.1654587984085083,
+          "predicted_next_hp": 0.5754548907279968,
+          "reference_next_hp": 0.8846153616905212,
+          "predicted_admission": 0.3061073422431946,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.2282596826553345,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 3.48793625831604,
+          "reference_expected_cost": 0.670932412147522,
+          "reference_score_with_prior": 0.7059146165847778,
+          "predicted_next_hp": 0.5859922170639038,
+          "reference_next_hp": 0.8942307829856873,
+          "predicted_admission": 0.5466475486755371,
+          "reference_admission": 1.0,
+          "predicted_damage": 0.216131329536438,
+          "reference_damage": 3.09375
+        }
+      ]
+    },
+    {
+      "role": "giant_spider",
+      "case": "healthy_far_idle",
+      "opponent": "idle",
+      "contact": {
+        "source": "vision",
+        "range_ft": 10,
+        "bearing_deg": 0,
+        "elevation_deg": 15,
+        "dimensions_ft": [
+          2.0,
+          1.0,
+          5.5
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "flee",
+      "learned_cost_action": "advance",
+      "reference_cost_action": "face",
+      "reference_cost_without_prior": "wait",
+      "forecast_ranking_regret": 0.003568291664123535,
+      "mean_next_hp_absolute_error": 0.49620649218559265,
+      "cost_prefers_attack_over_wait": false,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.3304118514060974
+        },
+        "attack_feedback": {
+          "action": "advance",
+          "reference_regret": 0.003568291664123535
+        },
+        "contact_range": {
+          "action": "advance",
+          "reference_regret": 0.003568291664123535
+        },
+        "blocked_flight": {
+          "action": "advance",
+          "reference_regret": 0.003568291664123535
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 4.451595306396484,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.2662666141986847,
+          "predicted_next_hp": 0.4338003396987915,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.16969037055969238,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.9271068572998047,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 2.612896203994751,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.15465877950191498,
+          "predicted_next_hp": 0.6648129820823669,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.17238891124725342,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.43785303831100464,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 4.327045917510986,
+          "reference_expected_cost": 0.36666667461395264,
+          "reference_score_with_prior": 0.48150235414505005,
+          "predicted_next_hp": 0.45344898104667664,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.13779237866401672,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.6963062286376953,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 3.4881179332733154,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.15109048783779144,
+          "predicted_next_hp": 0.5538581609725952,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.1338476985692978,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.1127188205718994,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 6.635191440582275,
+          "reference_expected_cost": 1.3666666746139526,
+          "reference_score_with_prior": 1.4108200073242188,
+          "predicted_next_hp": 0.20926398038864136,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.06011177599430084,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.7657745480537415,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 3.0091519355773926,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.22695867717266083,
+          "predicted_next_hp": 0.6204035878181458,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.05634402483701706,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.32525357604026794,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 3.578681707382202,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.2272588312625885,
+          "predicted_next_hp": 0.5410799980163574,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.30228692293167114,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.477770209312439,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 3.7357499599456787,
+          "reference_expected_cost": 0.5,
+          "reference_score_with_prior": 0.5503024458885193,
+          "predicted_next_hp": 0.5536801218986511,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.5465407371520996,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.020174682140350342,
+          "reference_damage": 0.0
+        }
+      ]
+    },
+    {
+      "role": "giant_spider",
+      "case": "wounded_close_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 7,
+        "bearing_deg": 0,
+        "elevation_deg": 30,
+        "dimensions_ft": [
+          2.0,
+          1.0,
+          5.5
+        ]
+      },
+      "hp_fraction": 0.23076923191547394,
+      "policy_action": "flee",
+      "learned_cost_action": "retreat",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "advance",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.2254282534122467,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 1.2025171518325806
+        },
+        "contact_range": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 0.011214347556233406,
+          "reference_expected_cost": 1.4549802541732788,
+          "reference_score_with_prior": 1.7417677640914917,
+          "predicted_next_hp": 0.2872605323791504,
+          "reference_next_hp": 0.12860578298568726,
+          "predicted_admission": 0.14802809059619904,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.0944154262542725,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 0.0030155405402183533,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.20376001298427582,
+          "predicted_next_hp": 0.5308027267456055,
+          "reference_next_hp": 0.23076920211315155,
+          "predicted_admission": 0.1601181924343109,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.2796803414821625,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": -0.0003212101000826806,
+          "reference_expected_cost": 0.03589743375778198,
+          "reference_score_with_prior": 0.11631482094526291,
+          "predicted_next_hp": 0.32344183325767517,
+          "reference_next_hp": 0.23076920211315155,
+          "predicted_admission": 0.10177110135555267,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.06566759198904037,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 0.0062812380492687225,
+          "reference_expected_cost": 1.4549802541732788,
+          "reference_score_with_prior": 1.6987836360931396,
+          "predicted_next_hp": 0.4227524995803833,
+          "reference_next_hp": 0.12860578298568726,
+          "predicted_admission": 0.12177686393260956,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.2543400526046753,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 2.7473626136779785,
+          "reference_expected_cost": 2.18803334236145,
+          "reference_score_with_prior": 2.219478130340576,
+          "predicted_next_hp": 0.0710904523730278,
+          "reference_next_hp": 0.12860578298568726,
+          "predicted_admission": 0.0315200611948967,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.1646984964609146,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": -0.03821001946926117,
+          "reference_expected_cost": 1.4460060596466064,
+          "reference_score_with_prior": 1.7055535316467285,
+          "predicted_next_hp": 0.48049604892730713,
+          "reference_next_hp": 0.12860578298568726,
+          "predicted_admission": 0.05452841520309448,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.49167895317077637,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 0.013064748607575893,
+          "reference_expected_cost": 1.4460060596466064,
+          "reference_score_with_prior": 1.7365081310272217,
+          "predicted_next_hp": 0.39617353677749634,
+          "reference_next_hp": 0.12860578298568726,
+          "predicted_admission": 0.28532421588897705,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.6860842704772949,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.26084357500076294,
+          "reference_expected_cost": 1.2453901767730713,
+          "reference_score_with_prior": 1.3188319206237793,
+          "predicted_next_hp": 0.4131566882133484,
+          "reference_next_hp": 0.13221155107021332,
+          "predicted_admission": 0.46243399381637573,
+          "reference_admission": 1.0,
+          "predicted_damage": 0.38257843255996704,
+          "reference_damage": 3.09375
+        }
+      ]
+    },
+    {
+      "role": "giant_spider",
+      "case": "critical_blocked_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 7,
+        "bearing_deg": 0,
+        "elevation_deg": 30,
+        "dimensions_ft": [
+          2.0,
+          1.0,
+          5.5
+        ]
+      },
+      "hp_fraction": 0.11538461595773697,
+      "policy_action": "attack",
+      "learned_cost_action": "retreat",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "advance",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.2911236882209778,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.6096281409263611
+        },
+        "contact_range": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 0.034759271889925,
+          "reference_expected_cost": 0.9551281332969666,
+          "reference_score_with_prior": 1.1962382793426514,
+          "predicted_next_hp": 0.29209452867507935,
+          "reference_next_hp": 0.05288461595773697,
+          "predicted_admission": 0.15911360085010529,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.9418810606002808,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 0.02237406186759472,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.214386984705925,
+          "predicted_next_hp": 0.5024765729904175,
+          "reference_next_hp": 0.11538460105657578,
+          "predicted_admission": 0.1769256442785263,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.23561999201774597,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 0.018860869109630585,
+          "reference_expected_cost": 0.051282044500112534,
+          "reference_score_with_prior": 0.16762320697307587,
+          "predicted_next_hp": 0.33055055141448975,
+          "reference_next_hp": 0.11538460105657578,
+          "predicted_admission": 0.11753883212804794,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.10477423667907715,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 0.026376735419034958,
+          "reference_expected_cost": 0.9551281332969666,
+          "reference_score_with_prior": 1.179518699645996,
+          "predicted_next_hp": 0.4184826910495758,
+          "reference_next_hp": 0.05288461595773697,
+          "predicted_admission": 0.14816346764564514,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.1683918982744217,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 1.4739620685577393,
+          "reference_expected_cost": 1.9655449390411377,
+          "reference_score_with_prior": 2.016231060028076,
+          "predicted_next_hp": 0.056616924703121185,
+          "reference_next_hp": 0.05288461595773697,
+          "predicted_admission": 0.063475102186203,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.005397908389568329,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": -0.02569613605737686,
+          "reference_expected_cost": 0.942307710647583,
+          "reference_score_with_prior": 1.1918171644210815,
+          "predicted_next_hp": 0.48743337392807007,
+          "reference_next_hp": 0.05288461595773697,
+          "predicted_admission": 0.04850975424051285,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.5481073260307312,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 0.040889859199523926,
+          "reference_expected_cost": 0.942307710647583,
+          "reference_score_with_prior": 1.2247118949890137,
+          "predicted_next_hp": 0.393498957157135,
+          "reference_next_hp": 0.05288461595773697,
+          "predicted_admission": 0.29540303349494934,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.6971332430839539,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.24139508605003357,
+          "reference_expected_cost": 0.7422096133232117,
+          "reference_score_with_prior": 0.7772513628005981,
+          "predicted_next_hp": 0.39951854944229126,
+          "reference_next_hp": 0.05649038776755333,
+          "predicted_admission": 0.513608455657959,
+          "reference_admission": 1.0,
+          "predicted_damage": 0.629892885684967,
+          "reference_damage": 3.09375
+        }
+      ]
+    },
+    {
+      "role": "giant_spider",
+      "case": "no_contact_idle",
+      "opponent": "idle",
+      "contact": null,
+      "hp_fraction": 1.0,
+      "policy_action": "wait",
+      "learned_cost_action": "advance",
+      "reference_cost_action": "wait",
+      "reference_cost_without_prior": "wait",
+      "forecast_ranking_regret": 0.33018621802330017,
+      "mean_next_hp_absolute_error": 0.08215715736150742,
+      "cost_prefers_attack_over_wait": false,
+      "cost_prefers_retreat_over_flee": false,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "wait",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "advance",
+          "reference_regret": 0.33018621802330017
+        },
+        "contact_range": {
+          "action": "advance",
+          "reference_regret": 0.33018621802330017
+        },
+        "blocked_flight": {
+          "action": "advance",
+          "reference_regret": 0.33018621802330017
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 0.5140447616577148,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.00020183066953904927,
+          "predicted_next_hp": 0.9357444047927856,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.005508787930011749,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.3851676285266876,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 0.0,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.33038803935050964,
+          "predicted_next_hp": 1.1194580793380737,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.06339766085147858,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.8191677927970886,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 0.13144874572753906,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.47768616676330566,
+          "predicted_next_hp": 0.9835689067840576,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.03612354397773743,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.4345685541629791,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 0.7935237884521484,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3484790027141571,
+          "predicted_next_hp": 0.9008095264434814,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.04374897480010986,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.7377230525016785,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 2.3680856227874756,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.33597686886787415,
+          "predicted_next_hp": 0.7211796045303345,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.006928294897079468,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.16063544154167175,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 0.569157600402832,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.43537041544914246,
+          "predicted_next_hp": 0.928855299949646,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.02979326993227005,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.12236792594194412,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 0.02411937713623047,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.4279342591762543,
+          "predicted_next_hp": 0.9969850778579712,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.0055921971797943115,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.8705723881721497,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.38850295543670654,
+          "reference_expected_cost": 0.5,
+          "reference_score_with_prior": 0.958935558795929,
+          "predicted_next_hp": 0.995058000087738,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.29974812269210815,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.022614113986492157,
+          "reference_damage": 0.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "healthy_close_idle",
+      "opponent": "idle",
+      "contact": {
+        "source": "vision",
+        "range_ft": 6,
+        "bearing_deg": 180,
+        "elevation_deg": 15,
+        "dimensions_ft": [
+          4.0,
+          4.0,
+          2.0
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "attack",
+      "learned_cost_action": "attack",
+      "reference_cost_action": "attack",
+      "reference_cost_without_prior": "attack",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.2672162652015686,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "attack",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.0
+        },
+        "contact_range": {
+          "action": "attack",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "attack",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 3.090841054916382,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3550441861152649,
+          "predicted_next_hp": 0.616341233253479,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.4811588525772095,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.11987999081611633,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 2.181182384490967,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.1817367821931839,
+          "predicted_next_hp": 0.7273522019386292,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.3363538086414337,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.4971750974655151,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 2.6112284660339355,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.13276638090610504,
+          "predicted_next_hp": 0.672531008720398,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.2718663811683655,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.058727264404296875,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 1.9141504764556885,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.2346382886171341,
+          "predicted_next_hp": 0.7638593912124634,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.496989369392395,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.1811806857585907,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 3.4067330360412598,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.4322640597820282,
+          "predicted_next_hp": 0.5741583704948425,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.2761356234550476,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.36838725209236145,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 1.7812464237213135,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.28505006432533264,
+          "predicted_next_hp": 0.777641773223877,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.4522278904914856,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.6250195503234863,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 2.080706834793091,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.18629120290279388,
+          "predicted_next_hp": 0.7399450540542603,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.3668631315231323,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.770087480545044,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.31615662574768066,
+          "reference_expected_cost": -0.15000000596046448,
+          "reference_score_with_prior": -0.1407943218946457,
+          "predicted_next_hp": 0.957528829574585,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.8679063320159912,
+          "reference_admission": 1.0,
+          "predicted_damage": 2.147887945175171,
+          "reference_damage": 3.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "healthy_close_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 6,
+        "bearing_deg": 180,
+        "elevation_deg": 15,
+        "dimensions_ft": [
+          4.0,
+          4.0,
+          2.0
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "attack",
+      "learned_cost_action": "attack",
+      "reference_cost_action": "attack",
+      "reference_cost_without_prior": "advance",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.2467292696237564,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.01558201014995575
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.0
+        },
+        "contact_range": {
+          "action": "attack",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "attack",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 3.090841054916382,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.6183420419692993,
+          "predicted_next_hp": 0.616341233253479,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.4811588525772095,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.11987999081611633,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 2.181182384490967,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.1817367821931839,
+          "predicted_next_hp": 0.7273522019386292,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.3363538086414337,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.4971750974655151,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 2.6112284660339355,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.13276638090610504,
+          "predicted_next_hp": 0.672531008720398,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.2718663811683655,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.058727264404296875,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 1.9141504764556885,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.4979361295700073,
+          "predicted_next_hp": 0.7638593912124634,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.496989369392395,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.1811806857585907,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 3.4067330360412598,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.4322640597820282,
+          "predicted_next_hp": 0.5741583704948425,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.2761356234550476,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.36838725209236145,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 1.7812464237213135,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.5483479499816895,
+          "predicted_next_hp": 0.777641773223877,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.4522278904914856,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.6250195503234863,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 2.080706834793091,
+          "reference_expected_cost": 0.2632978558540344,
+          "reference_score_with_prior": 0.4495890736579895,
+          "predicted_next_hp": 0.7399450540542603,
+          "reference_next_hp": 0.9670878648757935,
+          "predicted_admission": 0.3668631315231323,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.770087480545044,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.31615662574768066,
+          "reference_expected_cost": 0.1079786941409111,
+          "reference_score_with_prior": 0.11718437075614929,
+          "predicted_next_hp": 0.957528829574585,
+          "reference_next_hp": 0.9677526950836182,
+          "predicted_admission": 0.8679063320159912,
+          "reference_admission": 1.0,
+          "predicted_damage": 2.147887945175171,
+          "reference_damage": 3.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "healthy_far_idle",
+      "opponent": "idle",
+      "contact": {
+        "source": "vision",
+        "range_ft": 10,
+        "bearing_deg": 180,
+        "elevation_deg": 0,
+        "dimensions_ft": [
+          4.0,
+          4.0,
+          2.0
+        ]
+      },
+      "hp_fraction": 1.0,
+      "policy_action": "attack",
+      "learned_cost_action": "attack",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "wait",
+      "forecast_ranking_regret": 0.3663650453090668,
+      "mean_next_hp_absolute_error": 0.2579881250858307,
+      "cost_prefers_attack_over_wait": false,
+      "cost_prefers_retreat_over_flee": false,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "attack",
+          "reference_regret": 0.3663650453090668
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.3663650453090668
+        },
+        "contact_range": {
+          "action": "attack",
+          "reference_regret": 0.3663650453090668
+        },
+        "blocked_flight": {
+          "action": "attack",
+          "reference_regret": 0.3663650453090668
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 2.992520332336426,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3752390444278717,
+          "predicted_next_hp": 0.6241347789764404,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.48285961151123047,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.04970584064722061,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 1.9845542907714844,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.1655678004026413,
+          "predicted_next_hp": 0.7519307136535645,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.34124821424484253,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.4094793796539307,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 2.460793972015381,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.1424444019794464,
+          "predicted_next_hp": 0.6899350881576538,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.2771006226539612,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.1517912745475769,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 1.6244868040084839,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.2297748327255249,
+          "predicted_next_hp": 0.795748233795166,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.4890977740287781,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.13376951217651367,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 3.294412851333618,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.18913033604621887,
+          "predicted_next_hp": 0.5882959961891174,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.2755991816520691,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.17171651124954224,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 1.7199294567108154,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.27111193537712097,
+          "predicted_next_hp": 0.7815409302711487,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.45443689823150635,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.5588793754577637,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 1.970963716506958,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.17644549906253815,
+          "predicted_next_hp": 0.7510713338851929,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.36688777804374695,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.6632205247879028,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.308269202709198,
+          "reference_expected_cost": 0.5,
+          "reference_score_with_prior": 0.5088094472885132,
+          "predicted_next_hp": 0.9534379839897156,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.8782199025154114,
+          "reference_admission": 0.0,
+          "predicted_damage": 2.089284896850586,
+          "reference_damage": 0.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "wounded_close_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 6,
+        "bearing_deg": 180,
+        "elevation_deg": 15,
+        "dimensions_ft": [
+          4.0,
+          4.0,
+          2.0
+        ]
+      },
+      "hp_fraction": 0.25531914830207825,
+      "policy_action": "flee",
+      "learned_cost_action": "retreat",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "advance",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.13626641035079956,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.34448951482772827
+        },
+        "contact_range": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": -0.026225129142403603,
+          "reference_expected_cost": 0.45937076210975647,
+          "reference_score_with_prior": 0.7398936748504639,
+          "predicted_next_hp": 0.28082287311553955,
+          "reference_next_hp": 0.22240692377090454,
+          "predicted_admission": 0.3187766373157501,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.26169225573539734,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 0.0,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3256474435329437,
+          "predicted_next_hp": 0.36435043811798096,
+          "reference_next_hp": 0.25531914830207825,
+          "predicted_admission": 0.14668706059455872,
+          "reference_admission": 0.0,
+          "predicted_damage": 1.3579699993133545,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 0.004309879150241613,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.049771543592214584,
+          "predicted_next_hp": 0.3319830596446991,
+          "reference_next_hp": 0.25531914830207825,
+          "predicted_admission": 0.019899576902389526,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.7163249850273132,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": -0.029538197442889214,
+          "reference_expected_cost": 0.45937076210975647,
+          "reference_score_with_prior": 0.7634087204933167,
+          "predicted_next_hp": 0.35068175196647644,
+          "reference_next_hp": 0.22240692377090454,
+          "predicted_admission": 0.32176733016967773,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.44333040714263916,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 0.5022016167640686,
+          "reference_expected_cost": 0.45937076210975647,
+          "reference_score_with_prior": 0.4975404739379883,
+          "predicted_next_hp": 0.2229650616645813,
+          "reference_next_hp": 0.22240692377090454,
+          "predicted_admission": 0.09789255261421204,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.025924816727638245,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": -0.011764390394091606,
+          "reference_expected_cost": 0.45937076210975647,
+          "reference_score_with_prior": 0.806877613067627,
+          "predicted_next_hp": 0.41789764165878296,
+          "reference_next_hp": 0.22240692377090454,
+          "predicted_admission": 0.2948928475379944,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.8287798762321472,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": -0.006497021298855543,
+          "reference_expected_cost": 0.45937076210975647,
+          "reference_score_with_prior": 0.7367733120918274,
+          "predicted_next_hp": 0.3440631330013275,
+          "reference_next_hp": 0.22240692377090454,
+          "predicted_admission": 0.18765445053577423,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.8884718418121338,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.0767628401517868,
+          "reference_expected_cost": 0.3000905513763428,
+          "reference_score_with_prior": 0.39426106214523315,
+          "predicted_next_hp": 0.6231120824813843,
+          "reference_next_hp": 0.22307179868221283,
+          "predicted_admission": 0.6497200727462769,
+          "reference_admission": 1.0,
+          "predicted_damage": 1.6368331909179688,
+          "reference_damage": 3.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "critical_blocked_teacher",
+      "opponent": "teacher",
+      "contact": {
+        "source": "vision",
+        "range_ft": 6,
+        "bearing_deg": 180,
+        "elevation_deg": 15,
+        "dimensions_ft": [
+          4.0,
+          4.0,
+          2.0
+        ]
+      },
+      "hp_fraction": 0.09574468433856964,
+      "policy_action": "flee",
+      "learned_cost_action": "retreat",
+      "reference_cost_action": "retreat",
+      "reference_cost_without_prior": "advance",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.20910896360874176,
+      "cost_prefers_attack_over_wait": true,
+      "cost_prefers_retreat_over_flee": true,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "attack",
+          "reference_regret": 0.40292638540267944
+        },
+        "contact_range": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "retreat",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": -0.04053208604454994,
+          "reference_expected_cost": 0.4659348428249359,
+          "reference_score_with_prior": 0.7335392236709595,
+          "predicted_next_hp": 0.1875283122062683,
+          "reference_next_hp": 0.06515957415103912,
+          "predicted_admission": 0.26923424005508423,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.14342966675758362,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 0.0,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.36242619156837463,
+          "predicted_next_hp": 0.2584986388683319,
+          "reference_next_hp": 0.09574469178915024,
+          "predicted_admission": 0.10216842591762543,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.7285528779029846,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 0.00674786139279604,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.060228634625673294,
+          "predicted_next_hp": 0.23130837082862854,
+          "reference_next_hp": 0.09574469178915024,
+          "predicted_admission": -0.022669613361358643,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.9037280082702637,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": -0.052237559109926224,
+          "reference_expected_cost": 0.4659348428249359,
+          "reference_score_with_prior": 0.7907286286354065,
+          "predicted_next_hp": 0.26504504680633545,
+          "reference_next_hp": 0.06515957415103912,
+          "predicted_admission": 0.25920021533966064,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.8269428610801697,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 0.1198253259062767,
+          "reference_expected_cost": 0.5909348726272583,
+          "reference_score_with_prior": 0.6148988008499146,
+          "predicted_next_hp": 0.15673238039016724,
+          "reference_next_hp": 0.06515957415103912,
+          "predicted_admission": 0.055353328585624695,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.4292369484901428,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": -0.021304210647940636,
+          "reference_expected_cost": 0.4659348428249359,
+          "reference_score_with_prior": 0.8334394097328186,
+          "predicted_next_hp": 0.3395577371120453,
+          "reference_next_hp": 0.06515957415103912,
+          "predicted_admission": 0.25217169523239136,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.23438818752765656,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": -0.009299355559051037,
+          "reference_expected_cost": 0.4659348428249359,
+          "reference_score_with_prior": 0.7760428190231323,
+          "predicted_next_hp": 0.2691150903701782,
+          "reference_next_hp": 0.06515957415103912,
+          "predicted_admission": 0.15179912745952606,
+          "reference_admission": 0.0,
+          "predicted_damage": 0.3377661108970642,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 0.11962945759296417,
+          "reference_expected_cost": 0.33112838864326477,
+          "reference_score_with_prior": 0.46315503120422363,
+          "predicted_next_hp": 0.5465356707572937,
+          "reference_next_hp": 0.0641622319817543,
+          "predicted_admission": 0.5890870690345764,
+          "reference_admission": 1.0,
+          "predicted_damage": 1.2471704483032227,
+          "reference_damage": 3.0
+        }
+      ]
+    },
+    {
+      "role": "gilthaness",
+      "case": "no_contact_idle",
+      "opponent": "idle",
+      "contact": null,
+      "hp_fraction": 1.0,
+      "policy_action": "look_up",
+      "learned_cost_action": "look_up",
+      "reference_cost_action": "look_up",
+      "reference_cost_without_prior": "wait",
+      "forecast_ranking_regret": 0.0,
+      "mean_next_hp_absolute_error": 0.24342066049575806,
+      "cost_prefers_attack_over_wait": false,
+      "cost_prefers_retreat_over_flee": false,
+      "offline_forecast_replacements": {
+        "next_hp": {
+          "action": "look_up",
+          "reference_regret": 0.0
+        },
+        "attack_feedback": {
+          "action": "look_up",
+          "reference_regret": 0.0
+        },
+        "contact_range": {
+          "action": "look_up",
+          "reference_regret": 0.0
+        },
+        "blocked_flight": {
+          "action": "look_up",
+          "reference_regret": 0.0
+        }
+      },
+      "actions": [
+        {
+          "action": "wait",
+          "predicted_cost": 2.6856141090393066,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.1935613602399826,
+          "predicted_next_hp": 0.6642982363700867,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.013018503785133362,
+          "reference_admission": 0.0,
+          "predicted_damage": -1.598555088043213,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "advance",
+          "predicted_cost": 1.4744343757629395,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.13671889901161194,
+          "predicted_next_hp": 0.8156957030296326,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.020359963178634644,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.4139415919780731,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "retreat",
+          "predicted_cost": 2.1402387619018555,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3217660188674927,
+          "predicted_next_hp": 0.7324701547622681,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.030184492468833923,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.43697690963745117,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "face",
+          "predicted_cost": 1.8421859741210938,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3750905692577362,
+          "predicted_next_hp": 0.7697267532348633,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.07592843472957611,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.587425947189331,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "flee",
+          "predicted_cost": 3.519007682800293,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.38440388441085815,
+          "predicted_next_hp": 0.6447887420654297,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.0614171177148819,
+          "reference_admission": 0.0,
+          "predicted_damage": -2.148858070373535,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_up",
+          "predicted_cost": 1.458958625793457,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.004697172902524471,
+          "predicted_next_hp": 0.8176301717758179,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.010947614908218384,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.2696644961833954,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "look_down",
+          "predicted_cost": 1.993697166442871,
+          "reference_expected_cost": 0.0,
+          "reference_score_with_prior": 0.3406168222427368,
+          "predicted_next_hp": 0.7507878541946411,
+          "reference_next_hp": 1.0,
+          "predicted_admission": -0.0295446515083313,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.1933741271495819,
+          "reference_damage": 0.0
+        },
+        {
+          "action": "attack",
+          "predicted_cost": 1.5018212795257568,
+          "reference_expected_cost": 0.5,
+          "reference_score_with_prior": 0.9299570322036743,
+          "predicted_next_hp": 0.8572371006011963,
+          "reference_next_hp": 1.0,
+          "predicted_admission": 0.28056395053863525,
+          "reference_admission": 0.0,
+          "predicted_damage": -0.1785092055797577,
+          "reference_damage": 0.0
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Offline privileged reference is diagnostic only, never actor input",
+    "Cold memory and fresh teacher response; not arbitrary encountered histories",
+    "Finite dice sample; different branches can consume different random draws",
+    "Same cost and policy prior used for predicted and reference rankings",
+    "No training, cost tuning, or deployment changes"
+  ]
+}

@@ -138,6 +138,7 @@ def test_retreat_and_flee_are_distinct_intentions():
 
 def test_flee_turns_and_moves_in_one_slot_and_persists_after_contact_expires():
     world = DualEncounter(2,outages=False,scenario="critical_gil")
+    world.random.randint=lambda low,high:low
     teacher = SensoryTeacher()
     start = world.positions[PLAYER][:2]
     actions = []
@@ -152,7 +153,7 @@ def test_flee_turns_and_moves_in_one_slot_and_persists_after_contact_expires():
         before_x = world.positions[PLAYER][0]
         result = world.act(PLAYER,action,orientation=decision["orientation"])
         assert world.elapsed_seconds-before_time==6
-        assert world.positions[PLAYER][0]>before_x
+        assert world.positions[PLAYER][0]>=before_x  # Eventually reaches the cavern boundary.
         assert result["distance_moved_ft"]<=result["movement_budget_ft"]
     assert all(a=="flee" for a in actions)
     assert world.orientations[PLAYER].heading==0
@@ -236,7 +237,7 @@ def test_withdrawal_orients_and_translates_in_one_slot_from_any_facing(actor,man
     result = world.act(actor,command["action"],orientation=command["orientation"])
     assert world.elapsed_seconds-before_time==6
     assert separation(world)>before_distance
-    assert 0<result["distance_moved_ft"]<=min(6,result["movement_budget_ft"])+1e-9
+    assert 0<result["distance_moved_ft"]<=result["movement_budget_ft"]+1e-9
     toward = 0 if actor==SPIDER else 180
     assert world.orientations[actor].heading==((toward+180)%360 if maneuver=="flee" else toward)
 
@@ -254,6 +255,7 @@ def test_neural_command_uses_predicted_memory_without_hidden_target_position():
 def test_flee_exposes_rear_and_incoming_attacks_are_measured(monkeypatch):
     import spider_sim.encounter_evaluation as scoring
     world = ready(66)
+    world.random.randint=lambda low,high:low
     world.config.characters[SPIDER].character.current_hp=3
     monkeypatch.setattr(scoring,"DualEncounter",lambda *args,**kwargs:world)
     class Scripted:
@@ -268,8 +270,8 @@ def test_flee_exposes_rear_and_incoming_attacks_are_measured(monkeypatch):
     episode=encounter(1,"ground",agents,rounds=2)
     spider=episode["stats"][SPIDER]
     assert spider["flee_rear_exposed_moves"]==1
-    assert spider["incoming_rear_attack_requests"]==1
-    assert spider["incoming_rear_attacks_admitted"]==0  # Escape put it beyond weapon reach.
+    assert spider["incoming_rear_attack_requests"]==2
+    assert spider["incoming_rear_attacks_admitted"]==1  # Reaction before exit; later attack is out of reach.
     assert spider["incoming_rear_hp_damage"]==spider["damage_received"]==0
 
 def test_in_range_rear_attack_is_admitted_and_counted(monkeypatch):

@@ -89,3 +89,17 @@ The current teacher distinguishes maintaining focus while backing away from turn
 ## Corrected turn-and-move timing
 
 Retreat and flee now turn and move in one actor slot. See [current action semantics, results, and 5e considerations](experiments/TURN_AND_MOVE.md). Earlier turn-slot survival reports are historical.
+
+## 5e withdrawal and blocked flight
+
+The current experiment adds Disengage, Dash, opportunity reactions, a corrected round clock, and a cornered-spider counterattack. See [current mechanics and measured results](experiments/WITHDRAWAL_5E.md). These follow-up changes are pending review.
+
+The optional [JEPA-like planner](experiments/JEPA_PLANNING.md) evaluates all eight actions with learned one-step forecasts and health-sensitive costs. Initial comparison results and limitations are recorded there.
+
+Planner goals also receive private neurochemical condition snapshots; combat updates use Driftmoor’s numeric rules without LLM calls. See the planning notes for active mappings and evaluation limits.
+
+The [controlled JEPA audit](experiments/JEPA_AUDIT.md) isolates forecast-ranking failures from incomplete encounter objectives.
+
+The [combat experience learning loop](experiments/COMBAT_LEARNING.md) fine-tunes predictor checkpoints from batches of exploratory encounters, retains terminal experiences, and compares learned models with an untrained HP-change control.
+
+The [dJEPA focused curriculum experiment](experiments/CURRICULUM_LEARNING.md) mixes engine-generated close combat, elevation, boundary, and occlusion experiences with ordinary encounters, then separately measures forecasting, action ranking, and behavior.

@@ -1,5 +1,8 @@
 # Turn-and-move correction
 
+Historical v4 experiment. Current withdrawal rules use full Speed/Dash and
+opportunity reactions; see [WITHDRAWAL_5E.md](WITHDRAWAL_5E.md).
+
 The earlier [retreat/flee experiment](RETREAT_AND_FLEE.md) charged a full action
 slot for each 30-degree heading change. Its escape survival results were distorted
 by that timing model and should not guide strategy decisions.

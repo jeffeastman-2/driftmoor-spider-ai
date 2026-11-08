@@ -20,7 +20,7 @@ def main():
         parser.error("Use 1..1000 episodes/seeds and positive epochs")
     game_root(args.driftmoor_root)
     from spider_sim.dual_encounter import collect,ACTORS,ACTIONS
-    from spider_sim.encounter_evaluation import evaluate,SCENARIOS
+    from spider_sim.encounter_evaluation import evaluate,SCENARIOS,blocked_flight_behavior
     output=args.output.expanduser().resolve()
     if output.exists() and any(output.iterdir()):
         parser.error("Use an empty output directory to preserve earlier runs")
@@ -28,13 +28,13 @@ def main():
     torch.set_num_threads(1)
     print("Collecting improved-teacher demonstrations...",flush=True)
     scenarios=("mixed","ground","ceiling","wounded_spider","wounded_gil","critical_spider","critical_gil")
-    splits={"train":collect(args.train_episodes,110000,scenarios),
-            "validation":collect(24,111000,scenarios),"test":collect(32,112000,scenarios)}
+    splits={"train":collect(args.train_episodes,130000,scenarios),
+            "validation":collect(24,131000,scenarios),"test":collect(32,132000,scenarios)}
     for name,episodes in splits.items():
         (output/(name+".json")).write_text(json.dumps(episodes))
-    report={"method":"distinct retreat/flee teachers; unchanged neural architectures",
-            "teacher_version":"turn-and-move-v4","collection_scenarios":list(scenarios),
-            "observation_schema":"body-center-motion-v4","epochs":args.epochs,
+    report={"method":"Disengage/Dash reactions and observed blocked-flight counterattack; unchanged neural sizes",
+            "teacher_version":"withdrawal-cornered-v6","collection_scenarios":list(scenarios),
+            "observation_schema":"withdrawal-cornered-v6","epochs":args.epochs,
             "architecture":{"encoder":[41,32],"gru_hidden":48,"actions":8,"action_names":list(ACTIONS)},
             "splits":{key:[e["episode_id"] for e in episodes] for key,episodes in splits.items()},
             "agents":{}}
@@ -46,13 +46,14 @@ def main():
             agent,metrics=train(kind,cid,*(batch(splits[s],cid) for s in ("train","validation","test")),args.epochs)
             learned[kind][cid]=agent
             report["agents"][kind][cid]=metrics
-            save(agent,output/(kind+"-"+cid+".pt"),observation_schema="body-center-motion-v4")
+            save(agent,output/(kind+"-"+cid+".pt"),observation_schema="withdrawal-cornered-v6")
             print(kind,cid,json.dumps(metrics),flush=True)
     print("Evaluating matched encounters and fixed teacher opponents...",flush=True)
-    report["evaluation"]={"seeds":list(range(114000,114000+args.evaluation_seeds)),
+    report["evaluation"]={"seeds":list(range(134000,134000+args.evaluation_seeds)),
                           "scenarios":list(SCENARIOS),"rounds":18}
     comparisons,traces=evaluate(learned,report["evaluation"]["seeds"])
     report["encounters"]=comparisons
+    report["blocked_flight_behavior"]=blocked_flight_behavior(traces)
     report["limitations"]=[
         "Synthetic body-center vision, coarse vibration, simplified 2.5D scene and movement",
         "Legacy and improved teachers use the same revised sensory observations",
@@ -63,7 +64,10 @@ def main():
         "Retreat and flee include orientation and translation in one movement slot",
         "Neural bearings come from current private measurements or the learned belief head",
         "Flee follows a remembered away heading; no route or obstacle planning",
-        "Rear attacks use ordinary combat dice; no implemented backstab or opportunity-attack bonus",
+        "Retreat uses Disengage; flee uses Dash; legal opportunity attacks spend a reaction",
+        "Socket/body reach and perception arcs remain custom; no Sneak Attack or backstab bonus",
+        "Blocked flight triggers spider counterattack; no damage bonus or proof all routes are blocked",
+        "Input 29 is own blocked-flight feedback; reaction availability stays in own metadata",
         "Single training run and small held-out fixtures; no claim of statistical superiority",
     ]
     for name,episodes in traces.items():

@@ -11,6 +11,8 @@ from models.body_geometry import Orientation, ActionSocket
 from models.senses import resolve_senses
 from models.space_time import Position
 from engine.loadout import wielded_weapons
+from spider_sim.withdrawal_rules import WithdrawalRules
+from spider_sim.internal_condition import own_condition
 from spider_sim.encounter_teacher import ContactMemory, LegacyTeacher, ACTIONS, action_orientation, predicted_orientation
 
 ACTORS = (SPIDER, PLAYER)
@@ -18,10 +20,10 @@ ACTORS = (SPIDER, PLAYER)
 BASE_SIZE = 30
 INPUT_SIZE = BASE_SIZE+len(ACTIONS)+3
 MEMORY_SIZE = 5
-OBSERVATION_SCHEMA = "body-center-motion-v4"
+OBSERVATION_SCHEMA = "withdrawal-cornered-v6"
 
 
-class DualEncounter(ResolvedCavernExperiment):
+class DualEncounter(WithdrawalRules,ResolvedCavernExperiment):
     """No shared transcript or opponent state enters the agent observation.
 
     Fixture additions: a connected web strip x=60..105,y=188..202, an opaque
@@ -32,6 +34,10 @@ class DualEncounter(ResolvedCavernExperiment):
         super().__init__(seed=seed)
         self.seed = seed
         self.tick = 0
+        self.turn_counts = {cid:0 for cid in ACTORS}
+        self.turn_prepared = {cid:False for cid in ACTORS}
+        self.reaction_available = {cid:True for cid in ACTORS}
+        self.escape_blocked = {cid:False for cid in ACTORS}
         self.outages = outages
         self.motion_tick = {cid:-100 for cid in ACTORS}
         self.last_action = {cid:None for cid in ACTORS}
@@ -187,7 +193,7 @@ class DualEncounter(ResolvedCavernExperiment):
             float(visible),*[v/10 for v in size],
             hp,self.heights[actor]/10,*pose_values,
             own_body.width/5,own_body.depth/5,own_body.height/6,
-            own[0]/160,own[1]/240,float(self.feedback[actor][2]>0),
+            own[0]/160,own[1]/240,float(self.escape_blocked[actor]),
         ]
         assert len(values)==BASE_SIZE
         values += [float(self.last_action[actor]==a) for a in ACTIONS]+self.feedback[actor]
@@ -196,9 +202,13 @@ class DualEncounter(ResolvedCavernExperiment):
             "contact":contact,
             "web_evidence":bool(web_cue),
             "self":{
+                "condition":own_condition(self.config.characters[actor].condition),
                 "hp_fraction":hp,"orientation_roll_pitch_heading_deg":[pose.roll,pose.pitch,pose.heading],
                 "anchor_xy":list(own[:2]),
                 "attack_profile":self.attack_profile(actor),
+                "speed_ft":self.speed_ft(actor),
+                "reaction_available":self.reaction_available[actor],
+                "escape_blocked":self.escape_blocked[actor],
             },
         }
 
@@ -209,10 +219,20 @@ class DualEncounter(ResolvedCavernExperiment):
             return "target_not_observable",{"attempted":False,"hit":None,"damage":0},[]
         return super()._stationary_attack(actor_id,target_id)
 
+    def begin_turn(self,actor):
+        if not self.turn_prepared[actor]:
+            self.reaction_available[actor] = True
+            self.turn_prepared[actor] = True
+
     def act(self,actor,action_index,*,orientation=None):
         if not 0<=action_index<len(ACTIONS):
             raise ValueError("Unknown action index")
+        if self.config.characters[actor].character.current_hp<=0:
+            raise ValueError("A defeated actor cannot act")
         action = ACTIONS[action_index]
+        self.begin_turn(actor)
+        turn_start = self.turn_counts[actor]*6
+        self.elapsed_seconds = turn_start
         pose = self.orientations[actor]
         destination = None
         if orientation is None:
@@ -225,7 +245,8 @@ class DualEncounter(ResolvedCavernExperiment):
             direction = -1 if action=="retreat" else 1
             x,y,_ = self.positions[actor]
             heading = math.radians((orientation or pose).heading)
-            destination = (x+direction*6*math.cos(heading),y+direction*6*math.sin(heading))
+            distance = self.speed_ft(actor)*(2 if action=="flee" else 1)
+            destination = (x+direction*distance*math.cos(heading),y+direction*distance*math.sin(heading))
             kind = "move"
         elif action in ("face","look_up","look_down"):
             heading,pitch = pose.heading,pose.pitch
@@ -238,20 +259,30 @@ class DualEncounter(ResolvedCavernExperiment):
         elif action=="attack":
             target_id = PLAYER if actor==SPIDER else SPIDER
         previous_pose = self.orientations[actor]
-        if kind=="move" and orientation is not None:
+        if kind in ("move","attack") and orientation is not None:
             self.orientations[actor] = orientation
         try:
-            result = super().step(
-                actor,kind,destination,target_id=target_id,
-                orientation=orientation if kind=="orient" else None,
-            )
+            if kind=="move":
+                result = self._move_with_reactions(
+                    actor,destination,self.speed_ft(actor)*(2 if action=="flee" else 1),
+                    action=="retreat",super().step)
+            else:
+                result = super().step(
+                    actor,kind,destination,target_id=target_id,
+                    orientation=orientation if kind=="orient" else None,
+                )
         except Exception:
             self.orientations[actor] = previous_pose
             raise
+        self.turn_prepared[actor] = False
+        self.turn_counts[actor] += 1
+        self.elapsed_seconds = 6*max(self.turn_counts.values())
         self.tick += 1
         self.last_action[actor] = action
         combat = result["outcome"]["combat"] or {}
         moved = result["outcome"]["distance_moved_ft"]>0.1
+        if action=="flee" and self.config.characters[actor].character.current_hp>0:
+            self.escape_blocked[actor] = result["outcome"]["distance_moved_ft"]+0.1 < self.speed_ft(actor)*2
         if moved:
             self.motion_tick[actor] = self.tick
         if actor==SPIDER and (moved or combat.get("attempted")):
@@ -265,7 +296,10 @@ class DualEncounter(ResolvedCavernExperiment):
         return {"action":action,"status":result["outcome"]["status"],
                 "admitted":bool(combat.get("attempted",False)),"damage":damage,
                 "duration_seconds":6,"distance_moved_ft":result["outcome"]["distance_moved_ft"],
-                "movement_budget_ft":result["outcome"]["movement_budget_ft"]}
+                "movement_budget_ft":result["outcome"]["movement_budget_ft"],
+                "action_cost":"Disengage" if action=="retreat" else "Dash" if action=="flee" else action,
+                "opportunity_attacks":result["outcome"].get("opportunity_attacks",[]),
+                "elapsed_seconds":self.elapsed_seconds,"escape_blocked":self.escape_blocked[actor]}
 
 
 
@@ -281,6 +315,7 @@ def demonstration(seed,rounds=18,exploration=0.15,teacher="sensory",scenario="mi
         for cid in (PLAYER,SPIDER):
             if any(world.config.characters[k].character.current_hp<=0 for k in ACTORS):
                 break
+            world.begin_turn(cid)
             obs = world.observation_for(cid)
             belief = memories[cid].update(obs)
             teacher = memories[cid].choose(cid,obs)
@@ -323,6 +358,7 @@ def neural_encounters(seeds,agents):
             for cid in (PLAYER,SPIDER):
                 if any(world.config.characters[k].character.current_hp<=0 for k in ACTORS):
                     break
+                world.begin_turn(cid)
                 observation = world.observation_for(cid)
                 action,belief = sessions[cid].choose(observation["values"])
                 result = world.act(cid,action,orientation=predicted_orientation(observation,action,belief))

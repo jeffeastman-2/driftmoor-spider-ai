@@ -84,8 +84,9 @@ class SensoryTeacher(LegacyTeacher):
             self.escape_heading = (self.contact["bearing_deg"]+180)%360
         return belief
 
-    def __init__(self):
+    def __init__(self,fight_when_blocked=True):
         super().__init__()
+        self.fight_when_blocked = fight_when_blocked
         self.anchor = None
         self.escape_heading = None
 
@@ -112,6 +113,8 @@ class SensoryTeacher(LegacyTeacher):
         """Authored survival preferences, separate from the eight motor outputs."""
         hp = observation["self"]["hp_fraction"]
         if hp < (0.20 if actor==SPIDER else 0.25):
+            if actor==SPIDER and self.fight_when_blocked and observation["self"].get("escape_blocked",False):
+                return "cornered"
             return "flee"
         if hp < (0.35 if actor==SPIDER else 0.45):
             return "retreat"
@@ -135,6 +138,13 @@ class SensoryTeacher(LegacyTeacher):
             return ACTIONS.index("flee" if away is not None else "wait")
         if intent=="retreat":
             return ACTIONS.index("retreat" if c else "wait")
+        if intent=="cornered" and c and c.get("dimensions_ft"):
+            visible = observation["contact"] and observation["contact"]["source"]=="vision"
+            aimed = action_orientation(observation,ACTIONS.index("attack"),contact=c)
+            shape = self.estimate(observation,c,Orientation(*aimed))
+            if (visible and own["attack_profile"]["reach_ft"]>0 and shape["facing"]
+                and shape["distance_ft"]<=own["attack_profile"]["reach_ft"]+0.15):
+                return ACTIONS.index("attack")
         if not c:
             if actor==PLAYER:
                 if observation["web_evidence"] and pitch>-30:
@@ -178,7 +188,7 @@ def action_orientation(observation, action, *, contact=None, escape_heading=None
     position is consulted. Without evidence, preserve own current orientation.
     """
     name = ACTIONS[action]
-    if name not in ("advance","retreat","face","flee"):
+    if name not in ("advance","retreat","face","flee","attack"):
         return None
     roll,pitch,heading = observation["self"]["orientation_roll_pitch_heading_deg"]
     c = contact if contact is not None else observation["contact"]
@@ -188,7 +198,7 @@ def action_orientation(observation, action, *, contact=None, escape_heading=None
         pitch = 0
     elif c:
         heading = c["bearing_deg"]
-        if name in ("retreat","face"):
+        if name in ("retreat","face","attack"):
             if c.get("dimensions_ft"):
                 pose = Orientation(roll,pitch,heading)
                 pitch = SensoryTeacher.estimate(observation,c,pose)["desired_pitch"]
