@@ -103,3 +103,7 @@ The [controlled JEPA audit](experiments/JEPA_AUDIT.md) isolates forecast-ranking
 The [combat experience learning loop](experiments/COMBAT_LEARNING.md) fine-tunes predictor checkpoints from batches of exploratory encounters, retains terminal experiences, and compares learned models with an untrained HP-change control.
 
 The [dJEPA focused curriculum experiment](experiments/CURRICULUM_LEARNING.md) mixes engine-generated close combat, elevation, boundary, and occlusion experiences with ordinary encounters, then separately measures forecasting, action ranking, and behavior.
+
+The [encoder/GRU capacity experiment](experiments/CAPACITY_LEARNING.md) compares predictor-only training, unfrozen representation learning, and a function-preserving deeper encoder on matched data and evaluation seeds.
+
+The [engine-outcome cost control](experiments/ENGINE_COST_CONTROL.md) tests the existing costs in closed-loop encounters using offline simulation forks, separating learned forecast failures from pursuit/objective limitations.

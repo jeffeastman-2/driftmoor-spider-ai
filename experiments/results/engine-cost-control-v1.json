@@ -1,0 +1,617 @@
+{
+  "method": "Closed-loop controlled encounters; same costs, sampled true engine outcomes",
+  "draws_per_action": 8,
+  "rounds": 6,
+  "seeds": [
+    610000,
+    610001,
+    610002
+  ],
+  "groups": {
+    "giant_spider-policy": {
+      "healthy_close_idle": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 62,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 41,
+        "opponent_hp_lost": 46,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 9,
+        "admitted": 9,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 24,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "flee": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 10,
+        "admitted": 4,
+        "rejected_attacks": 6,
+        "own_damage_received": 6,
+        "opponent_hp_lost": 17,
+        "survived": 2,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "flee": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 4,
+        "admitted": 4,
+        "rejected_attacks": 0,
+        "own_damage_received": 9,
+        "opponent_hp_lost": 0,
+        "survived": 0,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      }
+    },
+    "giant_spider-learned": {
+      "healthy_close_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      }
+    },
+    "giant_spider-engine_prior": {
+      "healthy_close_idle": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 62,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 6,
+        "admitted": 6,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 17,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "face": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      }
+    },
+    "giant_spider-engine_cost_only": {
+      "healthy_close_idle": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 62,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 6,
+        "admitted": 6,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 17,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "advance": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "advance": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      }
+    },
+    "gilthaness-policy": {
+      "healthy_close_idle": {
+        "attacks": 6,
+        "admitted": 6,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 12,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 7,
+        "admitted": 7,
+        "rejected_attacks": 0,
+        "own_damage_received": 31,
+        "opponent_hp_lost": 17,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 3,
+        "admitted": 0,
+        "rejected_attacks": 3,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "flee": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "flee": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "look_up": 3
+        }
+      }
+    },
+    "gilthaness-learned": {
+      "healthy_close_idle": {
+        "attacks": 3,
+        "admitted": 3,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 8,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 3,
+        "admitted": 3,
+        "rejected_attacks": 0,
+        "own_damage_received": 18,
+        "opponent_hp_lost": 8,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 3,
+        "admitted": 0,
+        "rejected_attacks": 3,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "look_up": 3
+        }
+      }
+    },
+    "gilthaness-engine_prior": {
+      "healthy_close_idle": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 39,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 1,
+        "admitted": 1,
+        "rejected_attacks": 0,
+        "own_damage_received": 4,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 1,
+          "retreat": 2
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "retreat": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "look_up": 3
+        }
+      }
+    },
+    "gilthaness-engine_cost_only": {
+      "healthy_close_idle": {
+        "attacks": 18,
+        "admitted": 18,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 39,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "attack": 3
+        }
+      },
+      "healthy_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "advance": 3
+        }
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "advance": 3
+        }
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "advance": 3
+        }
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "own_damage_received": 0,
+        "opponent_hp_lost": 0,
+        "survived": 3,
+        "opponent_defeated": 0,
+        "first_actions": {
+          "wait": 3
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Privileged offline evaluator only; no deployed agent receives true futures",
+    "Sampled costs, not exact expectations; independent branch dice do not peek at actual future RNG",
+    "Same candidate action/aiming decoder and private neural belief across all controllers",
+    "Preserves live opponent memory in candidate forks; fixed teacher or idle response as specified",
+    "Six own turns, one-step horizon; a low cost need not mean successful hunting",
+    "Three actual dice seeds share authored poses; not three distinct landscapes",
+    "No cost tuning, network training, or controller promotion"
+  ],
+  "checkpoints": "curriculum-learning-v1 predictor-only checkpoints; encoder/GRU and policy/belief weights unchanged",
+  "costs": "Existing CostWeights and condition modulation; unchanged for this experiment",
+  "counterfactual_dice": "630000 + (actual_seed-610000)*1000 + actor_turn*draws + draw; independent of live RNG state"
+}

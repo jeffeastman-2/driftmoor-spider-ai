@@ -7,13 +7,17 @@ INPUT_SIZE=41
 ACTION_SIZE=8
 
 class Agent(nn.Module):
-    def __init__(self, kind="gru"):
+    def __init__(self, kind="gru", encoder_depth=1):
         super().__init__()
         if kind not in ("gru","mlp"):
             raise ValueError(kind)
         self.kind=kind
         self.prediction_mode="absolute"
-        self.encoder=nn.Sequential(nn.Linear(INPUT_SIZE,32),nn.ReLU())
+        if encoder_depth not in (1,2):
+            raise ValueError("encoder_depth must be 1 or 2")
+        self.encoder_depth=encoder_depth
+        self.encoder=(nn.Sequential(nn.Linear(INPUT_SIZE,32),nn.ReLU()) if encoder_depth==1 else
+                      nn.Sequential(nn.Linear(INPUT_SIZE,64),nn.ReLU(),nn.Linear(64,32),nn.ReLU()))
         self.memory=nn.GRU(32,48,batch_first=True) if kind=="gru" else nn.Sequential(nn.Linear(32,48),nn.Tanh())
         self.policy=nn.Linear(48,ACTION_SIZE)
         self.belief=nn.Linear(48,5)
@@ -59,7 +63,7 @@ class Session:
         return int(logits[0,0].argmax()),belief[0,0].tolist()
 
 def save(agent,path,observation_schema="withdrawal-cornered-v6"):
-    payload={"kind":agent.kind,"state":agent.state_dict(),"prediction_mode":agent.prediction_mode}
+    payload={"kind":agent.kind,"state":agent.state_dict(),"prediction_mode":agent.prediction_mode,"encoder_depth":agent.encoder_depth}
     if observation_schema is not None:
         payload["observation_schema"]=observation_schema
     torch.save(payload,path)
@@ -68,7 +72,7 @@ def load(path,*,expected_schema="withdrawal-cornered-v6"):
     payload=torch.load(path,map_location="cpu",weights_only=True)
     if expected_schema is not None and payload.get("observation_schema")!=expected_schema:
         raise ValueError("Checkpoint observation schema does not match this experiment")
-    agent=Agent(payload["kind"])
+    agent=Agent(payload["kind"],payload.get("encoder_depth",1))
     agent.prediction_mode=payload.get("prediction_mode","absolute")
     if agent.prediction_mode not in ("absolute","hp_delta"):
         raise ValueError("Unknown prediction mode")
