@@ -101,6 +101,10 @@ class DualEncounter(WithdrawalRules,ResolvedCavernExperiment):
         return {"reach_ft":max((w.reach for w in weapons),default=0),
                 "origin_local_ft":list(self.sockets[actor]["bite"].origin)}
 
+    def movement_distance_ft(self,actor,action,orientation):
+        """Default motor command; optional experimental subclasses can shorten it."""
+        return self.speed_ft(actor)*(2 if action=="flee" else 1)
+
     @staticmethod
     def in_web(xy):
         return 60<=xy[0]<=105 and 188<=xy[1]<=202
@@ -245,7 +249,8 @@ class DualEncounter(WithdrawalRules,ResolvedCavernExperiment):
             direction = -1 if action=="retreat" else 1
             x,y,_ = self.positions[actor]
             heading = math.radians((orientation or pose).heading)
-            distance = self.speed_ft(actor)*(2 if action=="flee" else 1)
+            distance = min(self.speed_ft(actor)*(2 if action=="flee" else 1),
+                           max(0.,self.movement_distance_ft(actor,action,orientation or pose)))
             destination = (x+direction*distance*math.cos(heading),y+direction*distance*math.sin(heading))
             kind = "move"
         elif action in ("face","look_up","look_down"):

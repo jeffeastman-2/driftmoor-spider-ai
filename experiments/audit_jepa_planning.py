@@ -20,10 +20,10 @@ CASES=("healthy_close_idle","healthy_close_teacher","healthy_far_idle",
        "wounded_close_teacher","critical_blocked_teacher","no_contact_idle")
 
 
-def fixture(role,case,seed):
+def fixture(role,case,seed,world_class=None):
     from spider_sim.dual_encounter import DualEncounter,ACTORS,PLAYER,SPIDER
     from models.body_geometry import Orientation
-    world=DualEncounter(seed,outages=False,scenario="wounded_spider")
+    world=(world_class or DualEncounter)(seed,outages=False,scenario="wounded_spider")
     for cid in ACTORS:
         world.config.characters[cid].character.current_hp=world.max_hp[cid]
     own_hp=.25 if case=="wounded_close_teacher" else .1 if case=="critical_blocked_teacher" else 1
@@ -41,6 +41,8 @@ def fixture(role,case,seed):
         world.positions[PLAYER]=(110,195,world.positions[PLAYER][2])
     world.orientations[SPIDER]=Orientation(heading=0)
     world.orientations[PLAYER]=Orientation(heading=180)
+    if hasattr(world,"approach_actor"):
+        world.approach_actor=role
     world.begin_turn(role)
     return world
 

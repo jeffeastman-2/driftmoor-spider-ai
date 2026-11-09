@@ -107,3 +107,5 @@ The [dJEPA focused curriculum experiment](experiments/CURRICULUM_LEARNING.md) mi
 The [encoder/GRU capacity experiment](experiments/CAPACITY_LEARNING.md) compares predictor-only training, unfrozen representation learning, and a function-preserving deeper encoder on matched data and evaluation seeds.
 
 The [engine-outcome cost control](experiments/ENGINE_COST_CONTROL.md) tests the existing costs in closed-loop encounters using offline simulation forks, separating learned forecast failures from pursuit/objective limitations.
+
+The [approach motor experiment](experiments/APPROACH_CONTROL.md) restores pursuit in controlled engine-outcome tests by stopping advance near estimated reach, with costs and one-step horizon unchanged.

@@ -119,3 +119,5 @@ Tracked summary: `results/engine-cost-control-v1.json`.
 sample costs, legal idle-target bites and actual execution of the reference
 choice. Game checkout and costs unchanged. Follow-up changes remain uncommitted
 for review alongside the optional capacity experiment.
+
+Follow-up: [short approach control](APPROACH_CONTROL.md) isolates the movement-choice limitation and restores approach-then-attack behavior without changing costs.

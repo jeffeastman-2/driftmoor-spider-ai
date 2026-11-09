@@ -41,11 +41,11 @@ def reference_scores(world,role,belief,opponent,mode,draws,dice_start):
     return costs,torch.stack(sampled).mean(0)
 
 
-def run_episode(agent,role,case,seed,controller,draws=8,rounds=6):
+def run_episode(agent,role,case,seed,controller,draws=8,rounds=6,world_class=None):
     from experiments.audit_jepa_planning import fixture
     from spider_sim.dual_encounter import ACTORS,ACTIONS
     from spider_sim.encounter_evaluation import TeacherAgent
-    world=fixture(role,case,seed)
+    world=fixture(role,case,seed,world_class)
     session=Planner(agent).session();opponent=TeacherAgent().session()
     mode="teacher" if case.endswith("teacher") else "idle"
     other=next(cid for cid in ACTORS if cid!=role)
