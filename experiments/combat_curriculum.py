@@ -6,13 +6,15 @@ CASES=("reachable","out_of_reach","sideways","ceiling","wounded",
        "critical","boundary","occluded")
 
 
-def curriculum_world(role,seed):
+def curriculum_world(role,seed,world_class=None):
     from spider_sim.dual_encounter import DualEncounter,ACTORS,SPIDER,PLAYER
     from models.body_geometry import Orientation
     from models.space_time import Position
     rng=random.Random(seed)
     case=CASES[(seed//8)%len(CASES)]
-    world=DualEncounter(seed,outages=False,scenario="wounded_spider")
+    world=(world_class or DualEncounter)(seed,outages=False,scenario="wounded_spider")
+    if hasattr(world,"approach_actor"):
+        world.approach_actor=role
     x,y=70+rng.uniform(-1,1),195+rng.uniform(-1,1)
     distance=rng.uniform(3,6) if case not in ("out_of_reach","occluded") else rng.uniform(10,14)
     world.positions[SPIDER]=(x,y,"Secret Chamber")

@@ -2,7 +2,7 @@
 import copy
 import random
 import torch
-from experiments.jepa_planner import predicted_cost,Planner
+from experiments.jepa_planner import predicted_cost,Planner,CostWeights
 
 
 def response(world,role,action,belief,opponent,mode):
@@ -23,7 +23,7 @@ def response(world,role,action,belief,opponent,mode):
     return future,result
 
 
-def reference_scores(world,role,belief,opponent,mode,draws,dice_start):
+def reference_scores(world,role,belief,opponent,mode,draws,dice_start,weights=CostWeights()):
     """Mean sample cost, not cost of mean prediction. No live RNG peeking."""
     current=world.observation_for(role)
     values=torch.tensor(current["values"])
@@ -36,17 +36,17 @@ def reference_scores(world,role,belief,opponent,mode,draws,dice_start):
             future,_=response(branch,role,action,belief,teacher,mode)
             futures.append(future)
         sampled.append(torch.tensor(futures))
-    costs=torch.stack([predicted_cost(values,f,condition=current["self"]["condition"])
+    costs=torch.stack([predicted_cost(values,f,weights,condition=current["self"]["condition"])
                        for f in sampled]).mean(0)
     return costs,torch.stack(sampled).mean(0)
 
 
-def run_episode(agent,role,case,seed,controller,draws=8,rounds=6,world_class=None):
+def run_episode(agent,role,case,seed,controller,draws=8,rounds=6,world_class=None,weights=CostWeights()):
     from experiments.audit_jepa_planning import fixture
     from spider_sim.dual_encounter import ACTORS,ACTIONS
     from spider_sim.encounter_evaluation import TeacherAgent
     world=fixture(role,case,seed,world_class)
-    session=Planner(agent).session();opponent=TeacherAgent().session()
+    session=Planner(agent,weights).session();opponent=TeacherAgent().session()
     mode="teacher" if case.endswith("teacher") else "idle"
     other=next(cid for cid in ACTORS if cid!=role)
     initial={cid:world.config.characters[cid].character.current_hp for cid in ACTORS}
@@ -60,7 +60,7 @@ def run_episode(agent,role,case,seed,controller,draws=8,rounds=6,world_class=Non
         record={"observation":obs,"learned_cost_action":ACTIONS[learned]}
         if controller.startswith("engine"):
             costs,futures=reference_scores(world,role,belief,opponent,mode,draws,
-                630000+(seed-610000)*1000+turn*draws)
+                630000+(seed-610000)*1000+turn*draws,weights)
             prior=torch.tensor(plan["scores"])-torch.tensor(plan["costs"])
             scores=costs+(prior if controller=="engine_prior" else 0)
             action=int(scores.argmin())

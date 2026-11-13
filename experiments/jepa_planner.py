@@ -16,6 +16,8 @@ class CostWeights:
     progress: float = 1.0
     blocked_escape: float = 1.0
     policy_prior: float = 0.05
+    healthy_injury_multiplier: float = 1.0
+    healthy_attack_multiplier: float = 1.0
 
 
 def goal_modulation(condition=None):
@@ -51,15 +53,18 @@ def predicted_cost(current, futures, weights=CostWeights(), condition=None):
     # Goal urgency is recomputed from current own state each decision. At half
     # health injury costs 50% more and approach gives way to holding distance;
     # below half, separation becomes valuable. No change to the frozen network.
+    boldness=((own_hp-.35)/.45).clamp(0,1)
+    injury_multiplier=1+boldness*(weights.healthy_injury_multiplier-1)
+    attack_multiplier=1+boldness*(weights.healthy_attack_multiplier-1)
     depletion = 1-own_hp
     goals=goal_modulation(condition)
     separation_preference=(2*depletion-1+goals["defensive_shift"]).clamp(-1,1)
     progress = separation_preference*distance_change
-    costs = weights.injury*(1+depletion)*goals["injury_multiplier"]*injury-weights.progress*progress
+    costs = weights.injury*injury_multiplier*(1+depletion)*goals["injury_multiplier"]*injury-weights.progress*progress
     # Feedback refers to the candidate's executed action, not the opponent.
     admission = futures[:,41].clamp(0,1)
     damage = futures[:,42].clamp(0,2)
-    costs[7] += weights.rejected_attack*(1-admission[7])-weights.attack*goals["attack_multiplier"]*damage[7]
+    costs[7] += weights.rejected_attack*(1-admission[7])-weights.attack*attack_multiplier*goals["attack_multiplier"]*damage[7]
     costs[4] += weights.blocked_escape*futures[4,29].clamp(0,1)
     return costs
 

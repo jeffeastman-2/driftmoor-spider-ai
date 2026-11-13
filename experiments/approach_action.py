@@ -1,4 +1,6 @@
 """Optional private-sensory approach motor primitive; no authoritative target query."""
+MOTOR_SCHEMA="approach-advance-v1"
+
 import math
 from spider_sim.dual_encounter import DualEncounter
 from spider_sim.encounter_teacher import SensoryTeacher

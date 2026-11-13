@@ -109,3 +109,7 @@ The [encoder/GRU capacity experiment](experiments/CAPACITY_LEARNING.md) compares
 The [engine-outcome cost control](experiments/ENGINE_COST_CONTROL.md) tests the existing costs in closed-loop encounters using offline simulation forks, separating learned forecast failures from pursuit/objective limitations.
 
 The [approach motor experiment](experiments/APPROACH_CONTROL.md) restores pursuit in controlled engine-outcome tests by stopping advance near estimated reach, with costs and one-step horizon unchanged.
+
+The [short-approach learning experiment](experiments/APPROACH_LEARNING.md) uses separately versioned experience to teach the predictor the new motor action, then checks actual learned-controller bites and controlled pursuit.
+
+The [healthy-spider aggression sweep](experiments/AGGRESSION_CONTROL.md) tests bolder injury/reward settings while preserving wounded caution; the default stays neutral because general bite legality remains unreliable.

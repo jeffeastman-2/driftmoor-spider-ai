@@ -46,8 +46,8 @@ def rear_exposed(world, defender, attacker):
     return abs(angle_difference(bearing,world.orientations[defender].heading))>=120
 
 
-def encounter(seed, scenario, agents, rounds=18):
-    world = DualEncounter(seed, scenario=scenario)
+def encounter(seed, scenario, agents, rounds=18,world_factory=None):
+    world = world_factory(seed,scenario) if world_factory else DualEncounter(seed, scenario=scenario)
     sessions = {cid:agents[cid].session() for cid in ACTORS}
     initial_hp = {cid:world.config.characters[cid].character.current_hp for cid in ACTORS}
     stats = {cid:{"attacks":0,"admitted":0,"rejected_attacks":0,"damage_dealt":0,"rolled_damage":0,
