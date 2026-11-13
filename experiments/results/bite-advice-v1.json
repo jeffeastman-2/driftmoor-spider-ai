@@ -1,0 +1,798 @@
+{
+  "method": "Only replace candidate attack admission estimate; all damage/injury/cost/motor/model weights fixed",
+  "calibration": {
+    "slope": 0.9101402759552002,
+    "bias": -1.6608474254608154,
+    "split": "accurate-bite-v2 validation only"
+  },
+  "groups": {
+    "neutral_baseline": {
+      "giant_spider": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected_attacks": 0,
+        "damage_dealt": 21,
+        "rolled_damage": 21,
+        "escape_moves": 300,
+        "escape_increased_separation": 178,
+        "escape_separation_change_ft": 4643.4082690397645,
+        "blocked_moves": 89,
+        "retreat_moves": 295,
+        "retreat_facing_retained": 292,
+        "retreat_sight_retained": 98,
+        "retreat_weapon_facing": 295,
+        "retreat_separation_and_focus": 178,
+        "flee_forward_moves": 5,
+        "flee_facing_away": 0,
+        "flee_progress_moves": 0,
+        "flee_rear_exposed_moves": 0,
+        "incoming_rear_attack_requests": 0,
+        "incoming_rear_attacks_admitted": 0,
+        "incoming_rear_hp_damage": 0,
+        "opportunity_attacks": 17,
+        "opportunity_damage_dealt": 21,
+        "opportunity_damage_received": 0,
+        "opportunity_interruptions": 0,
+        "damage_received": 65,
+        "survived": 117,
+        "initial_hp": 2096,
+        "final_hp": 2031,
+        "episodes": 128,
+        "actions": {
+          "wait": 1564,
+          "retreat": 454,
+          "advance": 29,
+          "face": 41,
+          "look_down": 13,
+          "look_up": 7
+        },
+        "intents": {
+          "unreported": 1654,
+          "retreat": 454
+        },
+        "retreat_focus_rate": 0.9898305084745763,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.33220338983050846,
+        "retreat_progress_with_focus_rate": 0.6033898305084746,
+        "flee_away_heading_rate": 0.0,
+        "flee_progress_rate": 0.0,
+        "flee_rear_exposure_rate": 0.0,
+        "attack_admission_rate": null,
+        "escape_separation_increase_rate": 0.5933333333333334
+      },
+      "gilthaness": {
+        "attacks": 31,
+        "admitted": 31,
+        "rejected_attacks": 0,
+        "damage_dealt": 65,
+        "rolled_damage": 90,
+        "escape_moves": 398,
+        "escape_increased_separation": 144,
+        "escape_separation_change_ft": 4815.438785327347,
+        "blocked_moves": 702,
+        "retreat_moves": 112,
+        "retreat_facing_retained": 112,
+        "retreat_sight_retained": 0,
+        "retreat_weapon_facing": 112,
+        "retreat_separation_and_focus": 96,
+        "flee_forward_moves": 286,
+        "flee_facing_away": 286,
+        "flee_progress_moves": 48,
+        "flee_rear_exposed_moves": 286,
+        "incoming_rear_attack_requests": 17,
+        "incoming_rear_attacks_admitted": 17,
+        "incoming_rear_hp_damage": 21,
+        "opportunity_attacks": 0,
+        "opportunity_damage_dealt": 0,
+        "opportunity_damage_received": 21,
+        "opportunity_interruptions": 0,
+        "damage_received": 21,
+        "survived": 128,
+        "initial_hp": 6248,
+        "final_hp": 6227,
+        "episodes": 128,
+        "actions": {
+          "wait": 856,
+          "look_up": 147,
+          "advance": 579,
+          "look_down": 87,
+          "face": 21,
+          "attack": 31,
+          "retreat": 112,
+          "flee": 286
+        },
+        "intents": {
+          "flee": 864,
+          "engage": 895,
+          "retreat": 360
+        },
+        "retreat_focus_rate": 1.0,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.0,
+        "retreat_progress_with_focus_rate": 0.8571428571428571,
+        "flee_away_heading_rate": 1.0,
+        "flee_progress_rate": 0.16783216783216784,
+        "flee_rear_exposure_rate": 1.0,
+        "attack_admission_rate": 1.0,
+        "escape_separation_increase_rate": 0.36180904522613067
+      }
+    },
+    "neutral_advice": {
+      "giant_spider": {
+        "attacks": 8,
+        "admitted": 8,
+        "rejected_attacks": 0,
+        "damage_dealt": 41,
+        "rolled_damage": 41,
+        "escape_moves": 300,
+        "escape_increased_separation": 178,
+        "escape_separation_change_ft": 4643.4082690397645,
+        "blocked_moves": 85,
+        "retreat_moves": 295,
+        "retreat_facing_retained": 292,
+        "retreat_sight_retained": 98,
+        "retreat_weapon_facing": 295,
+        "retreat_separation_and_focus": 178,
+        "flee_forward_moves": 5,
+        "flee_facing_away": 0,
+        "flee_progress_moves": 0,
+        "flee_rear_exposed_moves": 0,
+        "incoming_rear_attack_requests": 0,
+        "incoming_rear_attacks_admitted": 0,
+        "incoming_rear_hp_damage": 0,
+        "opportunity_attacks": 17,
+        "opportunity_damage_dealt": 21,
+        "opportunity_damage_received": 0,
+        "opportunity_interruptions": 0,
+        "damage_received": 65,
+        "survived": 117,
+        "initial_hp": 2096,
+        "final_hp": 2031,
+        "episodes": 128,
+        "actions": {
+          "wait": 1565,
+          "retreat": 446,
+          "advance": 30,
+          "face": 39,
+          "look_down": 13,
+          "attack": 8,
+          "look_up": 7
+        },
+        "intents": {
+          "unreported": 1662,
+          "retreat": 446
+        },
+        "retreat_focus_rate": 0.9898305084745763,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.33220338983050846,
+        "retreat_progress_with_focus_rate": 0.6033898305084746,
+        "flee_away_heading_rate": 0.0,
+        "flee_progress_rate": 0.0,
+        "flee_rear_exposure_rate": 0.0,
+        "attack_admission_rate": 1.0,
+        "escape_separation_increase_rate": 0.5933333333333334
+      },
+      "gilthaness": {
+        "attacks": 31,
+        "admitted": 31,
+        "rejected_attacks": 0,
+        "damage_dealt": 65,
+        "rolled_damage": 90,
+        "escape_moves": 398,
+        "escape_increased_separation": 144,
+        "escape_separation_change_ft": 4815.438785327347,
+        "blocked_moves": 702,
+        "retreat_moves": 112,
+        "retreat_facing_retained": 112,
+        "retreat_sight_retained": 0,
+        "retreat_weapon_facing": 112,
+        "retreat_separation_and_focus": 96,
+        "flee_forward_moves": 286,
+        "flee_facing_away": 286,
+        "flee_progress_moves": 48,
+        "flee_rear_exposed_moves": 286,
+        "incoming_rear_attack_requests": 17,
+        "incoming_rear_attacks_admitted": 17,
+        "incoming_rear_hp_damage": 21,
+        "opportunity_attacks": 0,
+        "opportunity_damage_dealt": 0,
+        "opportunity_damage_received": 21,
+        "opportunity_interruptions": 0,
+        "damage_received": 41,
+        "survived": 128,
+        "initial_hp": 6248,
+        "final_hp": 6207,
+        "episodes": 128,
+        "actions": {
+          "wait": 856,
+          "look_up": 147,
+          "advance": 579,
+          "look_down": 87,
+          "face": 21,
+          "attack": 31,
+          "retreat": 112,
+          "flee": 286
+        },
+        "intents": {
+          "flee": 864,
+          "engage": 895,
+          "retreat": 360
+        },
+        "retreat_focus_rate": 1.0,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.0,
+        "retreat_progress_with_focus_rate": 0.8571428571428571,
+        "flee_away_heading_rate": 1.0,
+        "flee_progress_rate": 0.16783216783216784,
+        "flee_rear_exposure_rate": 1.0,
+        "attack_admission_rate": 1.0,
+        "escape_separation_increase_rate": 0.36180904522613067
+      }
+    },
+    "hunter_baseline": {
+      "giant_spider": {
+        "attacks": 26,
+        "admitted": 10,
+        "rejected_attacks": 16,
+        "damage_dealt": 79,
+        "rolled_damage": 79,
+        "escape_moves": 300,
+        "escape_increased_separation": 178,
+        "escape_separation_change_ft": 4643.4082690397645,
+        "blocked_moves": 69,
+        "retreat_moves": 295,
+        "retreat_facing_retained": 292,
+        "retreat_sight_retained": 98,
+        "retreat_weapon_facing": 295,
+        "retreat_separation_and_focus": 178,
+        "flee_forward_moves": 5,
+        "flee_facing_away": 0,
+        "flee_progress_moves": 0,
+        "flee_rear_exposed_moves": 0,
+        "incoming_rear_attack_requests": 0,
+        "incoming_rear_attacks_admitted": 0,
+        "incoming_rear_hp_damage": 0,
+        "opportunity_attacks": 18,
+        "opportunity_damage_dealt": 25,
+        "opportunity_damage_received": 0,
+        "opportunity_interruptions": 0,
+        "damage_received": 81,
+        "survived": 117,
+        "initial_hp": 2096,
+        "final_hp": 2015,
+        "episodes": 128,
+        "actions": {
+          "wait": 1558,
+          "retreat": 399,
+          "attack": 26,
+          "face": 60,
+          "advance": 46,
+          "look_down": 11,
+          "look_up": 8
+        },
+        "intents": {
+          "unreported": 1709,
+          "retreat": 399
+        },
+        "retreat_focus_rate": 0.9898305084745763,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.33220338983050846,
+        "retreat_progress_with_focus_rate": 0.6033898305084746,
+        "flee_away_heading_rate": 0.0,
+        "flee_progress_rate": 0.0,
+        "flee_rear_exposure_rate": 0.0,
+        "attack_admission_rate": 0.38461538461538464,
+        "escape_separation_increase_rate": 0.5933333333333334
+      },
+      "gilthaness": {
+        "attacks": 35,
+        "admitted": 35,
+        "rejected_attacks": 0,
+        "damage_dealt": 81,
+        "rolled_damage": 106,
+        "escape_moves": 409,
+        "escape_increased_separation": 141,
+        "escape_separation_change_ft": 4819.761940081044,
+        "blocked_moves": 740,
+        "retreat_moves": 106,
+        "retreat_facing_retained": 106,
+        "retreat_sight_retained": 0,
+        "retreat_weapon_facing": 106,
+        "retreat_separation_and_focus": 90,
+        "flee_forward_moves": 303,
+        "flee_facing_away": 303,
+        "flee_progress_moves": 51,
+        "flee_rear_exposed_moves": 303,
+        "incoming_rear_attack_requests": 20,
+        "incoming_rear_attacks_admitted": 18,
+        "incoming_rear_hp_damage": 25,
+        "opportunity_attacks": 0,
+        "opportunity_damage_dealt": 0,
+        "opportunity_damage_received": 25,
+        "opportunity_interruptions": 0,
+        "damage_received": 79,
+        "survived": 128,
+        "initial_hp": 6248,
+        "final_hp": 6169,
+        "episodes": 128,
+        "actions": {
+          "wait": 837,
+          "look_up": 139,
+          "advance": 603,
+          "look_down": 76,
+          "attack": 35,
+          "face": 20,
+          "retreat": 106,
+          "flee": 303
+        },
+        "intents": {
+          "flee": 881,
+          "engage": 895,
+          "retreat": 343
+        },
+        "retreat_focus_rate": 1.0,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.0,
+        "retreat_progress_with_focus_rate": 0.8490566037735849,
+        "flee_away_heading_rate": 1.0,
+        "flee_progress_rate": 0.16831683168316833,
+        "flee_rear_exposure_rate": 1.0,
+        "attack_admission_rate": 1.0,
+        "escape_separation_increase_rate": 0.34474327628361856
+      }
+    },
+    "hunter_advice": {
+      "giant_spider": {
+        "attacks": 29,
+        "admitted": 18,
+        "rejected_attacks": 11,
+        "damage_dealt": 117,
+        "rolled_damage": 117,
+        "escape_moves": 300,
+        "escape_increased_separation": 178,
+        "escape_separation_change_ft": 4643.4082690397645,
+        "blocked_moves": 62,
+        "retreat_moves": 295,
+        "retreat_facing_retained": 292,
+        "retreat_sight_retained": 98,
+        "retreat_weapon_facing": 295,
+        "retreat_separation_and_focus": 178,
+        "flee_forward_moves": 5,
+        "flee_facing_away": 0,
+        "flee_progress_moves": 0,
+        "flee_rear_exposed_moves": 0,
+        "incoming_rear_attack_requests": 0,
+        "incoming_rear_attacks_admitted": 0,
+        "incoming_rear_hp_damage": 0,
+        "opportunity_attacks": 19,
+        "opportunity_damage_dealt": 35,
+        "opportunity_damage_received": 0,
+        "opportunity_interruptions": 0,
+        "damage_received": 81,
+        "survived": 117,
+        "initial_hp": 2096,
+        "final_hp": 2015,
+        "episodes": 128,
+        "actions": {
+          "wait": 1560,
+          "retreat": 384,
+          "face": 66,
+          "advance": 49,
+          "look_down": 12,
+          "look_up": 8,
+          "attack": 29
+        },
+        "intents": {
+          "unreported": 1724,
+          "retreat": 384
+        },
+        "retreat_focus_rate": 0.9898305084745763,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.33220338983050846,
+        "retreat_progress_with_focus_rate": 0.6033898305084746,
+        "flee_away_heading_rate": 0.0,
+        "flee_progress_rate": 0.0,
+        "flee_rear_exposure_rate": 0.0,
+        "attack_admission_rate": 0.6206896551724138,
+        "escape_separation_increase_rate": 0.5933333333333334
+      },
+      "gilthaness": {
+        "attacks": 35,
+        "admitted": 35,
+        "rejected_attacks": 0,
+        "damage_dealt": 81,
+        "rolled_damage": 106,
+        "escape_moves": 409,
+        "escape_increased_separation": 141,
+        "escape_separation_change_ft": 4819.761940081044,
+        "blocked_moves": 740,
+        "retreat_moves": 106,
+        "retreat_facing_retained": 106,
+        "retreat_sight_retained": 0,
+        "retreat_weapon_facing": 106,
+        "retreat_separation_and_focus": 90,
+        "flee_forward_moves": 303,
+        "flee_facing_away": 303,
+        "flee_progress_moves": 51,
+        "flee_rear_exposed_moves": 303,
+        "incoming_rear_attack_requests": 21,
+        "incoming_rear_attacks_admitted": 21,
+        "incoming_rear_hp_damage": 35,
+        "opportunity_attacks": 0,
+        "opportunity_damage_dealt": 0,
+        "opportunity_damage_received": 35,
+        "opportunity_interruptions": 0,
+        "damage_received": 117,
+        "survived": 128,
+        "initial_hp": 6248,
+        "final_hp": 6131,
+        "episodes": 128,
+        "actions": {
+          "wait": 837,
+          "look_up": 139,
+          "advance": 603,
+          "look_down": 76,
+          "attack": 35,
+          "face": 20,
+          "retreat": 106,
+          "flee": 303
+        },
+        "intents": {
+          "flee": 881,
+          "engage": 895,
+          "retreat": 343
+        },
+        "retreat_focus_rate": 1.0,
+        "retreat_weapon_focus_rate": 1.0,
+        "retreat_sight_retention_rate": 0.0,
+        "retreat_progress_with_focus_rate": 0.8490566037735849,
+        "flee_away_heading_rate": 1.0,
+        "flee_progress_rate": 0.16831683168316833,
+        "flee_rear_exposure_rate": 1.0,
+        "attack_admission_rate": 1.0,
+        "escape_separation_increase_rate": 0.34474327628361856
+      }
+    }
+  },
+  "controlled": {
+    "neutral_baseline": {
+      "healthy_close_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "healthy_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "neutral_advice": {
+      "healthy_close_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "healthy_close_teacher": {
+        "attacks": 12,
+        "admitted": 8,
+        "rejected": 4,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "healthy_far_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "critical_blocked_teacher": {
+        "attacks": 16,
+        "admitted": 8,
+        "rejected": 8,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "hunter_baseline": {
+      "healthy_close_idle": {
+        "attacks": 24,
+        "admitted": 24,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "healthy_close_teacher": {
+        "attacks": 21,
+        "admitted": 21,
+        "rejected": 0,
+        "own_damage": 50,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "healthy_far_idle": {
+        "attacks": 24,
+        "admitted": 0,
+        "rejected": 24,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "critical_blocked_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "hunter_advice": {
+      "healthy_close_idle": {
+        "attacks": 24,
+        "admitted": 24,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "healthy_close_teacher": {
+        "attacks": 21,
+        "admitted": 21,
+        "rejected": 0,
+        "own_damage": 50,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "healthy_far_idle": {
+        "attacks": 24,
+        "admitted": 0,
+        "rejected": 24,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "wounded_close_teacher": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "critical_blocked_teacher": {
+        "attacks": 16,
+        "admitted": 8,
+        "rejected": 8,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "no_contact_idle": {
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "own_damage": 0,
+        "survived": 4,
+        "first_actions": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "seeds": {
+    "encounters": [
+      950000,
+      950015
+    ],
+    "controlled": [
+      960000,
+      960003
+    ]
+  },
+  "limitations": [
+    "One agent checkpoint; three classifier seeds ensembled, validation-calibrated scores",
+    "Neutral primary comparison; existing hunter profile secondary, unchanged within each pair",
+    "Classifier receives only current private geometry transformed to the candidate bite pose",
+    "No simulation forks, future outcomes, authoritative opponent state or computed legality during inference",
+    "Damage expectation unchanged; advice is a score component, not a hard gate",
+    "New seeds in familiar cavern/fixtures, not new-map generalization",
+    "No training, default promotion or game-engine change"
+  ]
+}

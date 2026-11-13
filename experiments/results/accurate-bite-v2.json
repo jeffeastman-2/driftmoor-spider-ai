@@ -1,0 +1,304 @@
+{
+  "schema": "accurate-body-bite-v1",
+  "fields": [
+    "own_width",
+    "own_depth",
+    "own_height",
+    "own_floor_height",
+    "own_hp_fraction",
+    "roll_sin",
+    "roll_cos",
+    "pitch_sin",
+    "pitch_cos",
+    "heading_sin",
+    "heading_cos",
+    "mouth_x",
+    "mouth_y",
+    "mouth_z",
+    "bite_direction_x",
+    "bite_direction_y",
+    "bite_direction_z",
+    "bite_reach",
+    "bite_half_angle_cos",
+    "speed",
+    "reaction_available",
+    "movement_blocked",
+    "vision_available",
+    "visible",
+    "web_available",
+    "vibration",
+    "web_evidence",
+    "target_center_forward",
+    "target_center_left",
+    "target_center_up",
+    "target_width",
+    "target_depth",
+    "target_height",
+    "target_forward_x",
+    "target_forward_y",
+    "target_forward_z",
+    "target_left_x",
+    "target_left_y",
+    "target_left_z",
+    "target_up_x",
+    "target_up_y",
+    "target_up_z",
+    "vibration_range",
+    "vibration_bearing_cos",
+    "vibration_bearing_sin",
+    "last_action_wait",
+    "last_action_advance",
+    "last_action_retreat",
+    "last_action_face",
+    "last_action_flee",
+    "last_action_look_up",
+    "last_action_look_down",
+    "last_action_attack",
+    "last_attack_admitted",
+    "last_hit",
+    "last_damage",
+    "recent_injury"
+  ],
+  "input_sizes": {
+    "coarse": 41,
+    "accurate": 57
+  },
+  "task": "Bite at current explicitly supplied orientation; engine admission, not hit/damage",
+  "optimizer_seeds": [
+    42,
+    43,
+    44
+  ],
+  "epochs": 120,
+  "models": {
+    "coarse-42": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.92431640625,
+      "legal_recall": 0.9862385392189026,
+      "illegal_recall": 0.916939914226532,
+      "balanced_accuracy": 0.9515892267227173,
+      "brier": 0.05797962099313736,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9357233643531799
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.9024364948272705
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.08313155174255371
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.5608382225036621
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 1.1123577792204742e-07
+        }
+      }
+    },
+    "coarse-43": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.92626953125,
+      "legal_recall": 0.963302731513977,
+      "illegal_recall": 0.9218579530715942,
+      "balanced_accuracy": 0.9425803422927856,
+      "brier": 0.05289554223418236,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9346320033073425
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.8943405151367188
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.07317180931568146
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.5061277747154236
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 5.303411876322883e-11
+        }
+      }
+    },
+    "coarse-44": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.9306640625,
+      "legal_recall": 0.9449541568756104,
+      "illegal_recall": 0.9289617538452148,
+      "balanced_accuracy": 0.9369579553604126,
+      "brier": 0.04891793429851532,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9212554693222046
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.8692982792854309
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.06978384405374527
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.5225213170051575
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 2.5960842364725067e-08
+        }
+      }
+    },
+    "accurate-42": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.9423828125,
+      "legal_recall": 0.9449541568756104,
+      "illegal_recall": 0.9420765042304993,
+      "balanced_accuracy": 0.9435153305530548,
+      "brier": 0.045288801193237305,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9057320356369019
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.8740007281303406
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.07065046578645706
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.4114890396595001
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 0.0006770829786546528
+        }
+      }
+    },
+    "accurate-43": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.94384765625,
+      "legal_recall": 0.9403669834136963,
+      "illegal_recall": 0.9442622661590576,
+      "balanced_accuracy": 0.942314624786377,
+      "brier": 0.042607855051755905,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9234411120414734
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.8775104284286499
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.05940839275717735
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.37435853481292725
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 0.0004363413609098643
+        }
+      }
+    },
+    "accurate-44": {
+      "samples": 2048,
+      "legal": 218,
+      "visible": 1911,
+      "accuracy": 0.93212890625,
+      "legal_recall": 0.9587156176567078,
+      "illegal_recall": 0.9289617538452148,
+      "balanced_accuracy": 0.9438386857509613,
+      "brier": 0.05045034736394882,
+      "by_status": {
+        "hit": {
+          "count": 103,
+          "mean_predicted_admission": 0.9249184131622314
+        },
+        "miss": {
+          "count": 115,
+          "mean_predicted_admission": 0.897865355014801
+        },
+        "out_of_range_or_unarmed": {
+          "count": 1609,
+          "mean_predicted_admission": 0.07785259932279587
+        },
+        "outside_attack_arc": {
+          "count": 84,
+          "mean_predicted_admission": 0.4310941696166992
+        },
+        "target_not_observable": {
+          "count": 137,
+          "mean_predicted_admission": 0.0022498355247080326
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Ideal exact visible boxes, not camera reconstruction or measured real-world shapes",
+    "Separate admission diagnostic, not replacement of full recurrent controller",
+    "Direct MLPs trained from scratch for both input sets; no frozen encoder bottleneck",
+    "Same fixture distribution with held-out random seeds, not new maps or species",
+    "Own reach/capability supplied; no closest-point distance, legality, target HP or identity supplied",
+    "Class-weighted objective: scores are not automatically calibrated probabilities",
+    "No aggression/cost changes, autonomous behavior claim, or deployment"
+  ],
+  "baseline_commit": "264dbbe",
+  "dataset": {
+    "train": 4096,
+    "validation": 1024,
+    "test": 2048,
+    "seeds": [
+      900000,
+      910000,
+      920000
+    ],
+    "dice": "independent seed split_seed*10000+row_index; admission labels do not depend on hit/miss"
+  },
+  "aggregates": {
+    "coarse": {
+      "accuracy": 0.9270833333333334,
+      "balanced_accuracy": 0.9437091747919718,
+      "legal_recall": 0.96483180920283,
+      "illegal_recall": 0.9225865403811137,
+      "brier": 0.053264365841945015
+    },
+    "accurate": {
+      "accuracy": 0.939453125,
+      "balanced_accuracy": 0.9432228803634644,
+      "legal_recall": 0.9480122526486715,
+      "illegal_recall": 0.9384335080782572,
+      "brier": 0.046115667869647346
+    }
+  }
+}

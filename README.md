@@ -113,3 +113,7 @@ The [approach motor experiment](experiments/APPROACH_CONTROL.md) restores pursui
 The [short-approach learning experiment](experiments/APPROACH_LEARNING.md) uses separately versioned experience to teach the predictor the new motor action, then checks actual learned-controller bites and controlled pursuit.
 
 The [healthy-spider aggression sweep](experiments/AGGRESSION_CONTROL.md) tests bolder injury/reward settings while preserving wounded caution; the default stays neutral because general bite legality remains unreliable.
+
+The [accurate input experiment](experiments/ACCURATE_INPUTS.md) defines a separate 57-number private body/bite contract and tests bite-admission learning against the original coarse measurements.
+
+The [bite-advice experiment](experiments/BITE_ADVICE.md) tests that geometry classifier as a soft input to encounter decisions, with movement, damage forecasts and costs held fixed.
