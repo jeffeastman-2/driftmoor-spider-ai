@@ -1,0 +1,290 @@
+{
+  "schema": "ecology-djepa-v1",
+  "method": "Species set encoder + individual GRU; engine outcome learning and cautious teacher proposals; one-step predictive cost selection",
+  "epochs": 300,
+  "models": {
+    "rat": {
+      "initial_validation": {
+        "loss": 8.05285930633545,
+        "branches": 149,
+        "attack_requests": 29,
+        "admission_accuracy": 0.13793103396892548,
+        "admitted_samples": 25,
+        "rejected_samples": 4,
+        "admission_recall": 0.0,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 0.5,
+        "injury_fraction_mae": 0.4540933668613434,
+        "attack_damage_hp_mae": 6.528149604797363
+      },
+      "validation": {
+        "loss": 3.541779041290283,
+        "branches": 149,
+        "attack_requests": 29,
+        "admission_accuracy": 1.0,
+        "admitted_samples": 25,
+        "rejected_samples": 4,
+        "admission_recall": 1.0,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 1.0,
+        "injury_fraction_mae": 0.20583905279636383,
+        "attack_damage_hp_mae": 0.9243308305740356
+      },
+      "training": {
+        "loss": 3.4694113731384277,
+        "branches": 2410,
+        "attack_requests": 449,
+        "admission_accuracy": 0.9665924310684204,
+        "admitted_samples": 326,
+        "rejected_samples": 123,
+        "admission_recall": 0.953987717628479,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 0.9769938588142395,
+        "injury_fraction_mae": 0.22132396697998047,
+        "attack_damage_hp_mae": 0.7559589147567749
+      }
+    },
+    "spider": {
+      "initial_validation": {
+        "loss": 7.447944164276123,
+        "branches": 240,
+        "attack_requests": 40,
+        "admission_accuracy": 0.800000011920929,
+        "admitted_samples": 8,
+        "rejected_samples": 32,
+        "admission_recall": 0.0,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 0.5,
+        "injury_fraction_mae": 0.4850197434425354,
+        "attack_damage_hp_mae": 6.276688575744629
+      },
+      "validation": {
+        "loss": 2.065030336380005,
+        "branches": 240,
+        "attack_requests": 40,
+        "admission_accuracy": 0.949999988079071,
+        "admitted_samples": 8,
+        "rejected_samples": 32,
+        "admission_recall": 1.0,
+        "rejection_recall": 0.9375,
+        "balanced_admission_accuracy": 0.96875,
+        "injury_fraction_mae": 0.0006852240185253322,
+        "attack_damage_hp_mae": 0.777794361114502
+      },
+      "training": {
+        "loss": 1.8264557123184204,
+        "branches": 3663,
+        "attack_requests": 583,
+        "admission_accuracy": 0.9965694546699524,
+        "admitted_samples": 83,
+        "rejected_samples": 500,
+        "admission_recall": 0.9879518151283264,
+        "rejection_recall": 0.9980000257492065,
+        "balanced_admission_accuracy": 0.9929759204387665,
+        "injury_fraction_mae": 0.0006393683725036681,
+        "attack_damage_hp_mae": 0.3026367425918579
+      }
+    },
+    "shadowbeast": {
+      "initial_validation": {
+        "loss": 7.819119453430176,
+        "branches": 248,
+        "attack_requests": 50,
+        "admission_accuracy": 0.7799999713897705,
+        "admitted_samples": 11,
+        "rejected_samples": 39,
+        "admission_recall": 0.0,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 0.5,
+        "injury_fraction_mae": 0.48393237590789795,
+        "attack_damage_hp_mae": 6.6359710693359375
+      },
+      "validation": {
+        "loss": 3.079080820083618,
+        "branches": 248,
+        "attack_requests": 50,
+        "admission_accuracy": 0.9200000166893005,
+        "admitted_samples": 11,
+        "rejected_samples": 39,
+        "admission_recall": 0.6363636255264282,
+        "rejection_recall": 1.0,
+        "balanced_admission_accuracy": 0.8181818127632141,
+        "injury_fraction_mae": 0.0008093078504316509,
+        "attack_damage_hp_mae": 0.4533529281616211
+      },
+      "training": {
+        "loss": 1.9475699663162231,
+        "branches": 3743,
+        "attack_requests": 648,
+        "admission_accuracy": 0.970678985118866,
+        "admitted_samples": 102,
+        "rejected_samples": 546,
+        "admission_recall": 1.0,
+        "rejection_recall": 0.9652014374732971,
+        "balanced_admission_accuracy": 0.9826007187366486,
+        "injury_fraction_mae": 0.0009809749899432063,
+        "attack_damage_hp_mae": 0.359951376914978
+      }
+    }
+  },
+  "evaluation_seeds": [
+    340000,
+    340001,
+    340002,
+    340003,
+    340004,
+    340005,
+    340006,
+    340007
+  ],
+  "limitations": [
+    "One optimizer seed per species; familiar Level-2 layout only",
+    "Authored goal configuration and costs, not a learned critic/configurator",
+    "Explicit numeric forecasts, not joint-embedding JEPA training",
+    "Six-second rounds; no feeding, breeding or time-skipping added",
+    "Local ideal point-clearance sensor, not full-body navigation or global map",
+    "Three requested species use neural weights; crickets/lizards retain baseline scripts"
+  ],
+  "encounters": {
+    "scripted": {
+      "rat": {
+        "actors": 16,
+        "survived": 5,
+        "hp_lost": 44,
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "damage": 0,
+        "moves": 453,
+        "blocked": 46
+      },
+      "spider": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 21,
+        "attacks": 82,
+        "admitted": 80,
+        "rejected": 2,
+        "damage": 327,
+        "moves": 144,
+        "blocked": 0
+      },
+      "shadowbeast": {
+        "actors": 8,
+        "survived": 5,
+        "hp_lost": 36,
+        "attacks": 169,
+        "admitted": 163,
+        "rejected": 6,
+        "damage": 385,
+        "moves": 137,
+        "blocked": 9
+      }
+    },
+    "cautious_teacher": {
+      "rat": {
+        "actors": 16,
+        "survived": 8,
+        "hp_lost": 34,
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "damage": 0,
+        "moves": 465,
+        "blocked": 9
+      },
+      "spider": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 18,
+        "admitted": 18,
+        "rejected": 0,
+        "damage": 69,
+        "moves": 351,
+        "blocked": 68
+      },
+      "shadowbeast": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 38,
+        "admitted": 37,
+        "rejected": 1,
+        "damage": 71,
+        "moves": 337,
+        "blocked": 21
+      }
+    },
+    "neural": {
+      "rat": {
+        "actors": 16,
+        "survived": 8,
+        "hp_lost": 32,
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "damage": 0,
+        "moves": 415,
+        "blocked": 339
+      },
+      "spider": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 34,
+        "admitted": 34,
+        "rejected": 0,
+        "damage": 114,
+        "moves": 350,
+        "blocked": 0
+      },
+      "shadowbeast": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 6,
+        "admitted": 6,
+        "rejected": 0,
+        "damage": 7,
+        "moves": 378,
+        "blocked": 0
+      }
+    },
+    "neural_proposal": {
+      "rat": {
+        "actors": 16,
+        "survived": 8,
+        "hp_lost": 32,
+        "attacks": 0,
+        "admitted": 0,
+        "rejected": 0,
+        "damage": 0,
+        "moves": 419,
+        "blocked": 343
+      },
+      "spider": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 34,
+        "admitted": 34,
+        "rejected": 0,
+        "damage": 114,
+        "moves": 350,
+        "blocked": 0
+      },
+      "shadowbeast": {
+        "actors": 8,
+        "survived": 8,
+        "hp_lost": 0,
+        "attacks": 6,
+        "admitted": 6,
+        "rejected": 0,
+        "damage": 7,
+        "moves": 378,
+        "blocked": 0
+      }
+    }
+  }
+}

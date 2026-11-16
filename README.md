@@ -117,3 +117,17 @@ The [healthy-spider aggression sweep](experiments/AGGRESSION_CONTROL.md) tests b
 The [accurate input experiment](experiments/ACCURATE_INPUTS.md) defines a separate 57-number private body/bite contract and tests bite-admission learning against the original coarse measurements.
 
 The [bite-advice experiment](experiments/BITE_ADVICE.md) tests that geometry classifier as a soft input to encounter decisions, with movement, damage forecasts and costs held fixed.
+
+The [Level-2 ecology and live viewer](experiments/LEVEL2_ECOLOGY.md) run the
+Freight Quarter's actual scene with small prey, functional webs and explicit
+scripted goal baselines. Watch and step it through the existing Driftmoor web map:
+
+```sh
+python3 -m experiments.watch_level2 --output /tmp/driftmoor-level2-watch-1 --port 8081
+```
+
+The [three-species dJEPA experiment](experiments/ECOLOGY_DJEPA.md) adds separate rat, spider and Shadowbeast networks with private multi-contact observations and individual memory. The first trained models are experimental and do not replace the scripted baseline.
+
+The [balanced ecology curriculum and rat clearance experiment](experiments/ECOLOGY_CURRICULUM.md) improve attack training and test each species against fixed scripted opponents. The rat’s action-relative clearance input improves its isolated navigation, but the joint learned encounter remains experimental.
+
+The [single-prey pursuit benchmark](experiments/SINGLE_PREY_PURSUIT.md) isolates one learned spider against scripted prey. Neither focused model meets the scripted baseline; independent catch counts, unreachable attacks and loop failures are retained without promoting a checkpoint.

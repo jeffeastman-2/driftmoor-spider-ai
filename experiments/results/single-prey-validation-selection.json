@@ -1,0 +1,479 @@
+{
+  "schema": "single-prey-pursuit-v1",
+  "selection": "Validation catches, then rejected attacks, then return loops",
+  "validation_seeds": [
+    560000,
+    560001,
+    560002,
+    560003,
+    560004,
+    560005,
+    560006,
+    560007,
+    560008,
+    560009,
+    560010,
+    560011
+  ],
+  "selected_phase": 1,
+  "history": [
+    {
+      "phase": 0,
+      "metrics": {
+        "stationary": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              2,
+              3,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              2,
+              2,
+              2
+            ],
+            "moves": 12,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 10,
+            "turns_to_catch": [
+              2,
+              2,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              1,
+              2
+            ],
+            "moves": 10,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 105,
+            "admitted": 11
+          }
+        },
+        "fleeing": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              10,
+              7,
+              4,
+              1,
+              11,
+              3,
+              3,
+              5,
+              4,
+              4,
+              12
+            ],
+            "moves": 53,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 9,
+            "turns_to_catch": [
+              3,
+              11,
+              3,
+              1,
+              12,
+              4,
+              5,
+              1,
+              6
+            ],
+            "moves": 52,
+            "blocked": 1,
+            "return_loops": 2,
+            "reversals": 2,
+            "attacks": 138,
+            "admitted": 10
+          }
+        },
+        "cautious": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              11,
+              27,
+              11,
+              7,
+              1,
+              30,
+              6,
+              6,
+              3,
+              13,
+              6,
+              38
+            ],
+            "moves": 130,
+            "blocked": 1,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 18,
+            "admitted": 18
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 10,
+            "turns_to_catch": [
+              2,
+              9,
+              3,
+              1,
+              16,
+              5,
+              2,
+              7,
+              1,
+              19
+            ],
+            "moves": 115,
+            "blocked": 16,
+            "return_loops": 2,
+            "reversals": 2,
+            "attacks": 46,
+            "admitted": 11
+          }
+        }
+      }
+    },
+    {
+      "phase": 1,
+      "metrics": {
+        "stationary": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              2,
+              3,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              2,
+              2,
+              2
+            ],
+            "moves": 12,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 10,
+            "turns_to_catch": [
+              2,
+              2,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              1,
+              2
+            ],
+            "moves": 10,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 105,
+            "admitted": 11
+          }
+        },
+        "fleeing": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              10,
+              7,
+              4,
+              1,
+              11,
+              3,
+              3,
+              5,
+              4,
+              4,
+              12
+            ],
+            "moves": 53,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 11,
+            "turns_to_catch": [
+              3,
+              11,
+              3,
+              1,
+              12,
+              19,
+              4,
+              5,
+              1,
+              17,
+              6
+            ],
+            "moves": 86,
+            "blocked": 31,
+            "return_loops": 2,
+            "reversals": 2,
+            "attacks": 44,
+            "admitted": 12
+          }
+        },
+        "cautious": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              11,
+              27,
+              11,
+              7,
+              1,
+              30,
+              6,
+              6,
+              3,
+              13,
+              6,
+              38
+            ],
+            "moves": 130,
+            "blocked": 1,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 18,
+            "admitted": 18
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              21,
+              20,
+              3,
+              1,
+              16,
+              6,
+              2,
+              7,
+              1,
+              41,
+              19
+            ],
+            "moves": 126,
+            "blocked": 14,
+            "return_loops": 4,
+            "reversals": 4,
+            "attacks": 13,
+            "admitted": 13
+          }
+        }
+      }
+    },
+    {
+      "phase": 2,
+      "metrics": {
+        "stationary": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              2,
+              3,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              2,
+              2,
+              2
+            ],
+            "moves": 12,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 10,
+            "turns_to_catch": [
+              2,
+              2,
+              2,
+              1,
+              2,
+              2,
+              2,
+              3,
+              1,
+              2
+            ],
+            "moves": 10,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 105,
+            "admitted": 11
+          }
+        },
+        "fleeing": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              2,
+              10,
+              7,
+              4,
+              1,
+              11,
+              3,
+              3,
+              5,
+              4,
+              4,
+              12
+            ],
+            "moves": 53,
+            "blocked": 0,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 13,
+            "admitted": 13
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 10,
+            "turns_to_catch": [
+              3,
+              11,
+              3,
+              1,
+              12,
+              4,
+              5,
+              1,
+              18,
+              6
+            ],
+            "moves": 101,
+            "blocked": 46,
+            "return_loops": 2,
+            "reversals": 2,
+            "attacks": 59,
+            "admitted": 11
+          }
+        },
+        "cautious": {
+          "scripted": {
+            "episodes": 12,
+            "caught": 12,
+            "turns_to_catch": [
+              11,
+              27,
+              11,
+              7,
+              1,
+              30,
+              6,
+              6,
+              3,
+              13,
+              6,
+              38
+            ],
+            "moves": 130,
+            "blocked": 1,
+            "return_loops": 0,
+            "reversals": 0,
+            "attacks": 18,
+            "admitted": 18
+          },
+          "neural": {
+            "episodes": 12,
+            "caught": 11,
+            "turns_to_catch": [
+              2,
+              9,
+              3,
+              1,
+              16,
+              5,
+              2,
+              7,
+              1,
+              41,
+              19
+            ],
+            "moves": 113,
+            "blocked": 12,
+            "return_loops": 2,
+            "reversals": 2,
+            "attacks": 41,
+            "admitted": 12
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "One optimizer seed; familiar Level-2 rooms only",
+    "One-step privileged engine supervision is offline only; no future states at inference",
+    "Authored target commitment with bounded dead reckoning; motor choice is learned",
+    "Scalar goal-consequence model, not a full latent world model or joint-embedding JEPA objective",
+    "Baseline continuous headings differ from the neural discrete motor inventory",
+    "No live controller replacement unless benchmark warrants it"
+  ]
+}

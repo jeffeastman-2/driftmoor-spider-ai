@@ -1,0 +1,143 @@
+{
+  "seeds": [
+    360000,
+    360001,
+    360002,
+    360003,
+    360004,
+    360005,
+    360006,
+    360007,
+    360008,
+    360009,
+    360010,
+    360011,
+    360012,
+    360013,
+    360014,
+    360015
+  ],
+  "rounds": 24,
+  "wall_escape_definition": "At least five feet displacement within six rounds from a start with native measured forward clearance under five feet",
+  "opponents": "Existing scripted opponents; only focal actor controller changes; focused starts can have reduced HP",
+  "results": {
+    "rat": {
+      "focused": {
+        "scripted": {
+          "episodes": 16,
+          "survived": 0,
+          "hp_lost": 39,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 100,
+          "blocked": 30,
+          "distance_ft": 616.7496121209409,
+          "wall_starts": 4,
+          "wall_escaped": 2,
+          "max_blocked_streak": 4
+        },
+        "teacher": {
+          "episodes": 16,
+          "survived": 5,
+          "hp_lost": 28,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 256,
+          "blocked": 20,
+          "distance_ft": 2275.0,
+          "wall_starts": 4,
+          "wall_escaped": 3,
+          "max_blocked_streak": 3
+        },
+        "proposal": {
+          "episodes": 16,
+          "survived": 5,
+          "hp_lost": 29,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 259,
+          "blocked": 13,
+          "distance_ft": 2424.6904682797103,
+          "wall_starts": 4,
+          "wall_escaped": 3,
+          "max_blocked_streak": 3
+        },
+        "predictive": {
+          "episodes": 16,
+          "survived": 6,
+          "hp_lost": 26,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 256,
+          "blocked": 18,
+          "distance_ft": 2295.3685937186633,
+          "wall_starts": 4,
+          "wall_escaped": 3,
+          "max_blocked_streak": 3
+        }
+      },
+      "authored": {
+        "scripted": {
+          "episodes": 16,
+          "survived": 4,
+          "hp_lost": 48,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 282,
+          "blocked": 52,
+          "distance_ft": 1691.4591407924142,
+          "wall_starts": 0,
+          "wall_escaped": 0,
+          "max_blocked_streak": 8
+        },
+        "teacher": {
+          "episodes": 16,
+          "survived": 1,
+          "hp_lost": 60,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 169,
+          "blocked": 44,
+          "distance_ft": 1250.0,
+          "wall_starts": 0,
+          "wall_escaped": 0,
+          "max_blocked_streak": 4
+        },
+        "proposal": {
+          "episodes": 16,
+          "survived": 3,
+          "hp_lost": 52,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 163,
+          "blocked": 4,
+          "distance_ft": 1575.0685424949238,
+          "wall_starts": 0,
+          "wall_escaped": 0,
+          "max_blocked_streak": 2
+        },
+        "predictive": {
+          "episodes": 16,
+          "survived": 5,
+          "hp_lost": 44,
+          "attacks": 0,
+          "admitted": 0,
+          "damage": 0,
+          "moves": 164,
+          "blocked": 0,
+          "distance_ft": 1611.4314575050764,
+          "wall_starts": 0,
+          "wall_escaped": 0,
+          "max_blocked_streak": 0
+        }
+      }
+    }
+  }
+}

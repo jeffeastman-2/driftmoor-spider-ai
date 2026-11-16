@@ -1,0 +1,83 @@
+{
+  "checkpoint_date": "2026-11-16",
+  "driftmoor_branch": "codex/spider-world-model",
+  "driftmoor_commit": "421e8f46937b9c00791a0a0c3db01bfeac23b57a",
+  "external_models": [
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-v1/rat.pt",
+      "bytes": 111871,
+      "sha256": "ea8818dba8cef7d5e1ecf9d21be7fbd57cbb6af714098e0f7058bc0600651506"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-v1/shadowbeast.pt",
+      "bytes": 113103,
+      "sha256": "837aa77435c8f9a136305b8bf3f2f6f521f17c881616c509a42ddbc82a640199"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-v1/spider.pt",
+      "bytes": 111949,
+      "sha256": "cd18371fc3b82c147bbc7e1ab6be237ca2f9eff33a513880729ebfc434a92ce3"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-curriculum-v2/rat.pt",
+      "bytes": 111871,
+      "sha256": "c0aa0be5ec11ff94cbcb156c939b91a2e3153e04936436b04de6b600559e0c7d"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-curriculum-v2/shadowbeast.pt",
+      "bytes": 113103,
+      "sha256": "396ea109ea97191612c55fa914d1e816763eee74cc80c1e205175c3bb054a145"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-curriculum-v2/spider.pt",
+      "bytes": 111949,
+      "sha256": "debfe1a76d960d5e4a6487de614398b3f0135a25bb7b16f3f71ddd0faadd8404"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-rat-clearance-v3/rat.pt",
+      "bytes": 112255,
+      "sha256": "98ce67203e38d287b038cdafcd032ee7a95c93937330a9c150a15f70d3706f5f"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-rat-clearance-v3/shadowbeast.pt",
+      "bytes": 113103,
+      "sha256": "396ea109ea97191612c55fa914d1e816763eee74cc80c1e205175c3bb054a145"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/ecology-djepa-rat-clearance-v3/spider.pt",
+      "bytes": 111949,
+      "sha256": "debfe1a76d960d5e4a6487de614398b3f0135a25bb7b16f3f71ddd0faadd8404"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-v1/spider.pt",
+      "bytes": 95973,
+      "sha256": "91c20ae9ff75aa5d645163c5878b8a0e443c6e79a5f8c2b64e6a862f59aa74a5"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-v2/phase-0.pt",
+      "bytes": 96249,
+      "sha256": "2065c88f81b010785dcc71ee229a89e9338171346f5dcf47c4f4413fe1d7e6da"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-v2/phase-1.pt",
+      "bytes": 96249,
+      "sha256": "862b6b438820c8353ffdc627eb341f2181dc847236b3315cef59ad1c1f9f4216"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-v2/phase-2.pt",
+      "bytes": 96249,
+      "sha256": "6b5ec4314a90834aeb222cf13d756731e07ee6e2812fb366d0747d0a729ffe5d"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-v2/spider.pt",
+      "bytes": 95973,
+      "sha256": "18b1f2fd5d1768f72bdb68deeeeeba63652ca93b7f3aaf64e15ddda30d758936"
+    },
+    {
+      "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/single-prey-pursuit-kinematics-v3/spider.pt",
+      "bytes": 96485,
+      "sha256": "e3f802917e93f5df4d922811b6e40aad7580422333512edb41d5e9abd704b343"
+    }
+  ],
+  "note": "Weights and corpora are local artifacts, not tracked by Git; their hashes identify this research checkpoint. No learned model is promoted."
+}
