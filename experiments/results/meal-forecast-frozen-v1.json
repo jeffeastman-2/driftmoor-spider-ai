@@ -1,0 +1,1692 @@
+{
+  "kind": "supervised explicit outcome predictor; encoder and GRU frozen",
+  "dataset": {
+    "schema": "meal-forecast-forks-v1",
+    "horizons": [
+      3,
+      6,
+      12
+    ],
+    "context_names": [
+      "hunger",
+      "hp_fraction",
+      "incoming_damage_fraction",
+      "meal_visible",
+      "meal_range_30ft",
+      "food_units_3",
+      "wrapped",
+      "previously_handling_food"
+    ],
+    "outcome_names": [
+      "damage_fraction",
+      "hunger_reduction",
+      "damaging_attack",
+      "death"
+    ],
+    "modes": [
+      "pursue",
+      "guard",
+      "resume"
+    ],
+    "origin_counts": {
+      "train": 786,
+      "val": 186,
+      "test": 358
+    },
+    "reason_counts": {
+      "train": {
+        "first_injury": 384,
+        "first_observed_retreat": 306,
+        "renewed_injury": 96
+      },
+      "val": {
+        "first_injury": 96,
+        "first_observed_retreat": 70,
+        "renewed_injury": 20
+      },
+      "test": {
+        "first_injury": 192,
+        "first_observed_retreat": 150,
+        "renewed_injury": 16
+      }
+    },
+    "elapsed_seconds": 146.4778768750839,
+    "frozen_model_sha256": "6532baef7b99c64705347a490f9088c86e392b988af1c2d99c5960476a06b631",
+    "split_seeds": {
+      "train": [
+        81000,
+        81001,
+        81002,
+        81003,
+        81004,
+        81005,
+        81006,
+        81007
+      ],
+      "val": [
+        82000,
+        82001
+      ],
+      "test": [
+        83000,
+        83001,
+        83002,
+        83003
+      ]
+    },
+    "limits": [
+      "Same two authored rooms; disjoint seeds and held-out return delay, not held-out geography",
+      "Each choice commits to a scripted continuation, not one isolated physical action",
+      "Decision triggers select injury/retreat histories and are not ordinary-turn prevalence",
+      "Opponent condition/return delay are metadata only, never predictor inputs"
+    ]
+  },
+  "optimizer_seeds": [
+    0,
+    1,
+    2
+  ],
+  "variants": {
+    "frozen_memory": {
+      "ensemble_test": {
+        "3": {
+          "damage_mae_hp": 1.3948990106582642,
+          "hunger_reduction_mae": 0.04312748461961746,
+          "attack_brier": 0.15026983618736267,
+          "death_brier": 0.013336743228137493,
+          "observed_attack_rate": 0.21415269374847412,
+          "predicted_attack_rate": 0.30595842003822327,
+          "observed_death_rate": 0.013966480270028114,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1832,
+              "predicted": 0.03747051954269409,
+              "observed": 0.0043668122962117195
+            },
+            {
+              "lower": 0.2,
+              "count": 160,
+              "predicted": 0.31604477763175964,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.4,
+              "count": 1440,
+              "predicted": 0.4578714966773987,
+              "observed": 0.4000000059604645
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 864,
+              "predicted": 0.6201958656311035,
+              "observed": 0.34259259700775146
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.188037633895874,
+          "hunger_reduction_mae": 0.092787005007267,
+          "attack_brier": 0.1873752325773239,
+          "death_brier": 0.029252782464027405,
+          "observed_attack_rate": 0.2821229100227356,
+          "predicted_attack_rate": 0.4184252917766571,
+          "observed_death_rate": 0.027001861482858658,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1288,
+              "predicted": 0.06417480856180191,
+              "observed": 0.03105590119957924
+            },
+            {
+              "lower": 0.2,
+              "count": 512,
+              "predicted": 0.3069041967391968,
+              "observed": 0.046875
+            },
+            {
+              "lower": 0.4,
+              "count": 1016,
+              "predicted": 0.5551154017448425,
+              "observed": 0.4724409580230713
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1480,
+              "predicted": 0.6714634299278259,
+              "observed": 0.4513513445854187
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 3.127270460128784,
+          "hunger_reduction_mae": 0.16993717849254608,
+          "attack_brier": 0.21972738206386566,
+          "death_brier": 0.040715787559747696,
+          "observed_attack_rate": 0.40921786427497864,
+          "predicted_attack_rate": 0.535233199596405,
+          "observed_death_rate": 0.039571695029735565,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 968,
+              "predicted": 0.11643090844154358,
+              "observed": 0.07438016682863235
+            },
+            {
+              "lower": 0.2,
+              "count": 448,
+              "predicted": 0.32027408480644226,
+              "observed": 0.2232142835855484
+            },
+            {
+              "lower": 0.4,
+              "count": 576,
+              "predicted": 0.5245124101638794,
+              "observed": 0.4305555522441864
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1704,
+              "predicted": 0.7180027961730957,
+              "observed": 0.5715962648391724
+            },
+            {
+              "lower": 0.8,
+              "count": 600,
+              "predicted": 0.8626301884651184,
+              "observed": 0.6066666841506958
+            }
+          ]
+        }
+      },
+      "ranking": {
+        "origins": 358,
+        "mean_damage_only_choice_regret_hp": 0.882681600208389,
+        "mean_food_only_choice_regret": 0.003936452584278733,
+        "note": "Separate single-objective diagnostics, not a combined decision cost. Empirical best of four rollout draws is noisy."
+      },
+      "train_samples": 4716,
+      "val_samples": 1116,
+      "test_samples": 4296,
+      "validation_losses": [
+        0.37499886751174927,
+        0.37517648935317993,
+        0.37166133522987366
+      ],
+      "retreat_test_12": {
+        "damage_mae_hp": 1.543900489807129,
+        "hunger_reduction_mae": 0.21396934986114502,
+        "attack_brier": 0.1369665563106537,
+        "death_brier": 0.002298291539773345,
+        "observed_attack_rate": 0.1733333319425583,
+        "predicted_attack_rate": 0.24842242896556854,
+        "observed_death_rate": 0.002222222276031971,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 968,
+            "predicted": 0.11643090844154358,
+            "observed": 0.07438016682863235
+          },
+          {
+            "lower": 0.2,
+            "count": 448,
+            "predicted": 0.32027408480644226,
+            "observed": 0.2232142835855484
+          },
+          {
+            "lower": 0.4,
+            "count": 384,
+            "predicted": 0.497324138879776,
+            "observed": 0.3645833432674408
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "context_only": {
+      "ensemble_test": {
+        "3": {
+          "damage_mae_hp": 1.3396599292755127,
+          "hunger_reduction_mae": 0.031637467443943024,
+          "attack_brier": 0.140726700425148,
+          "death_brier": 0.013168915174901485,
+          "observed_attack_rate": 0.21415269374847412,
+          "predicted_attack_rate": 0.3016967475414276,
+          "observed_death_rate": 0.013966480270028114,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1816,
+              "predicted": 0.02969742752611637,
+              "observed": 0.0044052861630916595
+            },
+            {
+              "lower": 0.2,
+              "count": 272,
+              "predicted": 0.32524222135543823,
+              "observed": 0.29411765933036804
+            },
+            {
+              "lower": 0.4,
+              "count": 1728,
+              "predicted": 0.49071183800697327,
+              "observed": 0.29629629850387573
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 480,
+              "predicted": 0.6369641423225403,
+              "observed": 0.6666666865348816
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.0862393379211426,
+          "hunger_reduction_mae": 0.0736294835805893,
+          "attack_brier": 0.17358075082302094,
+          "death_brier": 0.026822784915566444,
+          "observed_attack_rate": 0.2821229100227356,
+          "predicted_attack_rate": 0.3966329097747803,
+          "observed_death_rate": 0.027001861482858658,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1668,
+              "predicted": 0.09965302795171738,
+              "observed": 0.032374098896980286
+            },
+            {
+              "lower": 0.2,
+              "count": 188,
+              "predicted": 0.25183191895484924,
+              "observed": 0.13829787075519562
+            },
+            {
+              "lower": 0.4,
+              "count": 1096,
+              "predicted": 0.5328941941261292,
+              "observed": 0.4416058361530304
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1344,
+              "predicted": 0.6743432879447937,
+              "observed": 0.4821428656578064
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 2.853023052215576,
+          "hunger_reduction_mae": 0.10364267230033875,
+          "attack_brier": 0.20788323879241943,
+          "death_brier": 0.03858508914709091,
+          "observed_attack_rate": 0.40921786427497864,
+          "predicted_attack_rate": 0.5261508822441101,
+          "observed_death_rate": 0.039571695029735565,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 788,
+              "predicted": 0.12829330563545227,
+              "observed": 0.08121827244758606
+            },
+            {
+              "lower": 0.2,
+              "count": 592,
+              "predicted": 0.26842746138572693,
+              "observed": 0.16554054617881775
+            },
+            {
+              "lower": 0.4,
+              "count": 644,
+              "predicted": 0.48738396167755127,
+              "observed": 0.32608696818351746
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1696,
+              "predicted": 0.702221691608429,
+              "observed": 0.5860849022865295
+            },
+            {
+              "lower": 0.8,
+              "count": 576,
+              "predicted": 0.8602375388145447,
+              "observed": 0.6805555820465088
+            }
+          ]
+        }
+      },
+      "ranking": {
+        "origins": 358,
+        "mean_damage_only_choice_regret_hp": 0.5425977793485759,
+        "mean_food_only_choice_regret": 0.003036312846071477,
+        "note": "Separate single-objective diagnostics, not a combined decision cost. Empirical best of four rollout draws is noisy."
+      },
+      "train_samples": 4716,
+      "val_samples": 1116,
+      "test_samples": 4296,
+      "validation_losses": [
+        0.35389384627342224,
+        0.3540557026863098,
+        0.3528631031513214
+      ],
+      "retreat_test_12": {
+        "damage_mae_hp": 1.7041218280792236,
+        "hunger_reduction_mae": 0.10579417645931244,
+        "attack_brier": 0.13441993296146393,
+        "death_brier": 0.0022235314827412367,
+        "observed_attack_rate": 0.1733333319425583,
+        "predicted_attack_rate": 0.24707044661045074,
+        "observed_death_rate": 0.002222222276031971,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 788,
+            "predicted": 0.12829330563545227,
+            "observed": 0.08121827244758606
+          },
+          {
+            "lower": 0.2,
+            "count": 592,
+            "predicted": 0.26842746138572693,
+            "observed": 0.16554054617881775
+          },
+          {
+            "lower": 0.4,
+            "count": 420,
+            "predicted": 0.4398156702518463,
+            "observed": 0.3571428656578064
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "frozen_memory_context": {
+      "ensemble_test": {
+        "3": {
+          "damage_mae_hp": 1.3969415426254272,
+          "hunger_reduction_mae": 0.03778840973973274,
+          "attack_brier": 0.16334545612335205,
+          "death_brier": 0.01330361794680357,
+          "observed_attack_rate": 0.21415269374847412,
+          "predicted_attack_rate": 0.33338087797164917,
+          "observed_death_rate": 0.013966480270028114,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1800,
+              "predicted": 0.03452054411172867,
+              "observed": 0.0
+            },
+            {
+              "lower": 0.2,
+              "count": 328,
+              "predicted": 0.32241395115852356,
+              "observed": 0.32926830649375916
+            },
+            {
+              "lower": 0.4,
+              "count": 1016,
+              "predicted": 0.45622265338897705,
+              "observed": 0.31889763474464417
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1152,
+              "predicted": 0.6951330304145813,
+              "observed": 0.4236111044883728
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.1542015075683594,
+          "hunger_reduction_mae": 0.08378372341394424,
+          "attack_brier": 0.19360505044460297,
+          "death_brier": 0.029077667742967606,
+          "observed_attack_rate": 0.2821229100227356,
+          "predicted_attack_rate": 0.4294150769710541,
+          "observed_death_rate": 0.027001861482858658,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1288,
+              "predicted": 0.05333570018410683,
+              "observed": 0.03105590119957924
+            },
+            {
+              "lower": 0.2,
+              "count": 464,
+              "predicted": 0.3271414041519165,
+              "observed": 0.03879310190677643
+            },
+            {
+              "lower": 0.4,
+              "count": 712,
+              "predicted": 0.5168032050132751,
+              "observed": 0.4747191071510315
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1832,
+              "predicted": 0.6857605576515198,
+              "observed": 0.44541484117507935
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 2.889523983001709,
+          "hunger_reduction_mae": 0.12169645726680756,
+          "attack_brier": 0.2204887419939041,
+          "death_brier": 0.04001028090715408,
+          "observed_attack_rate": 0.40921786427497864,
+          "predicted_attack_rate": 0.5380620956420898,
+          "observed_death_rate": 0.039571695029735565,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 936,
+              "predicted": 0.10352198034524918,
+              "observed": 0.07692307978868484
+            },
+            {
+              "lower": 0.2,
+              "count": 448,
+              "predicted": 0.3080213963985443,
+              "observed": 0.2455357164144516
+            },
+            {
+              "lower": 0.4,
+              "count": 560,
+              "predicted": 0.5222043991088867,
+              "observed": 0.3821428716182709
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 1776,
+              "predicted": 0.7215771079063416,
+              "observed": 0.5686936974525452
+            },
+            {
+              "lower": 0.8,
+              "count": 576,
+              "predicted": 0.8726895451545715,
+              "observed": 0.6111111044883728
+            }
+          ]
+        }
+      },
+      "ranking": {
+        "origins": 358,
+        "mean_damage_only_choice_regret_hp": 0.7856145583551023,
+        "mean_food_only_choice_regret": 0.011629190505352183,
+        "note": "Separate single-objective diagnostics, not a combined decision cost. Empirical best of four rollout draws is noisy."
+      },
+      "train_samples": 4716,
+      "val_samples": 1116,
+      "test_samples": 4296,
+      "validation_losses": [
+        0.37176647782325745,
+        0.3608892858028412,
+        0.35746410489082336
+      ],
+      "retreat_test_12": {
+        "damage_mae_hp": 1.3856223821640015,
+        "hunger_reduction_mae": 0.14886783063411713,
+        "attack_brier": 0.14029651880264282,
+        "death_brier": 0.002382531762123108,
+        "observed_attack_rate": 0.1733333319425583,
+        "predicted_attack_rate": 0.2494133859872818,
+        "observed_death_rate": 0.002222222276031971,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 936,
+            "predicted": 0.10352198034524918,
+            "observed": 0.07692307978868484
+          },
+          {
+            "lower": 0.2,
+            "count": 448,
+            "predicted": 0.3080213963985443,
+            "observed": 0.2455357164144516
+          },
+          {
+            "lower": 0.4,
+            "count": 352,
+            "predicted": 0.49386361241340637,
+            "observed": 0.3011363744735718
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 64,
+            "predicted": 0.628342866897583,
+            "observed": 0.375
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    }
+  },
+  "action_mean_baseline": {
+    "test_metrics": {
+      "3": {
+        "damage_mae_hp": 1.6153992414474487,
+        "hunger_reduction_mae": 0.0526282824575901,
+        "attack_brier": 0.17107434570789337,
+        "death_brier": 0.013829258270561695,
+        "observed_attack_rate": 0.21415269374847412,
+        "predicted_attack_rate": 0.26166245341300964,
+        "observed_death_rate": 0.013966480270028114,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.2,
+            "count": 4296,
+            "predicted": 0.26166242361068726,
+            "observed": 0.21415269374847412
+          },
+          {
+            "lower": 0.4,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "6": {
+        "damage_mae_hp": 2.605282783508301,
+        "hunger_reduction_mae": 0.1258491575717926,
+        "attack_brier": 0.21413715183734894,
+        "death_brier": 0.027558814734220505,
+        "observed_attack_rate": 0.2821229100227356,
+        "predicted_attack_rate": 0.3910093307495117,
+        "observed_death_rate": 0.027001861482858658,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.2,
+            "count": 2864,
+            "predicted": 0.3651399612426758,
+            "observed": 0.2667597830295563
+          },
+          {
+            "lower": 0.4,
+            "count": 1432,
+            "predicted": 0.44274812936782837,
+            "observed": 0.31284916400909424
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "12": {
+        "damage_mae_hp": 3.228372097015381,
+        "hunger_reduction_mae": 0.2154882401227951,
+        "attack_brier": 0.25481414794921875,
+        "death_brier": 0.03949160873889923,
+        "observed_attack_rate": 0.40921786427497864,
+        "predicted_attack_rate": 0.5248091816902161,
+        "observed_death_rate": 0.039571695029735565,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.2,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.4,
+            "count": 4296,
+            "predicted": 0.5248092412948608,
+            "observed": 0.40921786427497864
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "ranking": {
+      "origins": 358,
+      "mean_damage_only_choice_regret_hp": 0.5020950015363747,
+      "mean_food_only_choice_regret": 0.0032248603942278543,
+      "note": "Separate single-objective diagnostics, not a combined decision cost. Empirical best of four rollout draws is noisy."
+    },
+    "by_reason": {
+      "first_injury": {
+        "3": {
+          "damage_mae_hp": 2.0636134147644043,
+          "hunger_reduction_mae": 0.0440160296857357,
+          "attack_brier": 0.24947786331176758,
+          "death_brier": 0.025750815868377686,
+          "observed_attack_rate": 0.3784722089767456,
+          "predicted_attack_rate": 0.26166248321533203,
+          "observed_death_rate": 0.02604166604578495,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 2304,
+              "predicted": 0.26166242361068726,
+              "observed": 0.3784722089767456
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 3.018498659133911,
+          "hunger_reduction_mae": 0.11386823654174805,
+          "attack_brier": 0.2582043409347534,
+          "death_brier": 0.048097893595695496,
+          "observed_attack_rate": 0.4774305522441864,
+          "predicted_attack_rate": 0.3910093307495117,
+          "observed_death_rate": 0.0503472238779068,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 1536,
+              "predicted": 0.3651399612426758,
+              "observed": 0.4765625
+            },
+            {
+              "lower": 0.4,
+              "count": 768,
+              "predicted": 0.442748099565506,
+              "observed": 0.4791666567325592
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 3.4388818740844727,
+          "hunger_reduction_mae": 0.211777925491333,
+          "attack_brier": 0.24691060185432434,
+          "death_brier": 0.06615212559700012,
+          "observed_attack_rate": 0.5815972089767456,
+          "predicted_attack_rate": 0.5248091816902161,
+          "observed_death_rate": 0.0711805522441864,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 2304,
+              "predicted": 0.5248091816902161,
+              "observed": 0.5815972089767456
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      },
+      "first_observed_retreat": {
+        "3": {
+          "damage_mae_hp": 1.0445293188095093,
+          "hunger_reduction_mae": 0.06403084844350815,
+          "attack_brier": 0.06890462338924408,
+          "death_brier": 4.046642789035104e-05,
+          "observed_attack_rate": 0.0,
+          "predicted_attack_rate": 0.26166245341300964,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 1800,
+              "predicted": 0.26166245341300964,
+              "observed": 0.0
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.1199378967285156,
+          "hunger_reduction_mae": 0.1440792977809906,
+          "attack_brier": 0.15830771625041962,
+          "death_brier": 0.00380276539362967,
+          "observed_attack_rate": 0.035555556416511536,
+          "predicted_attack_rate": 0.3910093307495117,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 1200,
+              "predicted": 0.3651399612426758,
+              "observed": 0.0
+            },
+            {
+              "lower": 0.4,
+              "count": 600,
+              "predicted": 0.442748099565506,
+              "observed": 0.1066666692495346
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 2.99481201171875,
+          "hunger_reduction_mae": 0.22431114315986633,
+          "attack_brier": 0.26615914702415466,
+          "death_brier": 0.008030309341847897,
+          "observed_attack_rate": 0.1733333319425583,
+          "predicted_attack_rate": 0.5248091816902161,
+          "observed_death_rate": 0.002222222276031971,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 1800,
+              "predicted": 0.5248091816902161,
+              "observed": 0.1733333319425583
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      },
+      "renewed_injury": {
+        "3": {
+          "damage_mae_hp": 1.588740348815918,
+          "hunger_reduction_mae": 0.049076229333877563,
+          "attack_brier": 0.18807341158390045,
+          "death_brier": 4.046642789035104e-05,
+          "observed_attack_rate": 0.25,
+          "predicted_attack_rate": 0.26166245341300964,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 192,
+              "predicted": 0.26166245341300964,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.196803569793701,
+          "hunger_reduction_mae": 0.09871256351470947,
+          "attack_brier": 0.20873181521892548,
+          "death_brier": 0.0038027658592909575,
+          "observed_attack_rate": 0.25,
+          "predicted_attack_rate": 0.3910093307495117,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 128,
+              "predicted": 0.3651399612426758,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.4,
+              "count": 64,
+              "predicted": 0.442748099565506,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 2.8918843269348145,
+          "hunger_reduction_mae": 0.17729733884334564,
+          "attack_brier": 0.2432970553636551,
+          "death_brier": 0.01451497245579958,
+          "observed_attack_rate": 0.5520833134651184,
+          "predicted_attack_rate": 0.5248091816902161,
+          "observed_death_rate": 0.010416666977107525,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 192,
+              "predicted": 0.5248091816902161,
+              "observed": 0.5520833134651184
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    }
+  },
+  "damage_cue_baseline": {
+    "test_metrics": {
+      "3": {
+        "damage_mae_hp": 1.3036115169525146,
+        "hunger_reduction_mae": 0.042704593390226364,
+        "attack_brier": 0.137388676404953,
+        "death_brier": 0.01373855210840702,
+        "observed_attack_rate": 0.21415269374847412,
+        "predicted_attack_rate": 0.25021544098854065,
+        "observed_death_rate": 0.013966480270028114,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 1800,
+            "predicted": 0.026143791154026985,
+            "observed": 0.0
+          },
+          {
+            "lower": 0.2,
+            "count": 832,
+            "predicted": 0.3895832598209381,
+            "observed": 0.375
+          },
+          {
+            "lower": 0.4,
+            "count": 1664,
+            "predicted": 0.42291682958602905,
+            "observed": 0.36538460850715637
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "6": {
+        "damage_mae_hp": 2.058778762817383,
+        "hunger_reduction_mae": 0.11666740477085114,
+        "attack_brier": 0.16822586953639984,
+        "death_brier": 0.02738678641617298,
+        "observed_attack_rate": 0.2821229100227356,
+        "predicted_attack_rate": 0.3779347538948059,
+        "observed_death_rate": 0.027001861482858658,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 1800,
+            "predicted": 0.12200435996055603,
+            "observed": 0.035555556416511536
+          },
+          {
+            "lower": 0.2,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.4,
+            "count": 1664,
+            "predicted": 0.53125,
+            "observed": 0.45913460850715637
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 832,
+            "predicted": 0.625,
+            "observed": 0.4615384638309479
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "12": {
+        "damage_mae_hp": 2.7854785919189453,
+        "hunger_reduction_mae": 0.21105539798736572,
+        "attack_brier": 0.21221832931041718,
+        "death_brier": 0.03897712379693985,
+        "observed_attack_rate": 0.40921786427497864,
+        "predicted_attack_rate": 0.5113731026649475,
+        "observed_death_rate": 0.039571695029735565,
+        "attack_calibration_bins": [
+          {
+            "lower": 0.0,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.2,
+            "count": 1800,
+            "predicted": 0.24836602807044983,
+            "observed": 0.1733333319425583
+          },
+          {
+            "lower": 0.4,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "lower": 0.6000000000000001,
+            "count": 2496,
+            "predicted": 0.7010418176651001,
+            "observed": 0.5793269276618958
+          },
+          {
+            "lower": 0.8,
+            "count": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "ranking": {
+      "origins": 358,
+      "mean_damage_only_choice_regret_hp": 0.5146648227003033,
+      "mean_food_only_choice_regret": 0.0032248603942278543,
+      "note": "Separate single-objective diagnostics, not a combined decision cost. Empirical best of four rollout draws is noisy."
+    },
+    "by_reason": {
+      "first_injury": {
+        "3": {
+          "damage_mae_hp": 2.2148003578186035,
+          "hunger_reduction_mae": 0.03131778538227081,
+          "attack_brier": 0.23674334585666656,
+          "death_brier": 0.025607634335756302,
+          "observed_attack_rate": 0.3784722089767456,
+          "predicted_attack_rate": 0.41180551052093506,
+          "observed_death_rate": 0.02604166604578495,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 768,
+              "predicted": 0.3895832598209381,
+              "observed": 0.3854166567325592
+            },
+            {
+              "lower": 0.4,
+              "count": 1536,
+              "predicted": 0.42291679978370667,
+              "observed": 0.375
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 3.1587345600128174,
+          "hunger_reduction_mae": 0.10376659035682678,
+          "attack_brier": 0.2585763931274414,
+          "death_brier": 0.05022858455777168,
+          "observed_attack_rate": 0.4774305522441864,
+          "predicted_attack_rate": 0.5625,
+          "observed_death_rate": 0.0503472238779068,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 1536,
+              "predicted": 0.53125,
+              "observed": 0.4765625
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 768,
+              "predicted": 0.625,
+              "observed": 0.4791666567325592
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 3.6019532680511475,
+          "hunger_reduction_mae": 0.2066868394613266,
+          "attack_brier": 0.25776657462120056,
+          "death_brier": 0.06903067231178284,
+          "observed_attack_rate": 0.5815972089767456,
+          "predicted_attack_rate": 0.7010418176651001,
+          "observed_death_rate": 0.0711805522441864,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 2304,
+              "predicted": 0.7010418772697449,
+              "observed": 0.5815972089767456
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      },
+      "first_observed_retreat": {
+        "3": {
+          "damage_mae_hp": 0.06971678137779236,
+          "hunger_reduction_mae": 0.057001132518053055,
+          "attack_brier": 0.0020504933781921864,
+          "death_brier": 0.0,
+          "observed_attack_rate": 0.0,
+          "predicted_attack_rate": 0.026143794879317284,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1800,
+              "predicted": 0.026143791154026985,
+              "observed": 0.0
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 0.5705447196960449,
+          "hunger_reduction_mae": 0.13601332902908325,
+          "attack_brier": 0.0398934930562973,
+          "death_brier": 5.6958149798447266e-05,
+          "observed_attack_rate": 0.035555556416511536,
+          "predicted_attack_rate": 0.12200437486171722,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 1800,
+              "predicted": 0.12200435996055603,
+              "observed": 0.035555556416511536
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 1.69019615650177,
+          "hunger_reduction_mae": 0.22259101271629333,
+          "attack_brier": 0.14811910688877106,
+          "death_brier": 0.0022210830356925726,
+          "observed_attack_rate": 0.1733333319425583,
+          "predicted_attack_rate": 0.24836602807044983,
+          "observed_death_rate": 0.002222222276031971,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 1800,
+              "predicted": 0.24836602807044983,
+              "observed": 0.1733333319425583
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      },
+      "renewed_injury": {
+        "3": {
+          "damage_mae_hp": 1.937109351158142,
+          "hunger_reduction_mae": 0.04531623795628548,
+          "attack_brier": 0.21392793953418732,
+          "death_brier": 0.00010850695980479941,
+          "observed_attack_rate": 0.25,
+          "predicted_attack_rate": 0.4118055999279022,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 64,
+              "predicted": 0.3895833194255829,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.4,
+              "count": 128,
+              "predicted": 0.4229166805744171,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "6": {
+          "damage_mae_hp": 2.8115017414093018,
+          "hunger_reduction_mae": 0.09010902792215347,
+          "attack_brier": 0.28713542222976685,
+          "death_brier": 0.009502314031124115,
+          "observed_attack_rate": 0.25,
+          "predicted_attack_rate": 0.5625,
+          "observed_death_rate": 0.0,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 128,
+              "predicted": 0.53125,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 64,
+              "predicted": 0.625,
+              "observed": 0.25
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "12": {
+          "damage_mae_hp": 3.2560548782348633,
+          "hunger_reduction_mae": 0.15533146262168884,
+          "attack_brier": 0.266570121049881,
+          "death_brier": 0.022922450676560402,
+          "observed_attack_rate": 0.5520833134651184,
+          "predicted_attack_rate": 0.7010418772697449,
+          "observed_death_rate": 0.010416666977107525,
+          "attack_calibration_bins": [
+            {
+              "lower": 0.0,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.2,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.4,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "lower": 0.6000000000000001,
+              "count": 192,
+              "predicted": 0.7010417580604553,
+              "observed": 0.5520833134651184
+            },
+            {
+              "lower": 0.8,
+              "count": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "note": "Training mean grouped only by measured incoming damage present/absent and proposed response; no hidden behavior labels"
+  },
+  "limits": [
+    "Disjoint seeds and unseen return delay; same rooms and species",
+    "Predicted outcomes describe committing to scripted continuations, not a learned new actor",
+    "Outcome supervision is JEPA-inspired world-model work, not a joint-embedding JEPA objective",
+    "Fixed 36-input encoder does not receive hunger; context variants supply eight private measurements directly to predictor head",
+    "The live controller is unchanged; no utility weights or combined cost were fitted"
+  ],
+  "original_pursuit_checkpoint_unchanged": true,
+  "inference_roundtrip_verified": true,
+  "artifacts": {
+    "directory": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/meal-forecast-forks-v1",
+    "model_files": {
+      "frozen_memory-2.pt": "cb0c14aba9a4e3d050de5040edc2277493dcd3241ae946cd183483829faf3d65",
+      "frozen_memory_context-0.pt": "b94e7e9607874d3aad11baa6ac61c79a723a070e46c7129632c63c4443800bdb",
+      "context_only-2.pt": "04a90854dcc3fbf38a3a73729f27979404c915493470cd7e460ac13226179de2",
+      "frozen_memory_context-1.pt": "3879a45eb65f0f8eefc7bc1ea26cf68bce4d431e8dbf94b940d7553a160984ff",
+      "context_only-0.pt": "98fbe0ca38c19a4fce3ba86f0b329d5fa2d8a0f8e90b7dddf418322db01e3194",
+      "frozen_memory-0.pt": "de484affc2908d222a9ba849e3efdb1185715600ac9adeec9504fb28be95c091",
+      "frozen_memory_context-2.pt": "72282b02c0cf1d5f5ea674b73e86077029b22eb520353ed351f3fe4464b7cb58",
+      "frozen_memory-1.pt": "abf2d03c2305329ea0fa03cddd7d5afe7dbf6ecf39651b0f0f03a239757924c5",
+      "context_only-1.pt": "714e3cea6229cc670e6b3f9dfb518561d2f171d20cb660619d3e3a59cb790fdd"
+    }
+  },
+  "checkpoint_before_experiment": {
+    "spider": "6d9f793",
+    "game": "115a935"
+  },
+  "deployment": "Predictors are offline only; live actor remains unchanged",
+  "checks": {
+    "regression_tests_passed": 217,
+    "counterfactual_clone_isolation": true,
+    "source_checkpoint_unchanged": true,
+    "serialized_ensemble_reproduces_heldout_metrics": true
+  }
+}

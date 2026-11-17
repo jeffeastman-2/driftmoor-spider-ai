@@ -561,3 +561,12 @@ See [the meal-defense comparison](experiments/MEAL_DEFENSE_COMPARISON.md) for
 is useful evidence for returning to a meal, but does not guarantee an attacker
 will stay away. These results compare authored alternatives; no neural weights
 have been updated and the live defense behavior is unchanged.
+
+## Learned short-horizon meal-defense forecasts
+
+The first frozen-representation experiment is documented in
+[MEAL_FORECAST.md](experiments/MEAL_FORECAST.md). New heads predict injury,
+nourishment, further damaging attacks and death at 3/6/12 turns. The old
+encoder/GRU remain fixed. Forecasts improved over broad averages, but the
+old memory did not beat current context and action choices did not improve.
+These predictors remain offline; they are not the live spider controller.

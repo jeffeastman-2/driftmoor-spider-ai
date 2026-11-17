@@ -56,15 +56,15 @@ class ComparisonPolicy(FeedingPolicy):
 
 
 class Attacker(GoalBaseline):
-    def __init__(self,behavior,max_hp):
+    def __init__(self,behavior,max_hp,return_turns=3):
         super().__init__();self.behavior=behavior;self.max_hp=max_hp
-        self.flee_turns=0;self.last_hp=max_hp;self.returns=0
+        self.flee_turns=0;self.last_hp=max_hp;self.returns=0;self.return_turns=return_turns
 
     def choose(self,obs):
         if self.behavior=='current':return super().choose(obs)
         hp=obs['self']['hp_fraction']*self.max_hp
         if hp<self.last_hp:
-            self.flee_turns=9999 if self.behavior=='first_hit' else 3
+            self.flee_turns=9999 if self.behavior=='first_hit' else self.return_turns
         self.last_hp=hp
         visible=[c for c in obs['contacts'] if c['modality']=='vision']
         nearest=min(visible,key=lambda c:c['range_ft'],default=None)
