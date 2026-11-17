@@ -31,6 +31,8 @@ class FeedingPolicy:
         self.seeking_mate = False
         self.meal = None
         self.search_turns=0
+        self.defense_track=None
+        self.defense_age=0
 
     def choose(self, obs):
         private=dict(obs,contacts=[c for c in obs['contacts'] if not c.get('conspecific')])
@@ -40,8 +42,33 @@ class FeedingPolicy:
             self.seeking_mate = True
         if hunger >= RESUME_HUNTING:
             self.seeking_mate = False
-        # Abandon the meal when injured: existing pursuit is not a defense policy.
-        if obs['self']['hp_fraction'] < .35:
+        incoming=obs.get('incoming_damage',[])
+        interrupted=self.goal in ('wrap','feed','approach_meal','defend')
+        if incoming and interrupted:
+            known=[event for event in incoming if event.get('attacker')]
+            if known:
+                self.defense_track=known[-1]['attacker'];self.defense_age=0
+        feedback=obs.get('last_result') or {}
+        if feedback.get('target_defeated') and feedback.get('target')==self.defense_track:
+            self.defense_track=None
+        attacker=next((c for c in obs['contacts'] if c['track']==self.defense_track and c['modality']=='vision'),None)
+        if self.defense_track:
+            self.defense_age=0 if attacker else self.defense_age+1
+            if self.defense_age>4:self.defense_track=None
+        # A direct attack interrupts food handling before the critical-HP rule.
+        # No hidden attacker position is followed. Preserve the unfinished meal.
+        if self.defense_track or (incoming and interrupted):
+            self.goal='defend'
+            if attacker:
+                if attacker['range_ft']<=6:
+                    proposal={'action':'attack','target':attacker['track']}
+                else:
+                    x,y,_=attacker['relative_position_ft']
+                    proposal={'action':'move','heading_deg':math.degrees(math.atan2(y,x)), 'distance_ft':min(10,max(1,math.hypot(x,y)-5)), 'keep_facing':True,'face_track':attacker['track']}
+                    if self.hunter.locomotion:proposal,_=self.hunter.locomotion.pursue(obs,proposal)
+            else:
+                proposal={'action':'wait'}  # Alert, without inventing an attacker.
+        elif obs['self']['hp_fraction'] < .35:
             self.goal = 'survive'
             visible = [c for c in obs['contacts'] if c['modality'] == 'vision']
             if visible:
@@ -96,7 +123,7 @@ class FeedingPolicy:
             self.hunter.task.track = None
             self.hunter.task.last = None
         self.last_plan = dict(self.hunter.last_plan, executed_command=dict(proposal),
-                              hunger=hunger, meal_track=self.meal)
+                              hunger=hunger, meal_track=self.meal, defense_track=self.defense_track, incoming_damage=incoming)
         if self.goal != 'hunt':
             self.last_plan.update(selection_reason='feeding_goal_'+self.goal, selected=None)
         return proposal

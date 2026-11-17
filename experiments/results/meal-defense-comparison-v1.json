@@ -1,0 +1,735 @@
+{
+  "controlled": {
+    "kind": "paired authored policy experiment; no training",
+    "cases": 1536,
+    "episodes": 4608,
+    "horizon": 72,
+    "elapsed_seconds": 179.17651983397081,
+    "seeds": [
+      73000,
+      73001,
+      73002,
+      73003,
+      73004,
+      73005,
+      73006,
+      73007,
+      73008,
+      73009,
+      73010,
+      73011,
+      73012,
+      73013,
+      73014,
+      73015,
+      73016,
+      73017,
+      73018,
+      73019,
+      73020,
+      73021,
+      73022,
+      73023,
+      73024,
+      73025,
+      73026,
+      73027,
+      73028,
+      73029,
+      73030,
+      73031
+    ],
+    "model_sha256": "6532baef7b99c64705347a490f9088c86e392b988af1c2d99c5960476a06b631",
+    "overall": {
+      "pursue": {
+        "episodes": 1536,
+        "survival_rate": 0.8671875,
+        "fullness_rate": 0.5872395833333334,
+        "mean_turns_to_full_successes": 22.748337028824835,
+        "mean_rounds": 34.410807291666664,
+        "mean_damage_taken": 7.526041666666667,
+        "mean_food_consumed": 0.4049602864583334,
+        "mean_defense_turns": 10.591145833333334,
+        "mean_chase_turns": 4.0625,
+        "mean_repeat_interruptions": 0,
+        "mean_rejected_attacks": 0,
+        "mean_blocked_moves": 0
+      },
+      "guard": {
+        "episodes": 1536,
+        "survival_rate": 0.7513020833333334,
+        "fullness_rate": 0.56640625,
+        "mean_turns_to_full_successes": 11.910344827586206,
+        "mean_rounds": 24.295572916666668,
+        "mean_damage_taken": 8.686197916666666,
+        "mean_food_consumed": 0.40908984375,
+        "mean_defense_turns": 2.8671875,
+        "mean_chase_turns": 0,
+        "mean_repeat_interruptions": 0.20182291666666666,
+        "mean_rejected_attacks": 0,
+        "mean_blocked_moves": 0.4270833333333333
+      },
+      "resume": {
+        "episodes": 1536,
+        "survival_rate": 0.7083333333333334,
+        "fullness_rate": 0.51953125,
+        "mean_turns_to_full_successes": 11.323308270676693,
+        "mean_rounds": 26.301432291666668,
+        "mean_damage_taken": 9.602864583333334,
+        "mean_food_consumed": 0.3885651041666667,
+        "mean_defense_turns": 2.3294270833333335,
+        "mean_chase_turns": 0,
+        "mean_repeat_interruptions": 0.3802083333333333,
+        "mean_rejected_attacks": 0,
+        "mean_blocked_moves": 0.4283854166666667
+      }
+    },
+    "by_attacker": {
+      "current": {
+        "pursue": {
+          "episodes": 512,
+          "survival_rate": 0.734375,
+          "fullness_rate": 0.3984375,
+          "mean_turns_to_full_successes": 20.107843137254903,
+          "mean_rounds": 33.83203125,
+          "mean_damage_taken": 11.609375,
+          "mean_food_consumed": 0.28027734375,
+          "mean_defense_turns": 8.703125,
+          "mean_chase_turns": 2.75,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        },
+        "guard": {
+          "episodes": 512,
+          "survival_rate": 0.734375,
+          "fullness_rate": 0.3984375,
+          "mean_turns_to_full_successes": 14.764705882352942,
+          "mean_rounds": 31.703125,
+          "mean_damage_taken": 11.609375,
+          "mean_food_consumed": 0.2781484375,
+          "mean_defense_turns": 5.2109375,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        },
+        "resume": {
+          "episodes": 512,
+          "survival_rate": 0.60546875,
+          "fullness_rate": 0.2578125,
+          "mean_turns_to_full_successes": 12.772727272727273,
+          "mean_rounds": 37.720703125,
+          "mean_damage_taken": 14.359375,
+          "mean_food_consumed": 0.21657421875000002,
+          "mean_defense_turns": 3.59765625,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0.53515625,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0.00390625
+        }
+      },
+      "first_hit": {
+        "pursue": {
+          "episodes": 512,
+          "survival_rate": 0.96875,
+          "fullness_rate": 0.75,
+          "mean_turns_to_full_successes": 23.760416666666668,
+          "mean_rounds": 33.6640625,
+          "mean_damage_taken": 3.875,
+          "mean_food_consumed": 0.5131328125,
+          "mean_defense_turns": 11.7890625,
+          "mean_chase_turns": 4.84375,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        },
+        "guard": {
+          "episodes": 512,
+          "survival_rate": 0.96875,
+          "fullness_rate": 0.75,
+          "mean_turns_to_full_successes": 10.770833333333334,
+          "mean_rounds": 23.921875,
+          "mean_damage_taken": 3.875,
+          "mean_food_consumed": 0.503390625,
+          "mean_defense_turns": 1.328125,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        },
+        "resume": {
+          "episodes": 512,
+          "survival_rate": 0.96875,
+          "fullness_rate": 0.75,
+          "mean_turns_to_full_successes": 10.770833333333334,
+          "mean_rounds": 23.921875,
+          "mean_damage_taken": 3.875,
+          "mean_food_consumed": 0.503390625,
+          "mean_defense_turns": 1.328125,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        }
+      },
+      "returner": {
+        "pursue": {
+          "episodes": 512,
+          "survival_rate": 0.8984375,
+          "fullness_rate": 0.61328125,
+          "mean_turns_to_full_successes": 23.226114649681527,
+          "mean_rounds": 35.736328125,
+          "mean_damage_taken": 7.09375,
+          "mean_food_consumed": 0.421470703125,
+          "mean_defense_turns": 11.28125,
+          "mean_chase_turns": 4.59375,
+          "mean_repeat_interruptions": 0,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 0
+        },
+        "guard": {
+          "episodes": 512,
+          "survival_rate": 0.55078125,
+          "fullness_rate": 0.55078125,
+          "mean_turns_to_full_successes": 11.397163120567376,
+          "mean_rounds": 17.26171875,
+          "mean_damage_taken": 10.57421875,
+          "mean_food_consumed": 0.44573046875,
+          "mean_defense_turns": 2.0625,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0.60546875,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 1.28125
+        },
+        "resume": {
+          "episodes": 512,
+          "survival_rate": 0.55078125,
+          "fullness_rate": 0.55078125,
+          "mean_turns_to_full_successes": 11.397163120567376,
+          "mean_rounds": 17.26171875,
+          "mean_damage_taken": 10.57421875,
+          "mean_food_consumed": 0.44573046875,
+          "mean_defense_turns": 2.0625,
+          "mean_chase_turns": 0,
+          "mean_repeat_interruptions": 0.60546875,
+          "mean_rejected_attacks": 0,
+          "mean_blocked_moves": 1.28125
+        }
+      }
+    },
+    "limits": [
+      "Isolated spider/attacker/standardized 1.2-unit corpse, not full ecology",
+      "Episode stops at fullness, death or horizon; damage exposure durations differ",
+      "Paired starting seeds; divergent actions consume different subsequent dice",
+      "Guard infers retreat from observed relative motion corrected for own travel",
+      "No learned policy or predictor has been trained from these data"
+    ],
+    "paired_against_pursue": {
+      "overall": {
+        "guard": {
+          "cases": 1536,
+          "candidate_full_only": 24,
+          "pursuit_full_only": 56,
+          "both_full_cases": 846,
+          "mean_turn_difference_when_both_full": -10.843971631205674,
+          "fullness_rate_difference": -0.020833333333333332,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            -0.037760416666666664,
+            -0.00390625
+          ],
+          "mean_damage_difference": 1.16015625
+        },
+        "resume": {
+          "cases": 1536,
+          "candidate_full_only": 28,
+          "pursuit_full_only": 132,
+          "both_full_cases": 770,
+          "mean_turn_difference_when_both_full": -11.602597402597402,
+          "fullness_rate_difference": -0.06770833333333333,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            -0.09635416666666667,
+            -0.0390625
+          ],
+          "mean_damage_difference": 2.0768229166666665
+        }
+      },
+      "current": {
+        "guard": {
+          "cases": 512,
+          "candidate_full_only": 0,
+          "pursuit_full_only": 0,
+          "both_full_cases": 204,
+          "mean_turn_difference_when_both_full": -5.3431372549019605,
+          "fullness_rate_difference": 0,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            0,
+            0
+          ],
+          "mean_damage_difference": 0
+        },
+        "resume": {
+          "cases": 512,
+          "candidate_full_only": 4,
+          "pursuit_full_only": 76,
+          "both_full_cases": 128,
+          "mean_turn_difference_when_both_full": -6.640625,
+          "fullness_rate_difference": -0.140625,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            -0.21484375,
+            -0.07421875
+          ],
+          "mean_damage_difference": 2.75
+        }
+      },
+      "first_hit": {
+        "guard": {
+          "cases": 512,
+          "candidate_full_only": 0,
+          "pursuit_full_only": 0,
+          "both_full_cases": 384,
+          "mean_turn_difference_when_both_full": -12.989583333333334,
+          "fullness_rate_difference": 0,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            0,
+            0
+          ],
+          "mean_damage_difference": 0
+        },
+        "resume": {
+          "cases": 512,
+          "candidate_full_only": 0,
+          "pursuit_full_only": 0,
+          "both_full_cases": 384,
+          "mean_turn_difference_when_both_full": -12.989583333333334,
+          "fullness_rate_difference": 0,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            0,
+            0
+          ],
+          "mean_damage_difference": 0
+        }
+      },
+      "returner": {
+        "guard": {
+          "cases": 512,
+          "candidate_full_only": 24,
+          "pursuit_full_only": 56,
+          "both_full_cases": 258,
+          "mean_turn_difference_when_both_full": -12,
+          "fullness_rate_difference": -0.0625,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            -0.11328125,
+            -0.01171875
+          ],
+          "mean_damage_difference": 3.48046875
+        },
+        "resume": {
+          "cases": 512,
+          "candidate_full_only": 24,
+          "pursuit_full_only": 56,
+          "both_full_cases": 258,
+          "mean_turn_difference_when_both_full": -12,
+          "fullness_rate_difference": -0.0625,
+          "fullness_difference_seed_bootstrap_95_interval": [
+            -0.11328125,
+            -0.01171875
+          ],
+          "mean_damage_difference": 3.48046875
+        }
+      }
+    },
+    "by_initial_health": {
+      "0.5": {
+        "pursue": {
+          "episodes": 768,
+          "survival_rate": 0.75,
+          "fullness_rate": 0.2786458333333333
+        },
+        "guard": {
+          "episodes": 768,
+          "survival_rate": 0.53125,
+          "fullness_rate": 0.234375
+        },
+        "resume": {
+          "episodes": 768,
+          "survival_rate": 0.4713541666666667,
+          "fullness_rate": 0.21354166666666666
+        }
+      },
+      "1.0": {
+        "pursue": {
+          "episodes": 768,
+          "survival_rate": 0.984375,
+          "fullness_rate": 0.8958333333333334
+        },
+        "guard": {
+          "episodes": 768,
+          "survival_rate": 0.9713541666666666,
+          "fullness_rate": 0.8984375
+        },
+        "resume": {
+          "episodes": 768,
+          "survival_rate": 0.9453125,
+          "fullness_rate": 0.8255208333333334
+        }
+      }
+    },
+    "uncertainty_note": "Intervals resample 32 seed-level paired mean differences; they do not measure generalization beyond these layouts and scripted opponents."
+  },
+  "ecology_check": {
+    "rounds": 120,
+    "seeds": [
+      74000,
+      74001,
+      74002,
+      74003,
+      74004,
+      74005,
+      74006,
+      74007
+    ],
+    "summary": {
+      "pursue": {
+        "episodes": 8,
+        "surviving_spiders": 1.875,
+        "fed_spiders": 2.0,
+        "food_consumed": 1.6713750000000007,
+        "damage_taken": 8.125,
+        "defense_chase_turns": 1.125,
+        "repeat_interruptions": 0.0,
+        "courtships": 1.0
+      },
+      "guard": {
+        "episodes": 8,
+        "surviving_spiders": 1.875,
+        "fed_spiders": 2.0,
+        "food_consumed": 1.6703750000000008,
+        "damage_taken": 8.125,
+        "defense_chase_turns": 0.0,
+        "repeat_interruptions": 0.0,
+        "courtships": 1.0
+      },
+      "resume": {
+        "episodes": 8,
+        "surviving_spiders": 1.875,
+        "fed_spiders": 2.0,
+        "food_consumed": 1.6703750000000008,
+        "damage_taken": 8.125,
+        "defense_chase_turns": 0.0,
+        "repeat_interruptions": 0.0,
+        "courtships": 1.0
+      }
+    },
+    "episodes": [
+      {
+        "seed": 74000,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6680000000000006,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 8
+      },
+      {
+        "seed": 74000,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6680000000000006,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 8
+      },
+      {
+        "seed": 74000,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6680000000000006,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 8
+      },
+      {
+        "seed": 74001,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6680000000000006,
+        "damage_taken": 12,
+        "defense_chase_turns": 4,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 2
+      },
+      {
+        "seed": 74001,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.661000000000001,
+        "damage_taken": 12,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 2
+      },
+      {
+        "seed": 74001,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.661000000000001,
+        "damage_taken": 12,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 2
+      },
+      {
+        "seed": 74002,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6730000000000007,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74002,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6730000000000007,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74002,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6730000000000007,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74003,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6670000000000007,
+        "damage_taken": 14,
+        "defense_chase_turns": 1,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 4
+      },
+      {
+        "seed": 74003,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6660000000000008,
+        "damage_taken": 14,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 4
+      },
+      {
+        "seed": 74003,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6660000000000008,
+        "damage_taken": 14,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 4
+      },
+      {
+        "seed": 74004,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6860000000000008,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 6
+      },
+      {
+        "seed": 74004,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6860000000000008,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 6
+      },
+      {
+        "seed": 74004,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6860000000000008,
+        "damage_taken": 0,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 6
+      },
+      {
+        "seed": 74005,
+        "mode": "pursue",
+        "surviving_spiders": 1,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 29,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 11
+      },
+      {
+        "seed": 74005,
+        "mode": "guard",
+        "surviving_spiders": 1,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 29,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 11
+      },
+      {
+        "seed": 74005,
+        "mode": "resume",
+        "surviving_spiders": 1,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 29,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 11
+      },
+      {
+        "seed": 74006,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 5,
+        "defense_chase_turns": 4,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74006,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 5,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74006,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6700000000000006,
+        "damage_taken": 5,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74007,
+        "mode": "pursue",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6690000000000007,
+        "damage_taken": 5,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74007,
+        "mode": "guard",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6690000000000007,
+        "damage_taken": 5,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      },
+      {
+        "seed": 74007,
+        "mode": "resume",
+        "surviving_spiders": 2,
+        "fed_spiders": 2,
+        "food_consumed": 1.6690000000000007,
+        "damage_taken": 5,
+        "defense_chase_turns": 0,
+        "repeat_interruptions": 0,
+        "courtships": 1,
+        "births": 5
+      }
+    ],
+    "limits": [
+      "Small ecology sanity check, not sufficient to select a general controller",
+      "Two spiders per run, all other residents scripted",
+      "Normal authored initial population; random replacement prey; no standardized meal"
+    ]
+  },
+  "artifacts": {
+    "controlled": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/meal-defense-batch-v2",
+    "ecology": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/meal-defense-ecology-v1"
+  },
+  "checks": {
+    "regression_tests_passed": 214,
+    "policy_and_alignment_tests": 6
+  },
+  "deployment": "Live UI and production policy unchanged by this experiment",
+  "experience": {
+    "transitions": 129538,
+    "episodes": 4608,
+    "path": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/meal-defense-batch-v2/decision_transitions.jsonl.gz",
+    "note": "Use aligned next-decision records for learning; raw post-round records omit the next opponent response."
+  }
+}

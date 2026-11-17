@@ -19,10 +19,13 @@ CONTROLS = """<span style='font-weight:normal;margin-left:1em'>
 <button onclick="control('pause')">Pause</button>
 <button onclick="control('step')">One round</button>
 <span id='simstate'>Paused · scripted baseline</span>
-<label><input type='checkbox' id='allactors' onchange="location.search=this.checked?'?all=1':''">All creatures</label></span>
+<label>Transcript: <select id='actorview' onchange="location.search=this.value==='all'?'?all=1':this.value==='spiders'?'?view=spiders':''">
+<option value='mr'>Mr Spider</option><option value='spiders'>All spiders</option><option value='all'>All creatures</option></select></label></span>
 <script>
-window.spectatorFocus=new URLSearchParams(location.search).has('all')?null:'freight_spider';
-document.getElementById('allactors').checked=!window.spectatorFocus;
+const viewParams=new URLSearchParams(location.search);
+const actorView=viewParams.has('all')?'all':viewParams.get('view')==='spiders'?'spiders':'mr';
+window.spectatorFocus=actorView==='all'?null:actorView==='spiders'?['freight_spider','freight_spider_female']:'freight_spider';
+document.getElementById('actorview').value=actorView;
 async function control(action){
  const r=await fetch('/simulation/'+action,{method:'POST'});
  const s=await r.json();document.getElementById('simstate').textContent=s.message||JSON.stringify(s);
@@ -66,6 +69,9 @@ def explanation(row,names=None,tracks=None):
             text+=f" {goal.title()} {label(command['target'])}: {result['status']}."
             if 'food_remaining' in result:text+=f" Food remaining {result['food_remaining']:.2f} meal units."
         if command['action']=='vibrate_web':text+=' Sends a patterned courtship vibration through the web.'
+        if goal=='defend':
+            threat=plan.get('defense_track')
+            text+=' Interrupted meal to fight back against '+label(threat)+'.' if threat else ' Damage interrupted the meal; attacker not identified.'
         if goal=='seek_mate':text+=' Searching for a receptive mate using local contacts.'
         if command['action']=='move':
             text+=f" Travel direction {command['heading_deg']:.1f} degrees; moved {result['distance_ft']:.1f} ft ({result['status']})."
@@ -137,7 +143,7 @@ class LiveRun:
             self.controller_signature['replenish_prey']=True
             self.mode+=' · rats/crickets replaced'
         if feeding_cycle:
-            self.controller_signature['feeding_cycle']='hunt-wrap-feed-seek-mate-v2'
+            self.controller_signature['feeding_cycle']='hunt-wrap-feed-seek-mate-v3-damage-interrupt'
             self.mode+=' · hunt/wrap/feed/seek mate'
         if random_prey:self.controller_signature['random_prey']='valid-floor-v1';self.mode+=' · random prey spawns'
         if spider_pair:self.controller_signature['spider_pair']='fed-courtship-web-signals-v1';self.mode+=' · Mr & Ms Spider'
@@ -165,7 +171,7 @@ class LiveRun:
             webs={key:item.state for key,item in self.world.config.items.items() if 'web_bounds' in item.state}
             if (positions!=saved['current_positions'] or hp!=saved['ecology_hp'] or
                 webs!=saved['ecology_web_state'] or records!=saved['ecology_decisions'] or
-                (self.feeding_cycle and (self.world.food!=saved.get('ecology_food') or self.world.hunger!=saved.get('ecology_hunger') or self.world.mate_cooldown!=saved.get('ecology_mate_cooldown',{}) or self.world.mating_events!=saved.get('ecology_mating_events',[]) or self.world.web_signals!=saved.get('ecology_web_signals',{}) or {':'.join(k):v for k,v in self.world.courtship.items()}!=saved.get('ecology_courtship',{})))):
+                (self.feeding_cycle and (self.world.incoming_damage!=saved.get('ecology_incoming_damage',{}) or self.world.food!=saved.get('ecology_food') or self.world.hunger!=saved.get('ecology_hunger') or self.world.mate_cooldown!=saved.get('ecology_mate_cooldown',{}) or self.world.mating_events!=saved.get('ecology_mating_events',[]) or self.world.web_signals!=saved.get('ecology_web_signals',{}) or {':'.join(k):v for k,v in self.world.courtship.items()}!=saved.get('ecology_courtship',{})))):
                 raise ValueError('Replay differs from saved episode; resume refused without changing checkpoints')
             self.round=saved['turn'];self.episode=saved.get('episode',1)
         self.publish(records)
@@ -224,7 +230,7 @@ class LiveRun:
         from engine.map_renderer import render_turn_slider_html
         world=self.world
         names=screen_names(world)
-        snapshot={'ecology_web_signals':world.web_signals,'ecology_courtship':{':'.join(k):v for k,v in world.courtship.items()},'ecology_mate_cooldown':world.mate_cooldown,'ecology_mating_events':world.mating_events,'ecology_food':world.food,'ecology_hunger':world.hunger,'ecology_births':world.last_births,'controller_signature':self.controller_signature,'episode':self.episode,'seed':self.seed,'turn':self.round,'scene_place_path':world.geometry.place_path,
+        snapshot={'ecology_incoming_damage':world.incoming_damage,'ecology_web_signals':world.web_signals,'ecology_courtship':{':'.join(k):v for k,v in world.courtship.items()},'ecology_mate_cooldown':world.mate_cooldown,'ecology_mating_events':world.mating_events,'ecology_food':world.food,'ecology_hunger':world.hunger,'ecology_births':world.last_births,'controller_signature':self.controller_signature,'episode':self.episode,'seed':self.seed,'turn':self.round,'scene_place_path':world.geometry.place_path,
             'active_characters':sorted(world.active),
             'current_positions':{cid:{'x':p[0],'y':p[1],'zone':p[2]} for cid,p in world.positions.items()},
             'character_results':[{'character_id':r['actor'],'character_name':names[r['actor']],

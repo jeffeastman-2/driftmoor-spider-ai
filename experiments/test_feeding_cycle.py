@@ -108,3 +108,54 @@ def test_feeding_viewer_replays_body_state_and_resets_it(tmp_path):
     assert restored.world.positions==run.world.positions
     restored.restart()
     assert restored.world.hunger[SPIDER]==.8 and restored.world.food=={}
+
+
+def test_damage_interrupts_meal_targets_attacker_then_resumes_same_meal():
+    from types import SimpleNamespace
+    class Hunter:
+        locomotion=None
+        task=SimpleNamespace(previous=None,track=None,last=None)
+        last_plan={}
+        def choose(self,obs):return {'action':'wait'}
+    policy=FeedingPolicy(Hunter());policy.goal='wrap';policy.meal='food'
+    obs={'self':{'hunger':.8,'hp_fraction':.9},'contacts':[{'track':'threat','modality':'vision','range_ft':4,'relative_position_ft':[4,0,0]}],
+         'food_in_view':[{'track':'food','range_ft':4,'wrapped':False,'remaining':.5}],
+         'incoming_damage':[{'damage_hp':1,'attacker':'threat'}]}
+    command=policy.choose(obs)
+    assert policy.goal=='defend' and command=={'action':'attack','target':'threat'}
+    assert policy.meal=='food'
+    obs['incoming_damage']=[]
+    assert policy.choose(obs)['action']=='attack'  # Stay engaged between hits.
+    obs['last_result']={'target_defeated':True,'target':'threat'};obs['contacts']=[]
+    command=policy.choose(obs)
+    assert policy.goal=='wrap' and command=={'action':'wrap','target':'food'}
+
+
+def test_unknown_damage_source_does_not_accuse_an_unrelated_visible_contact():
+    from types import SimpleNamespace
+    class Hunter:
+        locomotion=None;task=SimpleNamespace(previous=None,track=None,last=None);last_plan={}
+        def choose(self,obs):return {'action':'wait'}
+    policy=FeedingPolicy(Hunter());policy.goal='feed'
+    obs={'self':{'hunger':.5,'hp_fraction':.9},'contacts':[{'track':'bystander','modality':'vision','range_ft':4}],
+         'incoming_damage':[{'damage_hp':1,'attacker':None}]}
+    assert policy.choose(obs)=={'action':'wait'} and policy.goal=='defend'
+    assert policy.defense_track is None
+
+
+def test_actual_engine_hit_is_felt_once_and_misses_do_not_trigger_defense():
+    from spider_sim.djepa_ecology import senses
+    world,rat=meal_world()
+    attacker='freight_shadowbeast';world.positions[attacker]=(107,140,'Fungal Stores')
+    command={'action':'attack','target':world.tokens[attacker][SPIDER]}
+    for _ in range(30):
+        result=world.act(attacker,command)
+        if result['damage']>0:break
+        assert world.observation_for(SPIDER)['incoming_damage']==[]
+    assert result['damage']>0
+    events=senses(world,SPIDER)['incoming_damage']
+    assert events[-1]['damage_hp']==result['damage']
+    assert events[-1]['attacker']==world.tokens[SPIDER][attacker]
+    assert world.observation_for(SPIDER)['incoming_damage']==events
+    world.act(SPIDER,{'action':'wait'})
+    assert world.observation_for(SPIDER)['incoming_damage']==[]

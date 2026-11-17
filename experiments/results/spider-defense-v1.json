@@ -1,0 +1,57 @@
+{
+  "seed": 42,
+  "summary": {
+    "rounds": 240,
+    "births": 4,
+    "spawn_zones": {
+      "Receiving Floor": 2,
+      "Cold Larder": 1,
+      "Cistern": 1
+    },
+    "spiders": {
+      "freight_spider": {
+        "hp": 19,
+        "hunger": 0.19600000000000015,
+        "goals": {
+          "hunt": 18,
+          "wrap": 5,
+          "feed": 9,
+          "defend": 12,
+          "seek_mate": 189,
+          "approach_mate": 6,
+          "court": 1
+        }
+      },
+      "freight_spider_female": {
+        "hp": 26,
+        "hunger": 0.20400000000000015,
+        "goals": {
+          "hunt": 19,
+          "wrap": 7,
+          "feed": 9,
+          "approach_meal": 1,
+          "seek_mate": 197,
+          "approach_mate": 5,
+          "court": 2
+        }
+      }
+    },
+    "courtship_events": [
+      {
+        "actors": [
+          "freight_spider",
+          "freight_spider_female"
+        ],
+        "time": 336,
+        "event": "courtship_accepted"
+      }
+    ]
+  },
+  "tests_passed": 208,
+  "full_trace": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/spider-defense-smoke.json",
+  "limits": [
+    "One seed",
+    "Authored interrupt and retaliation, unchanged neural weights",
+    "Accepted courtship only; no offspring"
+  ]
+}

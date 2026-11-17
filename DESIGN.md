@@ -457,7 +457,8 @@ feeding action and no retraining in this change.
 * **Feed:** consume at most 0.1 food units per turn until full or food is exhausted.
 * **Seek mate:** once full, roam even if no partner is present. Resume hunting at
   hunger 0.6. In the optional paired mode, visible conspecific cues and patterned web vibrations identify potential partners. Courtship is admitted only when both spiders are at hunger 0.2 or less and at least 35% HP, within six feet and visible. Three uninterrupted courtship actions produce an accepted-courtship event and a one-hour cooldown. Eggs, offspring and sexual cannibalism are not modeled.
-* **Survive:** below 35% HP, interrupt feeding/search and withdraw from the nearest
+* **Defend:** any actual incoming attack damage while wrapping, feeding or approaching a meal interrupts food handling. Fight the identified visible attacker; retain the meal commitment and return to food when the threat is defeated or no longer observed for four turns. This takes priority over the critical-HP rule. The rule uses private damage feedback and measured attacker positions, not remote world state.
+* **Survive:** otherwise below 35% HP, interrupt feeding/search and withdraw from the nearest
   visible contact; with no visible threat, wait. This is an authored precaution.
 
 Hunger is bounded from 0 (full) to 1 (very hungry), starts at 0.8 and increases
@@ -542,3 +543,21 @@ Random spawning rejects floor footprints outside rooms, local obstacles and
 occupied locations. Whole-scene background rock is carved out by the authored
 room polygons, matching the engine. Placement does not guarantee that every
 random spawn has a traversable route to every other room.
+
+### Meal interruption trial
+
+In the seed-42, 240-round paired run, Mr Spider switched from feeding to
+defense on turn 23, defeated the Shadowbeast on turn 34, and resumed wrapping
+and feeding on turn 35. Accepted courtship occurred at 336 simulated seconds.
+Both spiders survived. This is one trial, not a general performance claim.
+Damage feedback carries an opaque attacker token only when the victim could
+see the attacker; unidentified damage causes an alert pause rather than an
+attack against an arbitrary bystander. Misses do not trigger interruption.
+
+## Batch evidence for defense choices
+
+See [the meal-defense comparison](experiments/MEAL_DEFENSE_COMPARISON.md) for
+4,608 controlled episodes and 24 ordinary ecology runs. Observed withdrawal
+is useful evidence for returning to a meal, but does not guarantee an attacker
+will stay away. These results compare authored alternatives; no neural weights
+have been updated and the live defense behavior is unchanged.

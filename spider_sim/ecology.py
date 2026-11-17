@@ -68,6 +68,7 @@ class EcologyEncounter:
         self.max_hp = {cid:cs.character.current_hp for cid,cs in self.config.characters.items()}
         self.elapsed_seconds = 0
         self.last_results = {}
+        self.incoming_damage = {}
         self.replenish_prey=replenish_prey;self.replaced_prey=set();self.last_births=[]
         self.prey_roots={cid:cid for cid in self.positions if cid.startswith(('cave_rat_','cave_cricket_'))}
         self.prey_templates={cid:copy.deepcopy(self.config.characters[cid]) for cid in self.prey_roots}
@@ -171,7 +172,7 @@ class EcologyEncounter:
                     food.append(dict(track=self.tokens[actor][cid],range_ft=distance,
                                      relative_position_ft=vector,wrapped=state['wrap_turns']>=WRAP_TURNS,
                                      remaining=state['remaining']))
-        return {**({'food_in_view':food} if self.feeding_cycle and actor in self.spiders else {}),"schema":OBSERVATION_SCHEMA,"self":{"hp_fraction":character.current_hp/self.max_hp[actor],
+        return {**({'incoming_damage':list(self.incoming_damage.get(actor,[]))} if self.feeding_cycle and actor in self.spiders else {}),**({'food_in_view':food} if self.feeding_cycle and actor in self.spiders else {}),"schema":OBSERVATION_SCHEMA,"self":{"hp_fraction":character.current_hp/self.max_hp[actor],
                 "body_dimensions_ft":[body.width,body.depth,body.height],
                 "heading_deg":self.orientations[actor].heading,
                 **({"hunger":self.hunger[actor],"touching_web":touching_web} if actor in self.hunger else {})},
@@ -190,6 +191,7 @@ class EcologyEncounter:
             for pair in list(self.courtship):
                 if actor in pair:self.courtship.pop(pair,None)
         obs = self.observation_for(actor)
+        self.incoming_damage.pop(actor,None)
         character = self.config.characters[actor].character
         origin = self.positions[actor]
         result = {"action":action,"status":"waited","admitted":False,"damage":0,"distance_ft":0.}
@@ -251,7 +253,12 @@ class EcologyEncounter:
                 target_mid = dz+contact["body_dimensions_ft"][2]/2
                 self.orientations[actor] = Orientation(heading=math.degrees(math.atan2(dy,dx)),
                     pitch=math.degrees(math.atan2(own_mouth-target_mid,max(.01,math.hypot(dx,dy)))))
+                # Identify an attacker only if the victim could actually see it.
+                victim_obs=self.observation_for(target)
+                seen_attacker=any(c['track']==self.tokens[target][actor] and c['modality']=='vision' for c in victim_obs['contacts'])
                 status,feedback,_ = self._stationary_attack(actor,target)
+                if self.feeding_cycle and feedback['damage']>0 and target in self.spiders:
+                    self.incoming_damage.setdefault(target,[]).append({'damage_hp':feedback['damage'],'attacker':self.tokens[target][actor] if seen_attacker else None})
                 result.update(status=status,admitted=feedback["attempted"],damage=feedback["damage"],
                               hit=feedback["hit"],target=contact["track"],
                               target_defeated=self.config.characters[target].character.current_hp<=0)
