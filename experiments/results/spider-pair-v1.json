@@ -1,0 +1,46 @@
+{
+  "seed": 42,
+  "summary": {
+    "rounds": 240,
+    "births": 4,
+    "spawn_zones": {
+      "Factor's Office": 1,
+      "Receiving Floor": 1,
+      "Cold Larder": 1,
+      "Cistern": 1
+    },
+    "spiders": {
+      "freight_spider": {
+        "hp": 9,
+        "hunger": 0.5400000000000004,
+        "goals": {
+          "hunt": 18,
+          "wrap": 4,
+          "feed": 5,
+          "approach_meal": 1,
+          "survive": 212
+        }
+      },
+      "freight_spider_female": {
+        "hp": 23,
+        "hunger": 0.19600000000000015,
+        "goals": {
+          "hunt": 26,
+          "wrap": 8,
+          "feed": 9,
+          "approach_meal": 1,
+          "seek_mate": 196
+        }
+      }
+    },
+    "courtship_events": []
+  },
+  "tests_passed": 205,
+  "limits": [
+    "One seed; no natural courtship observed",
+    "Accepted courtship tested with controlled reachable fed partners",
+    "No eggs, offspring or cannibalism",
+    "Authored goals and signals around unchanged pursuit weights"
+  ],
+  "full_trace": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/spider-pair-smoke.json"
+}

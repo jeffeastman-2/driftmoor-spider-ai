@@ -118,17 +118,24 @@ def fit(training,validation,model=None,epochs=300):
     model.load_state_dict(weights);return model.eval(),best
 
 
-def evaluate(model,seeds,rounds=48):
+def evaluate(model,seeds,rounds=48,modes=('scripted','neural')):
     groups={}
     for kind in ('stationary','fleeing','cautious'):
         groups[kind]={}
-        for mode in ('scripted','neural'):
+        for mode in modes:
             total={'episodes':0,'caught':0,'turns_to_catch':[],'moves':0,'blocked':0,'return_loops':0,'longest_return_loop_streak':0,'reversals':0,'attacks':0,'admitted':0}
             for seed in seeds:
-                world,prey,opponent=fixture(seed,kind);controller=PursuitPolicy(model) if mode=='neural' else GoalBaseline(seed=seed)
+                world,prey,opponent=fixture(seed,kind)
+                if mode=='motor_matched':
+                    from experiments.motor_parity import MotorMatchedBaseline
+                    controller=MotorMatchedBaseline(seed)
+                elif mode in ('neural','neural_approach','neural_facing'):
+                    controller=PursuitPolicy(model,approach=mode!='neural',facing='track' if mode=='neural_facing' else 'legacy',rest_without_goal=mode=='neural_facing')
+                elif mode=='scripted':controller=GoalBaseline(seed=seed)
+                else:raise ValueError('Unknown evaluation controller')
                 positions=[world.positions[SPIDER][:2]];previous=None;loop_streak=0
                 for turn in range(rounds):
-                    obs=senses(world,SPIDER) if mode=='neural' else world.observation_for(SPIDER)
+                    obs=senses(world,SPIDER) if mode.startswith('neural') else world.observation_for(SPIDER)
                     command=controller.choose(obs);result=advance(world,prey,opponent,kind,command)
                     position=world.positions[SPIDER][:2]
                     if command['action']=='move':

@@ -1,9 +1,20 @@
 # Driftmoor Spider Agent Experiments
 
+**Start with [the current controller design](DESIGN.md)** for the network,
+complete candidate-command list, goal/motor distinction, and code pointers.
+
 Open this directory in VS Code. It contains the encounter environments,
 controllers, rule teachers, neural networks, training, diagnostics, and tests.
 Driftmoor supplies the game mechanics and authored world as an external
 dependency; you do not need to open a second VS Code project.
+
+## Feeding-cycle experiment
+
+The optional live mode adds hunger, wrapping, finite carcass consumption and
+mate-seeking exploration around the learned pursuit controller. See
+[body state and goals](DESIGN.md#body-state-goals-and-local-movement) for the
+constants, limitations and distinction between authored and learned behavior.
+Use `--feeding-cycle --spider-local-motion --replenish-prey` with `--spider-model`.
 
 ## Code map
 
@@ -131,3 +142,5 @@ The [three-species dJEPA experiment](experiments/ECOLOGY_DJEPA.md) adds separate
 The [balanced ecology curriculum and rat clearance experiment](experiments/ECOLOGY_CURRICULUM.md) improve attack training and test each species against fixed scripted opponents. The rat’s action-relative clearance input improves its isolated navigation, but the joint learned encounter remains experimental.
 
 The [single-prey pursuit benchmark](experiments/SINGLE_PREY_PURSUIT.md) isolates one learned spider against scripted prey. Neither focused model meets the scripted baseline; independent catch counts, unreachable attacks and loop failures are retained without promoting a checkpoint.
+
+The [motor-parity and pursuit-prior experiments](experiments/PURSUIT_MOTOR_PARITY.md) identify a motor-interface confound and train an imitation actor that matches scripted catches on stationary and ordinary fleeing prey in the focused test, while still trailing on cautious prey. It is a policy prior, not improved JEPA cost reasoning.

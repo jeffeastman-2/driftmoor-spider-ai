@@ -1,0 +1,38 @@
+{
+  "kind": "authored feeding goals around fixed learned pursuit weights",
+  "seed": 42,
+  "summary": {
+    "rounds": 180,
+    "goals": {
+      "hunt": 23,
+      "wrap": 9,
+      "feed": 9,
+      "seek_mate": 139
+    },
+    "actions": {
+      "move": 156,
+      "attack": 6,
+      "wrap": 9,
+      "feed": 9
+    },
+    "kills": 3,
+    "final_hunger": 0.1390000000000001,
+    "first_search_round": 41,
+    "food_summary": {
+      "carcasses": 35,
+      "exhausted": 2
+    }
+  },
+  "checks": {
+    "tests_passed": 198,
+    "real_model_viewer_replay_rounds": 45,
+    "restart_restores_initial_state": true
+  },
+  "full_trace": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/feeding-cycle-smoke.json",
+  "limits": [
+    "One seed; no claim of general behavioral improvement",
+    "Food values and times are prototype constants",
+    "Search uses roaming; mate detection and mating not implemented",
+    "Other creatures remain scripted and do not have the feeding cycle"
+  ]
+}

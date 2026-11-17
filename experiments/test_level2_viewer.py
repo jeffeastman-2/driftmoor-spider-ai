@@ -109,3 +109,24 @@ def test_resume_preserves_the_current_encounter_and_refuses_divergent_replay(tmp
     with pytest.raises(ValueError,match='Replay differs'):
         LiveRun(path,42,4,resume=True)
     assert checkpoint.read_bytes()==before
+
+
+def test_improved_spider_only_mode_annotations_memory_and_resume(tmp_path):
+    import torch
+    from spider_sim.pursuit import PursuitModel,save
+    model=PursuitModel(21);model.value_kind='negative_action_logit'
+    path=tmp_path/'spider.pt';save(model,path)
+    run=LiveRun(tmp_path/'pursuit',42,3,spider_model=path)
+    assert run.policies[SPIDER].approach
+    assert all(not getattr(p,'neural',False) for cid,p in run.policies.items() if cid!=SPIDER)
+    run.step()
+    row=json.loads((run.output/'day1_00001.json').read_text())
+    spider=next(r for r in row['ecology_decisions'] if r['actor']==SPIDER)
+    assert spider['controller_kind']=='pursuit' and spider['plan']['value_kind']=='negative_action_logit'
+    text=next(r for r in row['character_results'] if r['character_id']==SPIDER)['narration']['prose']
+    assert '[Learned pursuit]' in text and 'Forecast' not in text
+    assert 'other creatures scripted' in run.status()['message']
+    restored=LiveRun(run.output,42,3,spider_model=path,resume=True)
+    assert restored.round==1
+    restored.restart()
+    assert restored.policies[SPIDER].hidden is None and restored.policies[SPIDER].task.track is None

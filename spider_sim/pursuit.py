@@ -45,10 +45,17 @@ def features(obs,goal):
     return own+contact_values(goal,obs)
 
 
-def actions(obs,goal):
+def actions(obs,goal,approach=False):
     # Same discrete motor inventory as the previous neural controller; no mask.
     choices=candidates(obs)
     if goal:choices=[c for c in choices if c['action']!='attack' or c['target']==goal['track']]
+    if approach and goal and goal.get('relative_position_ft'):
+        x,y,_=goal['relative_position_ft']
+        # Existing script's motor convention: approach a five-foot standoff.
+        # This is a proposed command, never a reach check or forced action.
+        command={'action':'move','heading_deg':math.degrees(math.atan2(y,x)),
+                 'distance_ft':min(10.,max(1.,math.hypot(x,y)-5.))}
+        if command not in choices:choices.append(command)
     return choices
 
 
@@ -77,6 +84,7 @@ class PursuitModel(nn.Module):
     def __init__(self,action_size=ACTION_SIZE):
         super().__init__()
         self.action_size=action_size
+        self.value_kind="goal_cost"
         self.encoder=nn.Sequential(nn.Linear(INPUT_SIZE,64),nn.ReLU(),nn.Linear(64,32),nn.ReLU())
         self.memory=nn.GRU(32,48,batch_first=True)
         self.value=nn.Sequential(nn.Linear(48+action_size,64),nn.ReLU(),nn.Linear(64,32),nn.ReLU(),nn.Linear(32,1))
@@ -87,23 +95,44 @@ class PursuitModel(nn.Module):
 class PursuitPolicy:
     neural=True
     controller_kind='pursuit'
-    def __init__(self,model):self.model=model;self.hidden=None;self.task=PursuitGoal();self.goal='pursue';self.last_plan=None
+    def __init__(self,model,approach=False,*,facing="legacy",rest_without_goal=False,local_motion=False,seed=0):
+        if facing not in ("legacy","track"):raise ValueError("Unknown pursuit facing mode")
+        from spider_sim.locomotion import LocalLocomotion
+        self.locomotion=LocalLocomotion(seed) if local_motion else None
+        self.facing=facing;self.rest_without_goal=rest_without_goal
+        self.approach=approach;self.model=model;self.hidden=None;self.task=PursuitGoal();self.goal='pursue';self.last_plan=None
     @torch.no_grad()
     def choose(self,obs):
-        goal=self.task.observe(obs);choices=actions(obs,goal)
+        goal=self.task.observe(obs);choices=actions(obs,goal,self.approach)
         own=torch.tensor(features(obs,goal),dtype=torch.float32)[None,None]
         state,self.hidden=self.model.represent(own,self.hidden)
         encoded=torch.tensor([action_features(c,obs,goal,self.model.action_size) for c in choices],dtype=torch.float32)
         values=self.model.values(state[0,0].expand(len(choices),-1),encoded)
-        selected=int(values.argmin());command=choices[selected];self.task.previous=command
-        self.last_plan={'goal_track':self.task.track,'goal_age':self.task.age,'selected':selected,
-                        'candidates':choices,'predicted_goal_costs':values.tolist()}
+        resting=self.rest_without_goal and goal is None
+        selected=0 if resting else int(values.argmin())
+        self.goal='rest' if resting else 'pursue'
+        command=dict(choices[selected]);selection_reason='no_pursuit_goal' if resting else 'learned_actor'
+        neural_proposal=dict(command)
+        if self.locomotion:
+            if goal is None:
+                command,selection_reason=self.locomotion.roam(obs)
+                self.goal='roam';selected=None
+            else:
+                command,override=self.locomotion.pursue(obs,command)
+                if override:selection_reason=override;selected=None
+        if command['action']=='move' and self.facing=='track':
+            command['keep_facing']=True
+            if goal and self.task.age==0:command['face_track']=goal['track']
+        self.task.previous=command
+        self.last_plan={'facing':self.facing,'selection_reason':selection_reason,'neural_proposal':neural_proposal,'executed_command':dict(command),'approach_candidate':self.approach,'goal_track':self.task.track,'goal_age':self.task.age,'selected':selected,
+                        'candidates':choices,'value_kind':getattr(self.model,'value_kind','goal_cost'),
+                        ('predicted_goal_costs' if getattr(self.model,'value_kind','goal_cost')=='goal_cost' else 'action_scores'):values.tolist()}
         return command
 
 
-def save(model,path):torch.save({'schema':SCHEMA,'inputs':INPUT_SIZE,'actions':model.action_size,'state':model.state_dict()},path)
+def save(model,path):torch.save({'schema':SCHEMA,'inputs':INPUT_SIZE,'actions':model.action_size,'value_kind':model.value_kind,'state':model.state_dict()},path)
 def load(path):
     payload=torch.load(path,map_location='cpu',weights_only=True)
     if (payload.get('schema'),payload.get('inputs'))!=(SCHEMA,INPUT_SIZE) or payload.get('actions') not in (21,23):
         raise ValueError('Pursuit checkpoint contract mismatch')
-    model=PursuitModel(payload['actions']);model.load_state_dict(payload['state']);return model.eval()
+    model=PursuitModel(payload['actions']);model.value_kind=payload.get('value_kind','goal_cost');model.load_state_dict(payload['state']);return model.eval()
