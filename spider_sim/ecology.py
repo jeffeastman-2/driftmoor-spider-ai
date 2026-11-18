@@ -26,7 +26,9 @@ OBSERVATION_SCHEMA = "ecology-private-contacts-v1"
 
 
 class EcologyEncounter:
-    def __init__(self, seed=0, scene=SCENE,*,replenish_prey=False,feeding_cycle=False,random_prey=False,spider_pair=False):
+    def __init__(self, seed=0, scene=SCENE,*,replenish_prey=False,feeding_cycle=False,random_prey=False,spider_pair=False,lifecycle=False):
+        if lifecycle and not spider_pair:raise ValueError("Lifecycle requires paired feeding spiders")
+        self.lifecycle=lifecycle
         if spider_pair and not feeding_cycle:raise ValueError("Spider pair requires feeding cycle")
         self.random_prey=random_prey;self.spider_pair=spider_pair
         self.spawn_random=random.Random(seed+81721)
@@ -76,6 +78,10 @@ class EcologyEncounter:
         self.contact_ids={cid:f'contact_{n}' for n,cid in enumerate(sorted(self.positions),1)}
         self.tokens = {actor:{cid:f"contact_{n}" for n,cid in enumerate(sorted(self.positions),1) if cid!=actor}
                        for actor in self.positions}
+
+        if lifecycle:
+            from spider_sim.lifecycle import initialize
+            initialize(self)
 
     def random_floor_position(self,body,exclude=()):
         """Choose a zone uniformly, then reject rock, walls and occupied space.
@@ -130,6 +136,17 @@ class EcologyEncounter:
                                   heights=self.heights,items=self.config.items,
                                   body_heights={cid:b.height for cid,b in self.bodies.items()})
         own = floor_relative_position(self.geometry,self.positions[actor],self.heights[actor])
+        if actor in self.spiders and getattr(self,'zone_webs',False):
+            # Implicit silk carries coarse contact cues within this zone only.
+            existing={e['track_id'] for e in sensed['contacts'] if e['modality']=='web'}
+            for cid in sorted(self.active):
+                if cid==actor or cid in existing or self.positions[cid][2]!=self.positions[actor][2]:continue
+                if self.config.characters[cid].character.current_hp<=0:continue
+                target=floor_relative_position(self.geometry,self.positions[cid],self.heights[cid])
+                sensed['contacts'].append({'track_id':cid,'modality':'web',
+                    'range_ft':round(own.distance_to(target)/5)*5,
+                    'bearing_deg':round(math.degrees(math.atan2(target.y-own.y,target.x-own.x))/45)*45%360,
+                    'elevation_angle_deg':None})
         contacts = []
         for entry in sensed["contacts"]:
             cid = entry["track_id"]
@@ -144,9 +161,9 @@ class EcologyEncounter:
                 public["body_dimensions_ft"] = [body.width,body.depth,body.height]
             if self.spider_pair and actor in self.spiders and cid in self.spiders and entry['modality']=='vision':
                 public['conspecific']=True
-                public['mate_signal']='receptive' if self.hunger[cid]<=.2 and self.config.characters[cid].character.current_hp/self.max_hp[cid]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(cid,0) else 'unreceptive'
+                public['mate_signal']='receptive' if self.spiders[actor]!=self.spiders[cid] and (self.hunger[cid]<.2 if getattr(self,'zone_webs',False) else self.hunger[cid]<=.2) and self.config.characters[cid].character.current_hp/self.max_hp[cid]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(cid,0) else 'unreceptive'
             if self.spider_pair and actor in self.spiders and entry['modality']=='web' and self.web_signals.get(cid,{}).get('until',-1)>self.elapsed_seconds:
-                public.update(conspecific=True,courtship_signal=True,mate_signal=self.web_signals[cid]['readiness'])
+                public.update(conspecific=True,courtship_signal=True,mate_signal=self.web_signals[cid]['readiness'] if self.spiders[actor]!=self.spiders[cid] else 'unreceptive')
             contacts.append(public)
         # Web condition is inspected locally; remote damage is not clairvoyantly known.
         visual_range = max(self.geometry.ambient_sight_range(self.positions[actor][2]) or 0,30)
@@ -160,7 +177,7 @@ class EcologyEncounter:
                          "integrity":float(item.state["web_hp"])/float(item.state["web_max_hp"])})
         body = self.bodies[actor]
         from engine.webs import _touching
-        touching_web=any(_touching(own,item,body.height) for item in live_webs(self.config.items).values())
+        touching_web=(actor in self.spiders and getattr(self,'zone_webs',False)) or any(_touching(own,item,body.height) for item in live_webs(self.config.items).values())
         food=[]
         if self.feeding_cycle and actor in self.spiders:
             from spider_sim.feeding import WRAP_TURNS
@@ -266,7 +283,7 @@ class EcologyEncounter:
             if not self.spider_pair or actor not in self.spiders or not obs['self'].get('touching_web'):
                 result['status']='not_touching_web'
             else:
-                receptive=self.hunger[actor]<=.2 and character.current_hp/self.max_hp[actor]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(actor,0)
+                receptive=(self.hunger[actor]<.2 if getattr(self,'zone_webs',False) else self.hunger[actor]<=.2) and character.current_hp/self.max_hp[actor]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(actor,0)
                 self.web_signals[actor]={'until':self.elapsed_seconds+12,'readiness':'receptive' if receptive else 'unreceptive'}
                 result['status']='courtship_vibration'
         elif action=='court':
@@ -275,7 +292,9 @@ class EcologyEncounter:
             result['target']=command.get('target')
             if actor not in self.spiders or target not in self.spiders or not contact or contact['range_ft']>6:
                 result['status']='mate_not_reachable'
-            elif self.hunger[actor]>.2 or self.hunger[target]>.2:
+            elif actor==target or self.spiders[actor]==self.spiders[target]:
+                result['status']='incompatible_mate'
+            elif any(self.hunger[c]>=.2 if getattr(self,'zone_webs',False) else self.hunger[c]>.2 for c in (actor,target)):
                 result['status']='too_hungry_to_mate';self.courtship.pop(tuple(sorted((actor,target))),None)
             elif any(self.config.characters[c].character.current_hp/self.max_hp[c]<.35 or self.elapsed_seconds<self.mate_cooldown.get(c,0) for c in (actor,target)):
                 result['status']='not_receptive'
@@ -283,9 +302,12 @@ class EcologyEncounter:
                 pair=tuple(sorted((actor,target)));progress=self.courtship.get(pair,0)+1;self.courtship[pair]=progress
                 result.update(status='courtship_accepted' if progress>=3 else 'courting',courtship_turns=progress)
                 if progress>=3:
-                    for c in pair:self.mate_cooldown[c]=self.elapsed_seconds+3600
+                    for c in pair:self.mate_cooldown[c]=self.elapsed_seconds+getattr(self,'mate_cooldown_seconds',120)
                     self.mating_events.append({'actors':list(pair),'time':self.elapsed_seconds,'event':'courtship_accepted'})
                     self.courtship.pop(pair,None)
+                    if self.lifecycle:
+                        from spider_sim.lifecycle import lay_eggs
+                        result['egg_sac']=lay_eggs(self,pair)
         elif action in ('wrap','feed'):
             from spider_sim.feeding import WRAP_TURNS,FEED_PER_TURN
             target=self._target(actor,command.get('target'))
@@ -420,10 +442,14 @@ def baseline_policies(world,seed):
 
 def ecology_round(world,policies,turn):
     records=[]
+    if world.lifecycle:
+        from spider_sim.lifecycle import start_round
+        start_round(world)
     if world.feeding_cycle:
         from spider_sim.feeding import HUNGER_PER_ROUND
         for actor in world.hunger:
-            world.hunger[actor]=min(1.,world.hunger[actor]+HUNGER_PER_ROUND)
+            if world.lifecycle and actor not in world.active:continue
+            world.hunger[actor]=min(1.,world.hunger[actor]+getattr(world,'hunger_per_round',HUNGER_PER_ROUND))
     for cid in sorted(list(world.active)):
         if cid not in world.active:
             continue
@@ -448,6 +474,18 @@ def ecology_round(world,policies,turn):
             if row['result'].get('target_defeated') and world._target(row['actor'],row['result'].get('target'))==birth['replaces']:
                 row.setdefault('births',[]).append(birth)
                 break
+    if world.lifecycle:
+        from spider_sim.lifecycle import finish_round
+        finish_round(world,policies)
+        if getattr(world,'carcass_decay_rounds',5)==0:
+            world.retired_carcasses.update(cid for cid in world.positions if world.config.characters[cid].character.current_hp<=0 and world.food.get(cid,{}).get('remaining',0)<=0)
+        for event in world.lifecycle_events:
+            row=next((r for r in records if r['actor']==event.get('actor')),None)
+            if row is None:
+                # Hatches and replacements have no motor turn until next round.
+                observer=next((r for r in records if r['actor'] in world.spiders),None)
+                if observer is not None:observer.setdefault('lifecycle_events',[]).append(event)
+            else:row.setdefault('lifecycle_events',[]).append(event)
     world.elapsed_seconds+=6
     return records
 

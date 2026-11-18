@@ -455,18 +455,22 @@ feeding action and no retraining in this change.
 * **Approach meal:** walk toward locally visible food, preferring the current meal.
 * **Wrap:** three reachable turns to secure a carcass (18 simulated seconds).
 * **Feed:** consume at most 0.1 food units per turn until full or food is exhausted.
-* **Seek mate:** once full, roam even if no partner is present. Resume hunting at
-  hunger 0.6. In the optional paired mode, visible conspecific cues and patterned web vibrations identify potential partners. Courtship is admitted only when both spiders are at hunger 0.2 or less and at least 35% HP, within six feet and visible. Three uninterrupted courtship actions produce an accepted-courtship event and a one-hour cooldown. Eggs, offspring and sexual cannibalism are not modeled.
+* **Seek mate:** start below 10% hunger, roam or follow receptive partner cues,
+  and return to food at 20%. In the current paired lifecycle mode, both partners
+  must be below 20% hunger, at least 35% HP, visible and within six feet. Three
+  admitted courtship actions produce an egg sac and a 20-turn cooldown. The sac
+  hatches a hungry male and female two turns later. See
+  [LIFECYCLE.md](experiments/LIFECYCLE.md) for current sensory and readiness rules.
 * **Defend:** any actual incoming attack damage while wrapping, feeding or approaching a meal interrupts food handling. Fight the identified visible attacker; retain the meal commitment and return to food when the threat is defeated or no longer observed for four turns. This takes priority over the critical-HP rule. The rule uses private damage feedback and measured attacker positions, not remote world state.
 * **Survive:** otherwise below 35% HP, interrupt feeding/search and withdraw from the nearest
   visible contact; with no visible threat, wait. This is an authored precaution.
 
 Hunger is bounded from 0 (full) to 1 (very hungry), starts at 0.8 and increases
-0.001 per six-second round, including waiting. Feeding reduces it by the amount
-actually consumed. There is no starvation injury, healing or nutrition effect
-on combat yet. The constants are tunable experimental pacing, not biological
-measurements. A full spider takes approximately one simulated hour to reach the
-hunting threshold again; active search does not currently burn extra energy.
+0.01 (one percentage point) per six-second round, including waiting. Feeding reduces it by the amount
+actually consumed. In lifecycle mode, maximum hunger causes 1 HP starvation
+damage per turn. Feeding does not heal injuries. The constants are tunable
+experimental pacing, not biological measurements. A full spider reaches the
+20% food-seeking threshold in 20 unfed turns; search does not burn extra energy.
 
 A cricket supplies 0.2 units, a rat 0.5, and a Shadowbeast 2.5. Other prey use a
 bounded body-volume proxy. These food values are explicit rules: the authored
@@ -474,8 +478,9 @@ cave cricket is physically larger than the authored rat, so geometry alone
 would give the opposite ordering. No species name enters the learned actor.
 Remaining food stays in the carcass; feeding cannot consume a living, remote,
 unseen, unwrapped or exhausted target. Corpses are distinct from replacement
-prey. No dragging, carcass decay, digestive delay or persistent food-location
-memory is implemented yet.
+prey. In the current lifecycle viewer, exhausted carcasses disappear immediately
+at round end; edible remains stay available. No dragging, timed decay of edible
+food, digestive delay or persistent food-location memory is implemented yet.
 
 `LocalLocomotion` in `spider_sim/locomotion.py` adds gentle heading drift during
 roaming and larger turns after local obstruction or measured movement failure.
@@ -570,3 +575,19 @@ nourishment, further damaging attacks and death at 3/6/12 turns. The old
 encoder/GRU remain fixed. Forecasts improved over broad averages, but the
 old memory did not beat current context and action choices did not improve.
 These predictors remain offline; they are not the live spider controller.
+
+## Experimental 44-input perception and memory
+
+[MEAL_FORECAST_44.md](experiments/MEAL_FORECAST_44.md) describes a separate
+trainable encoder/GRU copy. All eight body/meal values enter its first MLP,
+then its memory. There is no context bypass to the predictor. The live actor
+still uses the original 36 inputs. Training the 44-input history model did
+not improve on the context-only predictor; a snapshot ablation was stronger
+on attack risk. These weights remain offline.
+
+## Optional live lifecycle
+
+[LIFECYCLE.md](experiments/LIFECYCLE.md) describes egg sacs, two-round paired
+hatching, one-for-one Shadowbeast replacement and starvation. New spiders get
+fresh memories and hunger state; they share the existing pursuit weights.
+These world rules do not install the experimental 44-input predictor.

@@ -5,7 +5,7 @@ Prototype timing and nutrition are experiment parameters, not spider biology.
 import math
 
 INITIAL_HUNGER = .8
-HUNGER_PER_ROUND = .001
+HUNGER_PER_ROUND = .01
 RESUME_HUNTING = .6
 WRAP_TURNS = 3
 FEED_PER_TURN = .1
@@ -16,7 +16,7 @@ def food_value(actor, body):
     # than rat geometry, so volume alone would contradict the intended food chain.
     if actor.startswith('cave_cricket_'):return .2
     if actor.startswith('cave_rat_'):return .5
-    if actor=='freight_shadowbeast':return 2.5
+    if actor.startswith('freight_shadowbeast'):return 2.5
     return max(.2,min(3.,body.width*body.depth*body.height/10))
 
 
@@ -38,9 +38,10 @@ class FeedingPolicy:
         private=dict(obs,contacts=[c for c in obs['contacts'] if not c.get('conspecific')])
         proposal = self.hunter.choose(private)  # Keep recurrent memory current.
         hunger = obs['self']['hunger']
-        if hunger <= .001:
+        threshold=getattr(self,'mate_hunger_threshold',.1)
+        if (hunger < threshold if threshold>.001 else hunger<=threshold):
             self.seeking_mate = True
-        if hunger >= RESUME_HUNTING:
+        if hunger >= getattr(self,'resume_hunting',.2):
             self.seeking_mate = False
         incoming=obs.get('incoming_damage',[])
         interrupted=self.goal in ('wrap','feed','approach_meal','defend')
@@ -83,6 +84,7 @@ class FeedingPolicy:
             self.goal = 'seek_mate'
             self.search_turns+=1
             partners=[c for c in obs['contacts'] if c.get('conspecific') and c.get('mate_signal')=='receptive']
+            if not getattr(self,'courtship_ready',True):partners=[]
             partner=min(partners,key=lambda c:c['range_ft'],default=None)
             if partner and hunger<=.2:
                 if partner['modality']=='vision' and partner['range_ft']<=6:

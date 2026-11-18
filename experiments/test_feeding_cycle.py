@@ -75,7 +75,8 @@ def test_satisfied_spider_searches_without_a_partner_then_resumes_hunting():
     obs={'self':{'hunger':0,'hp_fraction':1,'heading_deg':0,'local_clearance_ft':[10.]*8},'contacts':[], 'food_in_view':[]}
     command=policy.choose(obs)
     assert policy.goal=='seek_mate' and command['action']=='move'
-    obs['self']['hunger']=.4;policy.choose(obs);assert policy.goal=='seek_mate'
+    obs['self']['hunger']=.19;policy.choose(obs);assert policy.goal=='seek_mate'
+    obs['self']['hunger']=.2;policy.choose(obs);assert policy.goal=='hunt'
     obs['self']['hunger']=.6;command=policy.choose(obs)
     assert policy.goal=='hunt' and command['action']=='attack'
 

@@ -130,3 +130,42 @@ def test_improved_spider_only_mode_annotations_memory_and_resume(tmp_path):
     assert restored.round==1
     restored.restart()
     assert restored.policies[SPIDER].hidden is None and restored.policies[SPIDER].task.track is None
+
+
+def test_hunger_rate_change_preserves_legacy_history_on_resume(tmp_path, monkeypatch):
+    import spider_sim.feeding as nutrition
+    import spider_sim.lifecycle as life
+    monkeypatch.setattr(life, 'STARVATION_INTERVAL', 10)
+    monkeypatch.setattr(nutrition, 'HUNGER_PER_ROUND', .001)
+    from spider_sim.pursuit import PursuitModel, save
+    model = PursuitModel(21)
+    model.value_kind = 'negative_action_logit'
+    weights = tmp_path/'clock-model.pt'
+    save(model, weights)
+    run = LiveRun(tmp_path/'clock', feeding_cycle=True, spider_model=weights)
+    run.zone_web_schedule=[{'turn':0,'enabled':False}]
+    run.behavior_schedule=[{'turn':0,'modern':False}]
+    run.step()
+    old_hunger = dict(run.world.hunger)
+    path = run.output/'day1_00001.json'
+    snapshot = json.loads(path.read_text())
+    snapshot.pop('ecology_zone_web_schedule')
+    snapshot.pop('ecology_behavior_schedule')
+    snapshot.pop('ecology_starvation_schedule')
+    snapshot.pop('ecology_hunger_schedule')  # Existing runs predate rate metadata.
+    path.write_text(json.dumps(snapshot))
+    monkeypatch.setattr(life, 'STARVATION_INTERVAL', 1)
+    monkeypatch.setattr(nutrition, 'HUNGER_PER_ROUND', .01)
+    restored = LiveRun(run.output, feeding_cycle=True, spider_model=weights, resume=True)
+    assert restored.world.hunger == old_hunger
+    assert restored.behavior_schedule == [{'turn':0,'modern':False}, {'turn':1,'modern':True}]
+    assert restored.starvation_schedule == [{'turn':0,'interval':10}, {'turn':1,'interval':1}]
+    assert restored.hunger_schedule == [{'turn': 0, 'rate': .001}, {'turn': 1, 'rate': .01}]
+    restored.step()
+    replayed = LiveRun(run.output, feeding_cycle=True, spider_model=weights, resume=True)
+    assert replayed.world.hunger == restored.world.hunger
+    assert replayed.world.hunger_per_round == .01
+    assert replayed.world.starvation_interval == 1
+    assert replayed.world.mate_cooldown_seconds == 120
+    assert replayed.world.carcass_decay_rounds == 0
+    assert replayed.policies['freight_spider'].mate_hunger_threshold == .1

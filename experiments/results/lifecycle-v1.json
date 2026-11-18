@@ -1,0 +1,39 @@
+{
+  "seed": 42,
+  "kind": "lifecycle smoke check; stopped after event coverage, not population statistics",
+  "planned_rounds": 2000,
+  "last_recorded_event_round": 1280,
+  "completed_planned_horizon": false,
+  "stop_reason": "Observed eggs, paired hatching, repeated Shadowbeast replacement and starvation deaths; stopped extended offline run to release CPU for live viewer",
+  "events": {
+    "shadowbeast_replaced": 19,
+    "egg_sac_laid": 46,
+    "egg_sac_hatched": 46,
+    "starvation_damage": 33,
+    "starvation_death": 6
+  },
+  "first_event_round": {
+    "shadowbeast_replaced": 34,
+    "egg_sac_laid": 69,
+    "egg_sac_hatched": 71,
+    "starvation_damage": 853,
+    "starvation_death": 923
+  },
+  "checks": {
+    "regression_tests_passed": 228,
+    "natural_real_model_replay_rounds": 90,
+    "next_round_continuation_matches": true
+  },
+  "event_trace": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/lifecycle-final-events.jsonl",
+  "prototype_rules": {
+    "hatch_rounds": 2,
+    "starvation_hp": 1,
+    "starvation_round_interval": 10,
+    "initial_offspring_hunger": 0.8
+  },
+  "limits": [
+    "Accelerated adult hatching, not juvenile development",
+    "One seed; event coverage does not prove population stability",
+    "Current controller includes authored goals; offline 44-input model is not deployed"
+  ]
+}

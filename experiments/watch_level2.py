@@ -24,6 +24,7 @@ CONTROLS = """<span style='font-weight:normal;margin-left:1em'>
 <script>
 const viewParams=new URLSearchParams(location.search);
 const actorView=viewParams.has('all')?'all':viewParams.get('view')==='spiders'?'spiders':'mr';
+window.spectatorIncludes=cid=>actorView==='all'||(actorView==='spiders'?cid.startsWith('freight_spider'):cid==='freight_spider');
 window.spectatorFocus=actorView==='all'?null:actorView==='spiders'?['freight_spider','freight_spider_female']:'freight_spider';
 document.getElementById('actorview').value=actorView;
 async function control(action){
@@ -43,7 +44,20 @@ def screen_names(world):
     """Researcher-facing labels only; never supplied to creature policies."""
     special={'freight_spider':'Mr Spider' if world.spider_pair else 'Giant Spider','freight_spider_female':'Ms Spider','freight_shadowbeast':'Shadowbeast',
              'freight_master_goblin':'Freight Master'}
-    return {cid:special.get(cid,cid.replace('_',' ').title()) for cid in world.positions}
+    return {cid:special.get(cid,world.config.characters[cid].character.name if cid in world.spiders or cid.startswith('freight_shadowbeast_') else cid.replace('_',' ').title()) for cid in world.positions}
+
+
+def life_explanation(events,names):
+    text=[]
+    for event in events:
+        actor=names.get(event.get('actor'),event.get('actor',''))
+        kind=event['event']
+        if kind=='egg_sac_laid':text.append(f"{actor} produced an egg sac; it will hatch in two rounds.")
+        elif kind=='egg_sac_hatched':text.append('An egg sac hatched into '+ ' and '.join(names.get(c,c) for c in event['children'])+'; both are hungry.')
+        elif kind=='shadowbeast_replaced':text.append(f"{actor} appeared elsewhere after a Shadowbeast died.")
+        elif kind=='starvation_damage':text.append(f"{actor} lost {event['damage_hp']} HP to starvation.")
+        elif kind=='starvation_death':text.append(f"{actor} died of starvation.")
+    return (' '+' '.join(text)) if text else ''
 
 
 def explanation(row,names=None,tracks=None):
@@ -117,11 +131,13 @@ def explanation(row,names=None,tracks=None):
 
 
 class LiveRun:
-    def __init__(self,output,seed=42,rounds=120,*,resume=False,model_dir=None,selection="predictive",spider_model=None,spider_facing="track",spider_local_motion=False,replenish_prey=False,feeding_cycle=False,random_prey=False,spider_pair=False):
+    def __init__(self,output,seed=42,rounds=120,*,resume=False,model_dir=None,selection="predictive",spider_model=None,spider_facing="track",spider_local_motion=False,replenish_prey=False,feeding_cycle=False,random_prey=False,spider_pair=False,lifecycle=False):
         from spider_sim.ecology import EcologyEncounter,baseline_policies
         if model_dir and spider_model:raise ValueError('Choose species models or a single pursuit spider model')
         if feeding_cycle and not spider_model:raise ValueError("Feeding cycle requires a pursuit spider model")
         if spider_pair and not feeding_cycle:raise ValueError("Spider pair requires feeding cycle")
+        if lifecycle and not spider_pair:raise ValueError("Lifecycle requires --spider-pair")
+        self.lifecycle=lifecycle
         self.random_prey=random_prey;self.spider_pair=spider_pair
         self.feeding_cycle=feeding_cycle
         self.spider_local_motion=spider_local_motion
@@ -147,14 +163,21 @@ class LiveRun:
             self.mode+=' · hunt/wrap/feed/seek mate'
         if random_prey:self.controller_signature['random_prey']='valid-floor-v1';self.mode+=' · random prey spawns'
         if spider_pair:self.controller_signature['spider_pair']='fed-courtship-web-signals-v1';self.mode+=' · Mr & Ms Spider'
+        if lifecycle:self.controller_signature['lifecycle']='eggs-starvation-shadowbeast-v1';self.mode+=' · eggs, births and starvation'
         self.seed=seed;self.episode=1
-        self.world=EcologyEncounter(seed,replenish_prey=self.replenish_prey,feeding_cycle=self.feeding_cycle,random_prey=self.random_prey,spider_pair=self.spider_pair)
+        self.world=EcologyEncounter(seed,replenish_prey=self.replenish_prey,feeding_cycle=self.feeding_cycle,random_prey=self.random_prey,spider_pair=self.spider_pair,lifecycle=self.lifecycle)
         self.policies=self.make_policies(self.world)
         self.output=Path(output)
         if self.output.exists() and not resume:
             raise ValueError('Use a new output directory or --resume')
         self.output.mkdir(parents=True,exist_ok=resume)
         self.round=0;self.limit=rounds;self.running=False;self.error=None
+        from spider_sim.feeding import HUNGER_PER_ROUND
+        self.hunger_schedule=[{'turn':0,'rate':HUNGER_PER_ROUND}]
+        from spider_sim.lifecycle import STARVATION_INTERVAL
+        self.starvation_schedule=[{'turn':0,'interval':STARVATION_INTERVAL}]
+        self.behavior_schedule=[{'turn':0,'modern':True}]
+        self.zone_web_schedule=[{'turn':0,'enabled':True,'mate_threshold':.1}]
         records=[]
         if resume:
             # Replay with matching weights and mode; validate before touching files.
@@ -165,15 +188,35 @@ class LiveRun:
             if saved.get('controller_signature',{'mode':'scripted'})!=self.controller_signature:
                 raise ValueError('Resume controller/checkpoint mismatch')
             from spider_sim.ecology import ecology_round
-            for turn in range(saved['turn']):records=ecology_round(self.world,self.policies,turn)
-            positions={cid:{'x':p[0],'y':p[1],'zone':p[2]} for cid,p in self.world.positions.items()}
+            # Older checkpoints used 0.1% per round. Replay their original clock,
+            # then apply today's configured rate only to future rounds.
+            self.hunger_schedule=saved.get('ecology_hunger_schedule',[{'turn':0,'rate':.001}])
+            self.starvation_schedule=saved.get('ecology_starvation_schedule',[{'turn':0,'interval':10}])
+            self.behavior_schedule=saved.get('ecology_behavior_schedule',[{'turn':0,'modern':False}])
+            self.zone_web_schedule=saved.get('ecology_zone_web_schedule',[{'turn':0,'enabled':False}])
+            for turn in range(saved['turn']):
+                self.set_hunger_rate(turn)
+                records=ecology_round(self.world,self.policies,turn)
+            positions=self.visible_positions()
             hp={cid:cs.character.current_hp for cid,cs in self.world.config.characters.items()}
             webs={key:item.state for key,item in self.world.config.items.items() if 'web_bounds' in item.state}
             if (positions!=saved['current_positions'] or hp!=saved['ecology_hp'] or
                 webs!=saved['ecology_web_state'] or records!=saved['ecology_decisions'] or
                 (self.feeding_cycle and (self.world.incoming_damage!=saved.get('ecology_incoming_damage',{}) or self.world.food!=saved.get('ecology_food') or self.world.hunger!=saved.get('ecology_hunger') or self.world.mate_cooldown!=saved.get('ecology_mate_cooldown',{}) or self.world.mating_events!=saved.get('ecology_mating_events',[]) or self.world.web_signals!=saved.get('ecology_web_signals',{}) or {':'.join(k):v for k,v in self.world.courtship.items()}!=saved.get('ecology_courtship',{})))):
                 raise ValueError('Replay differs from saved episode; resume refused without changing checkpoints')
+            if self.lifecycle and self.life_state()!=saved.get('ecology_lifecycle'):
+                raise ValueError('Lifecycle replay differs from saved episode')
             self.round=saved['turn'];self.episode=saved.get('episode',1)
+            if self.hunger_schedule[-1]['rate']!=HUNGER_PER_ROUND:
+                self.hunger_schedule.append({'turn':self.round,'rate':HUNGER_PER_ROUND})
+            if self.starvation_schedule[-1]['interval']!=STARVATION_INTERVAL:
+                self.starvation_schedule.append({'turn':self.round,'interval':STARVATION_INTERVAL})
+        if not self.zone_web_schedule[-1]['enabled']:
+            self.zone_web_schedule.append({'turn':self.round,'enabled':True,'mate_threshold':.1})
+        elif self.zone_web_schedule[-1].get('mate_threshold',.2)!=.1:
+            self.zone_web_schedule.append({'turn':self.round,'enabled':True,'mate_threshold':.1})
+        if not self.behavior_schedule[-1]['modern']:
+            self.behavior_schedule.append({'turn':self.round,'modern':True})
         self.publish(records)
 
     def make_policies(self,world):
@@ -205,7 +248,7 @@ class LiveRun:
     def restart(self):
         """Reset world, RNG and policy memory, preserving the previous episode."""
         from spider_sim.ecology import EcologyEncounter,baseline_policies
-        world=EcologyEncounter(self.seed,replenish_prey=self.replenish_prey,feeding_cycle=self.feeding_cycle,random_prey=self.random_prey,spider_pair=self.spider_pair)
+        world=EcologyEncounter(self.seed,replenish_prey=self.replenish_prey,feeding_cycle=self.feeding_cycle,random_prey=self.random_prey,spider_pair=self.spider_pair,lifecycle=self.lifecycle)
         policies=self.make_policies(world)
         archive=self.output/'previous_episodes'/f'episode-{self.episode:04d}'
         archive.mkdir(parents=True,exist_ok=False)
@@ -213,28 +256,63 @@ class LiveRun:
         for path in list(self.output.glob('day1_*.json'))+[self.output/'echoing_caverns_level2_map.html']:
             if path.exists():shutil.move(str(path),archive/path.name)
         self.world=world;self.policies=policies
+        from spider_sim.feeding import HUNGER_PER_ROUND
+        self.hunger_schedule=[{'turn':0,'rate':HUNGER_PER_ROUND}]
+        from spider_sim.lifecycle import STARVATION_INTERVAL
+        self.starvation_schedule=[{'turn':0,'interval':STARVATION_INTERVAL}]
+        self.behavior_schedule=[{'turn':0,'modern':True}]
+        self.zone_web_schedule=[{'turn':0,'enabled':True,'mate_threshold':.1}]
         self.round=0;self.episode+=1;self.error=None
         self.publish([])
+
+    def visible_positions(self):
+        hidden=getattr(self.world,'retired_carcasses',set())
+        return {cid:{'x':p[0],'y':p[1],'zone':p[2]} for cid,p in self.world.positions.items() if cid not in hidden}
+
+    def set_hunger_rate(self,turn):
+        modern=next(change['modern'] for change in reversed(self.behavior_schedule) if change['turn']<=turn)
+        if modern and not getattr(self.world,'modern_pacing',True):
+            for cid,until in self.world.mate_cooldown.items():
+                self.world.mate_cooldown[cid]=min(until,self.world.elapsed_seconds+120)
+        self.world.modern_pacing=modern
+        self.world.mate_cooldown_seconds=120 if modern else 3600
+        zone_config=next(change for change in reversed(self.zone_web_schedule) if change['turn']<=turn)
+        zone_webs=zone_config['enabled']
+        self.world.zone_webs=zone_webs
+        self.world.carcass_decay_rounds=0 if zone_webs else 5 if modern else None
+        for cid,policy in self.policies.items():
+            policy.mate_hunger_threshold=zone_config.get('mate_threshold',.2) if zone_webs else .1 if modern else .001
+            policy.resume_hunting=.2 if zone_webs else .6
+            policy.courtship_ready=(not zone_webs or (self.world.elapsed_seconds>=self.world.mate_cooldown.get(cid,0) and self.world.config.characters[cid].character.current_hp/self.world.max_hp[cid]>=.35))
+        self.world.starvation_interval=next(change['interval'] for change in reversed(self.starvation_schedule) if change['turn']<=turn)
+        self.world.hunger_per_round=next(change['rate'] for change in reversed(self.hunger_schedule) if change['turn']<=turn)
 
     def step(self):
         from spider_sim.ecology import ecology_round
         if self.round>=self.limit or self.error:
             return
+        self.set_hunger_rate(self.round)
         records=ecology_round(self.world,self.policies,self.round)
         self.round+=1
         self.publish(records)
         if self.round>=self.limit:
             self.running=False
 
+    def life_state(self):
+        if not self.lifecycle:return None
+        w=self.world
+        return {'egg_sacs':w.egg_sacs,'spiders':w.spiders,'starvation_ticks':w.starvation_ticks,
+                'replaced_beasts':sorted(w.replaced_beasts),'events':w.lifecycle_events}
+
     def publish(self,records):
         from engine.map_renderer import render_turn_slider_html
         world=self.world
         names=screen_names(world)
-        snapshot={'ecology_incoming_damage':world.incoming_damage,'ecology_web_signals':world.web_signals,'ecology_courtship':{':'.join(k):v for k,v in world.courtship.items()},'ecology_mate_cooldown':world.mate_cooldown,'ecology_mating_events':world.mating_events,'ecology_food':world.food,'ecology_hunger':world.hunger,'ecology_births':world.last_births,'controller_signature':self.controller_signature,'episode':self.episode,'seed':self.seed,'turn':self.round,'scene_place_path':world.geometry.place_path,
+        snapshot={'ecology_zone_web_schedule':self.zone_web_schedule,'ecology_behavior_schedule':self.behavior_schedule,'ecology_starvation_schedule':self.starvation_schedule,'ecology_hunger_schedule':self.hunger_schedule,'ecology_lifecycle':self.life_state(),'ecology_incoming_damage':world.incoming_damage,'ecology_web_signals':world.web_signals,'ecology_courtship':{':'.join(k):v for k,v in world.courtship.items()},'ecology_mate_cooldown':world.mate_cooldown,'ecology_mating_events':world.mating_events,'ecology_food':world.food,'ecology_hunger':world.hunger,'ecology_births':world.last_births,'controller_signature':self.controller_signature,'episode':self.episode,'seed':self.seed,'turn':self.round,'scene_place_path':world.geometry.place_path,
             'active_characters':sorted(world.active),
-            'current_positions':{cid:{'x':p[0],'y':p[1],'zone':p[2]} for cid,p in world.positions.items()},
+            'current_positions':self.visible_positions(),
             'character_results':[{'character_id':r['actor'],'character_name':names[r['actor']],
-                'narration':{'prose':explanation(r,names,{token:cid for cid,token in world.tokens[r['actor']].items()})}} for r in records],
+                'narration':{'prose':explanation(r,names,{token:cid for cid,token in world.tokens[r['actor']].items()})+life_explanation(r.get('lifecycle_events',[]),names)}} for r in records],
             'ecology_decisions':records,
             'ecology_hp':{cid:cs.character.current_hp for cid,cs in world.config.characters.items()},
             'ecology_web_state':{key:item.state for key,item in world.config.items.items() if 'web_bounds' in item.state}}
@@ -244,10 +322,11 @@ class LiveRun:
         # Observer map: all placed residents are visible to the researcher, not to policies.
         render_turn_slider_html(world.config.geometry_path,temp,snapshot_dir=self.output,
             title='Level-2 ecology · observer map · '+self.mode,live_refresh_secs=2,
-            start_characters=set(world.positions),item_details=world.config.items,
-            start_positions={cid:p[:2] for cid,p in world.positions.items()},scene_geometry=world.geometry,
+            show_web_overlays=not (self.spider_pair and self.zone_web_schedule[-1]['enabled']),
+            start_characters=set(self.visible_positions()),item_details=world.config.items,
+            start_positions={cid:p[:2] for cid,p in world.positions.items() if cid in self.visible_positions()},scene_geometry=world.geometry,
             visited_places={world.geometry.place_path},
-            char_colors={'freight_spider':'#e64b28','freight_spider_female':'#9c4dcc'},
+            char_colors={cid:('#e64b28' if sex=='male' else '#9c4dcc') for cid,sex in world.spiders.items()},
             character_symbols={cid:('🕷' if cid in world.spiders else '🐀' if 'rat_' in cid else '🦗' if 'cricket_' in cid
                                     else '🦎' if 'lizard_' in cid else '◆') for cid in world.positions})
         temp.replace(path)
@@ -311,6 +390,7 @@ def main():
     parser.add_argument('--interval',type=float,default=2.)
     parser.add_argument('--port',type=int,default=8081)
     parser.add_argument('--selection',choices=['predictive','proposal'],default='predictive',help='Neural forecast scoring or proposal-only diagnostic')
+    parser.add_argument('--lifecycle',action='store_true',help='Egg sacs, two-turn male/female hatching, Shadowbeast replacement, and starvation')
     parser.add_argument('--random-prey',action='store_true',help='Spawn replacement prey in random valid zones and floor positions')
     parser.add_argument('--spider-pair',action='store_true',help='Add Ms Spider with independent hunger and fed-only courtship')
     parser.add_argument('--feeding-cycle',action='store_true',help='Authored hunt/wrap/feed/seek mate spider goals')
@@ -321,11 +401,11 @@ def main():
     parser.add_argument('--models',type=Path,help='Directory containing rat.pt, spider.pt and shadowbeast.pt; default remains scripted')
     parser.add_argument('--resume',action='store_true',help='Validate deterministic replay of the existing episode, then pause at its last round')
     args=parser.parse_args()
-    if not 1<=args.rounds<=1000 or not .1<=args.interval<=60:
-        parser.error('Use 1..1000 rounds and a finite interval from .1 to 60 seconds')
+    if not 1<=args.rounds<=5000 or not .1<=args.interval<=60:
+        parser.error('Use 1..5000 rounds and a finite interval from .1 to 60 seconds')
     if args.models and args.spider_model:parser.error('Choose --models or --spider-model, not both')
     game_root(args.driftmoor_root)
-    run=LiveRun(args.output,args.seed,args.rounds,resume=args.resume,model_dir=args.models,selection=args.selection,spider_model=args.spider_model,spider_facing=args.spider_facing,spider_local_motion=args.spider_local_motion,replenish_prey=args.replenish_prey,feeding_cycle=args.feeding_cycle,random_prey=args.random_prey,spider_pair=args.spider_pair)
+    run=LiveRun(args.output,args.seed,args.rounds,resume=args.resume,model_dir=args.models,selection=args.selection,spider_model=args.spider_model,spider_facing=args.spider_facing,spider_local_motion=args.spider_local_motion,replenish_prey=args.replenish_prey,feeding_cycle=args.feeding_cycle,random_prey=args.random_prey,spider_pair=args.spider_pair,lifecycle=args.lifecycle)
     print(f'Open http://localhost:{args.port}/ — starts paused; {run.mode}')
     web.run_app(create_app(run,args.interval),host='127.0.0.1',port=args.port)
 
