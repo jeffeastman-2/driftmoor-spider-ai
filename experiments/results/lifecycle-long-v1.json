@@ -1,0 +1,175 @@
+{
+  "seed": 42,
+  "turns_requested": 9000,
+  "model_sha256": "6532baef7b99c64705347a490f9088c86e392b988af1c2d99c5960476a06b631",
+  "controller_signature": {
+    "mode": "learned_pursuit",
+    "approach": true,
+    "facing": "track",
+    "rest_without_goal": true,
+    "spider_sha256": "6532baef7b99c64705347a490f9088c86e392b988af1c2d99c5960476a06b631",
+    "local_motion": "roam-and-feedback-detour-v1",
+    "replenish_prey": true,
+    "feeding_cycle": "hunt-wrap-feed-seek-mate-v3-damage-interrupt",
+    "random_prey": "valid-floor-v1",
+    "spider_pair": "fed-courtship-web-signals-v1",
+    "lifecycle": "eggs-starvation-shadowbeast-v1"
+  },
+  "hunger_schedule": [
+    {
+      "turn": 0,
+      "rate": 0.01
+    }
+  ],
+  "starvation_schedule": [
+    {
+      "turn": 0,
+      "interval": 1
+    }
+  ],
+  "behavior_schedule": [
+    {
+      "turn": 0,
+      "modern": true
+    }
+  ],
+  "zone_web_schedule": [
+    {
+      "turn": 0,
+      "enabled": true,
+      "mate_threshold": 0.1
+    }
+  ],
+  "initial_spiders": 2,
+  "learning": false,
+  "torch_threads": 1,
+  "exact_geometry_cache": true,
+  "turns_requested_initially": 10000,
+  "turns_completed": 9000,
+  "stop_reason": "User revised limit to 9000; analysis excludes any records after turn 9000.",
+  "actual_recorded_turns_before_signal": 9025,
+  "final_population": 42,
+  "final_males": 21,
+  "final_females": 21,
+  "peak_population": 62,
+  "peak_turn": 2640,
+  "post_1000_mean": 35.91125,
+  "post_1000_range": [
+    9,
+    62
+  ],
+  "births": 1136,
+  "deaths": 1096,
+  "starvation_deaths": 1074,
+  "starvation_fraction": 0.9799270072992701,
+  "equivalence": {
+    "identical_through_turn": 1897,
+    "compared_turns": 1898,
+    "compared": "all per-turn recorded metrics",
+    "original_turns_available": 1897,
+    "fast_turns_available": 3547
+  },
+  "windows": [
+    {
+      "from": 1,
+      "through": 1000,
+      "mean": 24.18,
+      "min": 2,
+      "max": 59,
+      "births": 114,
+      "deaths": 81,
+      "starvation_deaths": 78,
+      "food_consumed": 215.62
+    },
+    {
+      "from": 1001,
+      "through": 2000,
+      "mean": 37.3,
+      "min": 21,
+      "max": 49,
+      "births": 146,
+      "deaths": 143,
+      "starvation_deaths": 140,
+      "food_consumed": 320.3
+    },
+    {
+      "from": 2001,
+      "through": 3000,
+      "mean": 38.51,
+      "min": 18,
+      "max": 62,
+      "births": 142,
+      "deaths": 142,
+      "starvation_deaths": 138,
+      "food_consumed": 319.4
+    },
+    {
+      "from": 3001,
+      "through": 4000,
+      "mean": 32.25,
+      "min": 16,
+      "max": 53,
+      "births": 116,
+      "deaths": 103,
+      "starvation_deaths": 99,
+      "food_consumed": 288.0
+    },
+    {
+      "from": 4001,
+      "through": 5000,
+      "mean": 34.59,
+      "min": 9,
+      "max": 62,
+      "births": 134,
+      "deaths": 125,
+      "starvation_deaths": 122,
+      "food_consumed": 301.9
+    },
+    {
+      "from": 5001,
+      "through": 6000,
+      "mean": 32.57,
+      "min": 11,
+      "max": 60,
+      "births": 110,
+      "deaths": 147,
+      "starvation_deaths": 145,
+      "food_consumed": 261.4
+    },
+    {
+      "from": 6001,
+      "through": 7000,
+      "mean": 32.47,
+      "min": 19,
+      "max": 52,
+      "births": 110,
+      "deaths": 81,
+      "starvation_deaths": 80,
+      "food_consumed": 298.3
+    },
+    {
+      "from": 7001,
+      "through": 8000,
+      "mean": 39.09,
+      "min": 26,
+      "max": 56,
+      "births": 120,
+      "deaths": 127,
+      "starvation_deaths": 127,
+      "food_consumed": 339.2
+    },
+    {
+      "from": 8001,
+      "through": 9000,
+      "mean": 40.51,
+      "min": 22,
+      "max": 52,
+      "births": 144,
+      "deaths": 147,
+      "starvation_deaths": 145,
+      "food_consumed": 345.3
+    }
+  ],
+  "artifact_directory": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/lifecycle-10k-seed42-fast-v1",
+  "interpretation": "One fixed-seed baseline: sustained irregular oscillations around a broadly maintained mean; no claim of statistical stationarity or learned goal selection."
+}

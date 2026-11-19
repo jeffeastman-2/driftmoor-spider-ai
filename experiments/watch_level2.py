@@ -323,10 +323,12 @@ class LiveRun:
         render_turn_slider_html(world.config.geometry_path,temp,snapshot_dir=self.output,
             title='Level-2 ecology · observer map · '+self.mode,live_refresh_secs=2,
             show_web_overlays=not (self.spider_pair and self.zone_web_schedule[-1]['enabled']),
+            show_item_labels=not (self.spider_pair and self.zone_web_schedule[-1]['enabled']),
             start_characters=set(self.visible_positions()),item_details=world.config.items,
             start_positions={cid:p[:2] for cid,p in world.positions.items() if cid in self.visible_positions()},scene_geometry=world.geometry,
             visited_places={world.geometry.place_path},
-            char_colors={cid:('#e64b28' if sex=='male' else '#9c4dcc') for cid,sex in world.spiders.items()},
+            char_colors={**{cid:('#58b7ff' if sex=='male' else '#ff69d4') for cid,sex in world.spiders.items()},
+                         **{cid:'#e64b28' for cid in world.positions if cid.startswith('freight_shadowbeast')}},
             character_symbols={cid:('🕷' if cid in world.spiders else '🐀' if 'rat_' in cid else '🦗' if 'cricket_' in cid
                                     else '🦎' if 'lizard_' in cid else '◆') for cid in world.positions})
         temp.replace(path)

@@ -132,8 +132,13 @@ result. Clicking its name opens the full explanation. The transcript follows
 new entries when the reader is at the bottom.
 
 Transcript events distinguish egg laying, hatching, Shadowbeast replacement,
-starvation damage and starvation death. Dynamic sacs use the native item
-renderer. Blue web-box overlays are hidden for this simulation.
+starvation damage and starvation death. Egg sacs appear as small white dots without labels; their details remain on
+hover. Persistent yellow item and landmark labels are hidden, with hover
+tooltips retained. Mate-seeking, approaching and courting spiders have pink
+halos for females and blue for males, matching the displayed historical turn.
+Spider body outlines and trails use the same pink/female and blue/male colors.
+Shadowbeast body outlines and trails are red, including replacement generations.
+Blue web-box overlays are hidden for this simulation.
 
 Saved state records lifecycle events, parents and offspring, sex registry,
 starvation counters, replaced-beast IDs, food and hunger. Rule-change schedules
