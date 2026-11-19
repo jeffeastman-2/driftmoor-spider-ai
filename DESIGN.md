@@ -11,6 +11,12 @@ Quick navigation: [diagram](#the-mental-model) ·
 [example turn](#one-concrete-turn) ·
 [parameter counts](#how-many-learned-parameters-altogether)
 
+An offline **learned lifecycle goal selector** now sits in a separate experiment.
+It has a 99-input encoder and a 64-value GRU; it is **not installed** in the viewer.
+See [lifecycle learning](experiments/LIFECYCLE_LEARNING.md) for its diagram, coverage,
+comparison with memory-free imitation, and frozen-context forecasts. The design
+below still describes the installed pursuit motor.
+
 ## The mental model
 
 ```text
