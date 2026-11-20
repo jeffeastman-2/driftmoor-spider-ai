@@ -123,8 +123,9 @@ def finish_round(world,policies):
             parent_policy=policies[spider_source]
             if hasattr(parent_policy,'hunter'):
                 template=parent_policy.hunter
-                policies[cid]=FeedingPolicy(PursuitPolicy(template.model,approach=template.approach,facing=template.facing,
-                               rest_without_goal=True,local_motion=True,seed=world.seed+len(world.contact_ids)))
+                hunter=PursuitPolicy(template.model,approach=template.approach,facing=template.facing,
+                               rest_without_goal=True,local_motion=True,seed=world.seed+len(world.contact_ids))
+                policies[cid]=parent_policy.spawn(hunter,sex) if hasattr(parent_policy,'spawn') else FeedingPolicy(hunter)
             else:policies[cid]=GoalBaseline(seed=world.seed+len(world.contact_ids))
             positions.append(cid)
         sac['hatched']=True;sac['children']=positions

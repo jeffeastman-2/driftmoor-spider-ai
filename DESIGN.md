@@ -16,6 +16,9 @@ It has a 99-input encoder and a 64-value GRU; it is **not installed** in the vie
 See [lifecycle learning](experiments/LIFECYCLE_LEARNING.md) for its diagram, coverage,
 comparison with memory-free imitation, and frozen-context forecasts. The design
 below still describes the installed pursuit motor.
+The next [closed-loop experiment](experiments/LEARNED_LIFECYCLE.md) retrains this
+selector and lets it choose goals in actual engine encounters; its copying score
+is high, but independent survival still falls short of the teacher.
 
 ## The mental model
 

@@ -1,0 +1,176 @@
+{
+  "schema": "lifecycle-courtship-response-v1",
+  "runs": [
+    {
+      "seed": 11,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 23,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": 115,
+        "living_spiders": 46,
+        "egg_sacs": 64
+      },
+      "after": {
+        "first_egg_turn": 115,
+        "living_spiders": 36,
+        "egg_sacs": 69
+      }
+    },
+    {
+      "seed": 37,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 42,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": 73,
+        "living_spiders": 35,
+        "egg_sacs": 59
+      },
+      "after": {
+        "first_egg_turn": 72,
+        "living_spiders": 42,
+        "egg_sacs": 66
+      }
+    },
+    {
+      "seed": 53,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 67,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 79,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": 82,
+        "living_spiders": 32,
+        "egg_sacs": 57
+      },
+      "after": {
+        "first_egg_turn": 82,
+        "living_spiders": 33,
+        "egg_sacs": 82
+      }
+    },
+    {
+      "seed": 83,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 97,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": 85,
+        "living_spiders": 0,
+        "egg_sacs": 1
+      }
+    },
+    {
+      "seed": 109,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 127,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      },
+      "after": {
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "egg_sacs": 0
+      }
+    },
+    {
+      "seed": 139,
+      "turns": 1000,
+      "before": {
+        "first_egg_turn": 278,
+        "living_spiders": 52,
+        "egg_sacs": 61
+      },
+      "after": {
+        "first_egg_turn": 278,
+        "living_spiders": 49,
+        "egg_sacs": 76
+      }
+    }
+  ],
+  "before_extinctions": 8,
+  "after_extinctions": 8,
+  "limitations": "Same twelve diagnostic seeds used to identify failures. Descriptive regression comparison, not an independent test of generalization. Dynamics diverge after changed actions, including random event consumption. Only fixed pursuit weights are used; response rules are authored."
+}

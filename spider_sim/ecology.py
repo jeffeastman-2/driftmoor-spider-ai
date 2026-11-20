@@ -162,6 +162,9 @@ class EcologyEncounter:
             if self.spider_pair and actor in self.spiders and cid in self.spiders and entry['modality']=='vision':
                 public['conspecific']=True
                 public['mate_signal']='receptive' if self.spiders[actor]!=self.spiders[cid] and (self.hunger[cid]<.2 if getattr(self,'zone_webs',False) else self.hunger[cid]<=.2) and self.config.characters[cid].character.current_hp/self.max_hp[cid]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(cid,0) else 'unreceptive'
+                # Visible courtship is behavior, not access to the partner's goal.
+                if self.courtship.get(tuple(sorted((actor,cid))),0)>0:
+                    public['courtship_signal']=True
             if self.spider_pair and actor in self.spiders and entry['modality']=='web' and self.web_signals.get(cid,{}).get('until',-1)>self.elapsed_seconds:
                 public.update(conspecific=True,courtship_signal=True,mate_signal=self.web_signals[cid]['readiness'] if self.spiders[actor]!=self.spiders[cid] else 'unreceptive')
             contacts.append(public)

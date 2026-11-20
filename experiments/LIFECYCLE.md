@@ -150,3 +150,20 @@ The current population is preserved rather than reset when settings change.
 Restart archives the previous episode and restores the original two spiders.
 Other experiments retain their own saved rule schedules; the map renderer's
 web-overlay option remains enabled by default for ordinary Driftmoor scenes.
+
+## Courtship responses (experimental, not yet installed in the live viewer)
+
+The 10% threshold starts an unsolicited mate search; it is not a requirement
+for responding to an invitation. A spider below 20% hunger, at least 35% HP and
+off cooldown may respond to a perceived web invitation or visible courtship.
+Visible courtship is exposed only on an actually visible conspecific contact
+while the pair has courtship progress; it does not expose hidden goals or
+remote positions.
+
+A responder approaches or reciprocates using the existing approach_mate/court
+goals and engine commands. It retains a sensed, receptive partner during the
+approach, preferring visual measurements over a duplicate web contact. Lost
+contact, lost receptivity, its own hunger/health or cooldown ends the response.
+There is no pursuit of an unseen mate. Defense and critical-health behavior
+retain their existing priority. Successful mating, nutrition costs, cooldown,
+hatching and food supplies are unchanged.

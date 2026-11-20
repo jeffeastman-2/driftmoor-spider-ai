@@ -33,6 +33,7 @@ class FeedingPolicy:
         self.search_turns=0
         self.defense_track=None
         self.defense_age=0
+        self.mate_track=None
 
     def choose(self, obs):
         private=dict(obs,contacts=[c for c in obs['contacts'] if not c.get('conspecific')])
@@ -43,6 +44,21 @@ class FeedingPolicy:
             self.seeking_mate = True
         if hunger >= getattr(self,'resume_hunting',.2):
             self.seeking_mate = False
+        # Respond to an observed invitation even when not sated enough to
+        # initiate a search. Keep a visible/receptive partner through approach.
+        ready=(hunger<.2 and obs['self']['hp_fraction']>=.35
+               and getattr(self,'courtship_ready',True))
+        partners={}
+        for c in obs['contacts']:
+            if c.get('conspecific') and c.get('mate_signal')=='receptive':
+                if c['track'] not in partners or c['modality']=='vision':partners[c['track']]=c
+        response=partners.get(self.mate_track) if ready else None
+        if response is None and ready:
+            invitations=[c for c in obs['contacts'] if c.get('conspecific')
+                and c.get('mate_signal')=='receptive' and c.get('courtship_signal')]
+            response=min(invitations,key=lambda c:c['range_ft'],default=None)
+            if response:response=partners[response['track']]
+        self.mate_track=response['track'] if response else None
         incoming=obs.get('incoming_damage',[])
         interrupted=self.goal in ('wrap','feed','approach_meal','defend')
         if incoming and interrupted:
@@ -80,12 +96,12 @@ class FeedingPolicy:
                     proposal, _ = self.hunter.locomotion.pursue(obs, proposal)
             else:
                 proposal = {'action':'wait'}
-        elif self.seeking_mate:
+        elif self.seeking_mate or response:
             self.goal = 'seek_mate'
             self.search_turns+=1
-            partners=[c for c in obs['contacts'] if c.get('conspecific') and c.get('mate_signal')=='receptive']
-            if not getattr(self,'courtship_ready',True):partners=[]
-            partner=min(partners,key=lambda c:c['range_ft'],default=None)
+            candidates=list(partners.values()) if ready else []
+            partner=response or min(candidates,key=lambda c:c['range_ft'],default=None)
+            if partner:self.mate_track=partner['track']
             if partner and hunger<=.2:
                 if partner['modality']=='vision' and partner['range_ft']<=6:
                     self.goal='court';proposal={'action':'court','target':partner['track']}

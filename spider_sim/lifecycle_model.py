@@ -103,6 +103,13 @@ class LifecycleModel(nn.Module):
 
     def forward(self,history,lengths):return self.actor(self.represent(history,lengths))
 
+    def step(self,observation,hidden=None):
+        embedded=self.encoder(observation)
+        if self.recurrent:
+            state,hidden=self.memory(embedded,hidden)
+        else:state=embedded
+        return self.actor(state),hidden
+
 
 class LatentPredictor(nn.Module):
     """One-step predictor, trained after freezing perception, memory and actor."""

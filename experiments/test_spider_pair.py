@@ -101,3 +101,50 @@ def test_interrupted_courtship_does_not_accumulate_progress():
     assert w.act(SPIDER,cmd)['courtship_turns']==1
     w.act(SPIDER,{'action':'wait'})
     assert w.act(SPIDER,cmd)['courtship_turns']==1
+
+
+def test_visible_courtship_invites_receptive_nonseeking_partner_to_respond():
+    from spider_sim.feeding import FeedingPolicy
+    from spider_sim.pursuit import PursuitModel,PursuitPolicy
+    w=paired();w.positions[SPIDER]=(103,140,'Fungal Stores');w.positions[FEMALE_SPIDER]=(107,140,'Fungal Stores')
+    w.hunger[SPIDER]=.115;w.hunger[FEMALE_SPIDER]=.04
+    policy=FeedingPolicy(PursuitPolicy(PursuitModel(21),approach=True,local_motion=True))
+    policy.mate_hunger_threshold=.1;policy.resume_hunting=.2
+    female_cmd={'action':'court','target':w.tokens[FEMALE_SPIDER][SPIDER]}
+    assert w.act(FEMALE_SPIDER,female_cmd)['status']=='courting'
+    from spider_sim.djepa_ecology import senses
+    obs=senses(w,SPIDER)
+    assert any(c.get('courtship_signal') for c in obs['contacts'] if c['modality']=='vision')
+    command=policy.choose(obs)
+    assert not policy.seeking_mate
+    assert policy.goal=='court' and command['target']==w.tokens[SPIDER][FEMALE_SPIDER]
+    assert w.act(SPIDER,command)['status']=='courting'
+    assert w.act(FEMALE_SPIDER,female_cmd)['status']=='courtship_accepted'
+
+
+def test_courtship_response_respects_hunger_health_cooldown_and_lost_contact():
+    from copy import deepcopy
+    from spider_sim.feeding import FeedingPolicy
+    from spider_sim.pursuit import PursuitModel,PursuitPolicy
+    from spider_sim.djepa_ecology import senses
+    w=paired();w.positions[SPIDER]=(103,140,'Fungal Stores');w.positions[FEMALE_SPIDER]=(107,140,'Fungal Stores')
+    w.hunger[SPIDER]=.15;w.hunger[FEMALE_SPIDER]=.05
+    obs=senses(w,SPIDER)
+    for c in obs['contacts']:
+        if c.get('conspecific'):c['courtship_signal']=True
+    def policy():return FeedingPolicy(PursuitPolicy(PursuitModel(21),approach=True,local_motion=True))
+    for hunger,hp,ready in [(.2,1,True),(.15,.3,True),(.15,1,False)]:
+        p=policy();o=deepcopy(obs);o['self'].update(hunger=hunger,hp_fraction=hp);p.courtship_ready=ready
+        assert p.choose(o)['action']!='court' and p.mate_track is None
+    p=policy();assert p.choose(obs)['action']=='court'
+    lost=deepcopy(obs);lost['contacts']=[]
+    p.choose(lost);assert p.mate_track is None
+
+
+def test_visible_invitation_does_not_reveal_remote_partner():
+    w=paired();w.positions[SPIDER]=(103,140,'Fungal Stores');w.positions[FEMALE_SPIDER]=(107,140,'Fungal Stores')
+    w.hunger[SPIDER]=w.hunger[FEMALE_SPIDER]=.05
+    assert w.act(FEMALE_SPIDER,{'action':'court','target':w.tokens[FEMALE_SPIDER][SPIDER]})['status']=='courting'
+    assert any(c.get('courtship_signal') for c in w.observation_for(SPIDER)['contacts'])
+    w.positions[FEMALE_SPIDER]=(20,60,'Cistern')
+    assert not any(c.get('courtship_signal') for c in w.observation_for(SPIDER)['contacts'])
