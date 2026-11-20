@@ -161,7 +161,7 @@ class EcologyEncounter:
                 public["body_dimensions_ft"] = [body.width,body.depth,body.height]
             if self.spider_pair and actor in self.spiders and cid in self.spiders and entry['modality']=='vision':
                 public['conspecific']=True
-                public['mate_signal']='receptive' if self.spiders[actor]!=self.spiders[cid] and (self.hunger[cid]<.2 if getattr(self,'zone_webs',False) else self.hunger[cid]<=.2) and self.config.characters[cid].character.current_hp/self.max_hp[cid]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(cid,0) else 'unreceptive'
+                public['mate_signal']='receptive' if self.spiders[actor]!=self.spiders[cid] and (self.hunger[cid]<getattr(self,'mate_hunger_limit',.2) if getattr(self,'zone_webs',False) else self.hunger[cid]<=getattr(self,'mate_hunger_limit',.2)) and self.config.characters[cid].character.current_hp/self.max_hp[cid]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(cid,0) else 'unreceptive'
                 # Visible courtship is behavior, not access to the partner's goal.
                 if self.courtship.get(tuple(sorted((actor,cid))),0)>0:
                     public['courtship_signal']=True
@@ -286,7 +286,7 @@ class EcologyEncounter:
             if not self.spider_pair or actor not in self.spiders or not obs['self'].get('touching_web'):
                 result['status']='not_touching_web'
             else:
-                receptive=(self.hunger[actor]<.2 if getattr(self,'zone_webs',False) else self.hunger[actor]<=.2) and character.current_hp/self.max_hp[actor]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(actor,0)
+                receptive=(self.hunger[actor]<getattr(self,'mate_hunger_limit',.2) if getattr(self,'zone_webs',False) else self.hunger[actor]<=getattr(self,'mate_hunger_limit',.2)) and character.current_hp/self.max_hp[actor]>=.35 and self.elapsed_seconds>=self.mate_cooldown.get(actor,0)
                 self.web_signals[actor]={'until':self.elapsed_seconds+12,'readiness':'receptive' if receptive else 'unreceptive'}
                 result['status']='courtship_vibration'
         elif action=='court':
@@ -297,7 +297,7 @@ class EcologyEncounter:
                 result['status']='mate_not_reachable'
             elif actor==target or self.spiders[actor]==self.spiders[target]:
                 result['status']='incompatible_mate'
-            elif any(self.hunger[c]>=.2 if getattr(self,'zone_webs',False) else self.hunger[c]>.2 for c in (actor,target)):
+            elif any(self.hunger[c]>=getattr(self,'mate_hunger_limit',.2) if getattr(self,'zone_webs',False) else self.hunger[c]>getattr(self,'mate_hunger_limit',.2) for c in (actor,target)):
                 result['status']='too_hungry_to_mate';self.courtship.pop(tuple(sorted((actor,target))),None)
             elif any(self.config.characters[c].character.current_hp/self.max_hp[c]<.35 or self.elapsed_seconds<self.mate_cooldown.get(c,0) for c in (actor,target)):
                 result['status']='not_receptive'
@@ -330,6 +330,7 @@ class EcologyEncounter:
                     state['remaining']=max(0.,state['remaining']-amount)
                     if state['remaining']<1e-9:state['remaining']=0.
                     self.hunger[actor]=max(0.,self.hunger[actor]-amount)
+                    if amount>0 and self.lifecycle:self.fed_this_round.add(actor)
                     result.update(status='fed' if amount>0 else 'full',consumed=amount,hunger=self.hunger[actor],food_remaining=state['remaining'])
         elif action in ("repair_web","damage_web"):
             key = command.get("item");item = self.config.items.get(key)

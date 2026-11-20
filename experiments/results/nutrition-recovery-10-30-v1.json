@@ -1,0 +1,501 @@
+{
+  "schema": "nutrition-recovery-10-30-v1",
+  "manifest": {
+    "seeds": [
+      11,
+      23,
+      37,
+      42,
+      53,
+      67,
+      79,
+      83,
+      97,
+      109,
+      127,
+      139
+    ],
+    "turns": 1000,
+    "checkpoint": "69ad4cd",
+    "teacher": "response teacher; fixed learned pursuit; no learned lifecycle selector",
+    "weights_sha256": "6532baef7b99c64705347a490f9088c86e392b988af1c2d99c5960476a06b631",
+    "healing": "1 HP per round after feeding OR when post-round hunger <10%, capped, living spiders only",
+    "mating": "initiate below10%, retain search and admit mating below30%; existing health/cooldown rules",
+    "baseline": "lifecycle-response-v1",
+    "purpose": "full population outcomes on same diagnostic seeds, not independent confirmation"
+  },
+  "totals": {
+    "before": {
+      "living_populations": 4,
+      "populations_above_pair_at_end": 4,
+      "lone_spider_runs": 0,
+      "reproducing_populations": 5,
+      "living_spiders": 160,
+      "egg_sacs": 294,
+      "starvation_deaths": 434
+    },
+    "after": {
+      "living_populations": 7,
+      "populations_above_pair_at_end": 6,
+      "lone_spider_runs": 1,
+      "reproducing_populations": 6,
+      "living_spiders": 216,
+      "egg_sacs": 459,
+      "starvation_deaths": 704
+    }
+  },
+  "runs": [
+    {
+      "seed": 11,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 1,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 11,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "starvation_damage": 17,
+          "shadowbeast_replaced": 4,
+          "starvation_death": 2,
+          "nutrition_recovery": 21
+        },
+        "healed_hp": 21,
+        "food_consumed": 3.600000000000002,
+        "goals": {
+          "hunt": 38,
+          "wrap": 32,
+          "defend": 60,
+          "feed": 36,
+          "survive": 67,
+          "approach_meal": 16,
+          "seek_mate": 168
+        },
+        "seconds": 3.4878266669998084,
+        "mean_population_last_200": 0.0
+      }
+    },
+    {
+      "seed": 23,
+      "before": {
+        "living_spiders": 36,
+        "egg_sacs": 69,
+        "starvation_deaths": 98,
+        "mean_population_last_200": 32.875
+      },
+      "after": {
+        "seed": 23,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "shadowbeast_replaced": 4,
+          "nutrition_recovery": 25
+        },
+        "healed_hp": 25,
+        "food_consumed": 11.324999999999976,
+        "goals": {
+          "hunt": 134,
+          "wrap": 45,
+          "feed": 114,
+          "seek_mate": 586,
+          "approach_mate": 2,
+          "survive": 4,
+          "approach_meal": 137,
+          "defend": 17
+        },
+        "seconds": 3.7043778749998637,
+        "mean_population_last_200": 0.965
+      }
+    },
+    {
+      "seed": 37,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 0,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 37,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "starvation_damage": 21,
+          "starvation_death": 1
+        },
+        "healed_hp": 0,
+        "food_consumed": 2.400000000000001,
+        "goals": {
+          "hunt": 58,
+          "wrap": 21,
+          "feed": 24,
+          "seek_mate": 48,
+          "approach_meal": 7,
+          "defend": 96
+        },
+        "seconds": 2.0342111250001835,
+        "mean_population_last_200": 0.0
+      }
+    },
+    {
+      "seed": 42,
+      "before": {
+        "living_spiders": 42,
+        "egg_sacs": 66,
+        "starvation_deaths": 89,
+        "mean_population_last_200": 45.76
+      },
+      "after": {
+        "seed": 42,
+        "turns": 1000,
+        "first_egg_turn": 77,
+        "living_spiders": 44,
+        "peak_spiders": 60,
+        "actors": 170,
+        "events": {
+          "nutrition_recovery": 997,
+          "shadowbeast_replaced": 85,
+          "egg_sac_laid": 85,
+          "egg_sac_hatched": 84,
+          "starvation_damage": 3812,
+          "starvation_death": 124
+        },
+        "healed_hp": 997,
+        "food_consumed": 323.9250000000052,
+        "goals": {
+          "hunt": 24544,
+          "wrap": 1141,
+          "feed": 3240,
+          "defend": 289,
+          "approach_meal": 4152,
+          "approach_mate": 505,
+          "seek_mate": 2755,
+          "court": 313,
+          "survive": 1196
+        },
+        "seconds": 163.17553016700003,
+        "mean_population_last_200": 32.34
+      }
+    },
+    {
+      "seed": 53,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 2,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 53,
+        "turns": 1000,
+        "first_egg_turn": 101,
+        "living_spiders": 45,
+        "peak_spiders": 59,
+        "actors": 164,
+        "events": {
+          "egg_sac_laid": 82,
+          "egg_sac_hatched": 81,
+          "shadowbeast_replaced": 69,
+          "nutrition_recovery": 712,
+          "starvation_damage": 3300,
+          "starvation_death": 117
+        },
+        "healed_hp": 712,
+        "food_consumed": 258.22499999999025,
+        "goals": {
+          "hunt": 19838,
+          "wrap": 902,
+          "feed": 2583,
+          "approach_meal": 2823,
+          "seek_mate": 2678,
+          "approach_mate": 512,
+          "court": 294,
+          "defend": 224,
+          "survive": 1217
+        },
+        "seconds": 117.79832454199959,
+        "mean_population_last_200": 35.35
+      }
+    },
+    {
+      "seed": 67,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 2,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 67,
+        "turns": 1000,
+        "first_egg_turn": 130,
+        "living_spiders": 31,
+        "peak_spiders": 68,
+        "actors": 148,
+        "events": {
+          "egg_sac_laid": 73,
+          "egg_sac_hatched": 73,
+          "starvation_damage": 3096,
+          "shadowbeast_replaced": 77,
+          "nutrition_recovery": 671,
+          "starvation_death": 115
+        },
+        "healed_hp": 671,
+        "food_consumed": 280.0249999999952,
+        "goals": {
+          "hunt": 21191,
+          "wrap": 930,
+          "feed": 2801,
+          "approach_meal": 2929,
+          "seek_mate": 2412,
+          "approach_mate": 493,
+          "court": 253,
+          "defend": 220,
+          "survive": 1359
+        },
+        "seconds": 137.46788204199993,
+        "mean_population_last_200": 36.02
+      }
+    },
+    {
+      "seed": 79,
+      "before": {
+        "living_spiders": 33,
+        "egg_sacs": 82,
+        "starvation_deaths": 130,
+        "mean_population_last_200": 36.105
+      },
+      "after": {
+        "seed": 79,
+        "turns": 1000,
+        "first_egg_turn": 138,
+        "living_spiders": 32,
+        "peak_spiders": 51,
+        "actors": 132,
+        "events": {
+          "shadowbeast_replaced": 66,
+          "nutrition_recovery": 589,
+          "egg_sac_laid": 67,
+          "egg_sac_hatched": 65,
+          "starvation_damage": 2769,
+          "starvation_death": 100
+        },
+        "healed_hp": 589,
+        "food_consumed": 250.82499999999,
+        "goals": {
+          "hunt": 17964,
+          "wrap": 909,
+          "feed": 2509,
+          "seek_mate": 2209,
+          "approach_mate": 451,
+          "court": 269,
+          "approach_meal": 3180,
+          "defend": 244,
+          "survive": 1006
+        },
+        "seconds": 102.90560541600007,
+        "mean_population_last_200": 34.405
+      }
+    },
+    {
+      "seed": 83,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 1,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 83,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "shadowbeast_replaced": 3,
+          "starvation_damage": 6,
+          "starvation_death": 1
+        },
+        "healed_hp": 0,
+        "food_consumed": 7.899999999999987,
+        "goals": {
+          "hunt": 161,
+          "wrap": 52,
+          "feed": 79,
+          "approach_meal": 54,
+          "seek_mate": 354,
+          "defend": 33,
+          "survive": 46
+        },
+        "seconds": 2.8639193330000126,
+        "mean_population_last_200": 0.0
+      }
+    },
+    {
+      "seed": 97,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 1,
+        "starvation_deaths": 4,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 97,
+        "turns": 1000,
+        "first_egg_turn": 74,
+        "living_spiders": 23,
+        "peak_spiders": 56,
+        "actors": 150,
+        "events": {
+          "egg_sac_laid": 74,
+          "egg_sac_hatched": 74,
+          "starvation_damage": 3584,
+          "nutrition_recovery": 710,
+          "shadowbeast_replaced": 64,
+          "starvation_death": 126
+        },
+        "healed_hp": 710,
+        "food_consumed": 252.02499999998994,
+        "goals": {
+          "hunt": 19881,
+          "wrap": 926,
+          "approach_meal": 3105,
+          "feed": 2521,
+          "seek_mate": 2518,
+          "approach_mate": 415,
+          "court": 262,
+          "defend": 203,
+          "survive": 1261
+        },
+        "seconds": 115.52060491699967,
+        "mean_population_last_200": 45.2
+      }
+    },
+    {
+      "seed": 109,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 2,
+        "mean_population_last_200": 0.0
+      },
+      "after": {
+        "seed": 109,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 1,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "shadowbeast_replaced": 4,
+          "starvation_damage": 6,
+          "starvation_death": 1,
+          "nutrition_recovery": 26
+        },
+        "healed_hp": 26,
+        "food_consumed": 10.02499999999998,
+        "goals": {
+          "hunt": 186,
+          "wrap": 64,
+          "feed": 101,
+          "approach_meal": 79,
+          "defend": 45,
+          "seek_mate": 504,
+          "survive": 67
+        },
+        "seconds": 3.9737262500002544,
+        "mean_population_last_200": 1.0
+      }
+    },
+    {
+      "seed": 127,
+      "before": {
+        "living_spiders": 0,
+        "egg_sacs": 0,
+        "starvation_deaths": 2,
+        "mean_population_last_200": 0.76
+      },
+      "after": {
+        "seed": 127,
+        "turns": 1000,
+        "first_egg_turn": null,
+        "living_spiders": 0,
+        "peak_spiders": 2,
+        "actors": 2,
+        "events": {
+          "shadowbeast_replaced": 3,
+          "nutrition_recovery": 17,
+          "starvation_damage": 25,
+          "starvation_death": 1
+        },
+        "healed_hp": 17,
+        "food_consumed": 6.124999999999995,
+        "goals": {
+          "hunt": 250,
+          "wrap": 57,
+          "feed": 62,
+          "approach_meal": 32,
+          "defend": 31,
+          "seek_mate": 174,
+          "survive": 9
+        },
+        "seconds": 2.57965541700014,
+        "mean_population_last_200": 0.0
+      }
+    },
+    {
+      "seed": 139,
+      "before": {
+        "living_spiders": 49,
+        "egg_sacs": 76,
+        "starvation_deaths": 103,
+        "mean_population_last_200": 35.41
+      },
+      "after": {
+        "seed": 139,
+        "turns": 1000,
+        "first_egg_turn": 60,
+        "living_spiders": 40,
+        "peak_spiders": 61,
+        "actors": 156,
+        "events": {
+          "starvation_damage": 3349,
+          "nutrition_recovery": 753,
+          "egg_sac_laid": 78,
+          "egg_sac_hatched": 77,
+          "shadowbeast_replaced": 69,
+          "starvation_death": 116
+        },
+        "healed_hp": 753,
+        "food_consumed": 277.9249999999947,
+        "goals": {
+          "hunt": 20148,
+          "wrap": 1079,
+          "feed": 2780,
+          "seek_mate": 2451,
+          "approach_mate": 465,
+          "court": 273,
+          "approach_meal": 3858,
+          "defend": 246,
+          "survive": 1176
+        },
+        "seconds": 119.873558667,
+        "mean_population_last_200": 33.425
+      }
+    }
+  ],
+  "limitations": "Same diagnostic seeds, authored response teacher with fixed learned pursuit. Combined recovery/cutoff intervention; no attribution of individual effects. Final population is not evidence of long-term equilibrium. Defaults and live viewer unchanged."
+}

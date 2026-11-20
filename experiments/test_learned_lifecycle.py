@@ -1,5 +1,6 @@
 from copy import deepcopy
 import torch
+import pytest
 from spider_sim.learned_lifecycle import LearnedLifecyclePolicy
 from spider_sim.lifecycle_model import LifecycleModel,GOALS
 from spider_sim.feeding import FeedingPolicy
@@ -70,3 +71,16 @@ def test_motor_execution_matches_teacher_when_given_same_goals(tmp_path):
                 return command
             teacher.choose=choose;wrapped.add(actor)
         ecology_round(run.world,run.policies,turn)
+
+
+@pytest.mark.parametrize('previous_goal',['seek_mate','approach_mate','court'])
+def test_learned_executor_can_defend_against_attack_received_during_mating(previous_goal):
+    w=EcologyEncounter(42,feeding_cycle=True,spider_pair=True)
+    w.positions[SPIDER]=(103,140,'Fungal Stores')
+    w.positions['freight_shadowbeast']=(107,140,'Fungal Stores')
+    target=w.tokens[SPIDER]['freight_shadowbeast']
+    obs=senses(w,SPIDER);obs['incoming_damage']=[{'damage_hp':1,'attacker':target}]
+    model=ForcedGoal();model.goal='defend'
+    p=LearnedLifecyclePolicy(PursuitPolicy(PursuitModel(21)),model,'male');p.goal=previous_goal
+    assert p.choose(obs)=={'action':'attack','target':target}
+    assert p.goal=='defend' and p.defense_track==target

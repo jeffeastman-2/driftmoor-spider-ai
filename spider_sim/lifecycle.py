@@ -19,6 +19,7 @@ BEAST='freight_shadowbeast'
 
 def initialize(world):
     world.egg_sacs={};world.lifecycle_events=[];world.starvation_ticks={}
+    world.fed_this_round=set()
     world.replaced_beasts=set()
     world.exhausted_since={};world.retired_carcasses=set()
     world.life_templates={cid:copy.deepcopy(world.config.characters[cid]) for cid in (next(iter(world.spiders)),BEAST)}
@@ -76,6 +77,22 @@ def lay_eggs(world,pair):
 
 def start_round(world):
     world.lifecycle_events=[]
+    world.fed_this_round=set()
+
+
+def recover(world):
+    """Optional nutrition-supported recovery; disabled in existing episodes."""
+    rate=getattr(world,'healing_hp_per_round',0)
+    if rate<=0:return
+    limit=getattr(world,'healing_hunger_limit',.1)
+    for cid in world.spiders:
+        character=world.config.characters[cid].character
+        if cid not in world.active or character.current_hp<=0:continue
+        if cid not in world.fed_this_round and world.hunger[cid]>=limit:continue
+        amount=min(rate,max(0,world.max_hp[cid]-character.current_hp))
+        if amount:
+            character.current_hp+=amount
+            world.lifecycle_events.append({'event':'nutrition_recovery','actor':cid,'healed_hp':amount})
 
 
 def finish_round(world,policies):
@@ -92,6 +109,7 @@ def finish_round(world,policies):
             if world.food.get(cid,{}).get('remaining',0)>0:continue
             since=world.exhausted_since.setdefault(cid,world.elapsed_seconds)
             if world.elapsed_seconds-since>=decay*6:world.retired_carcasses.add(cid)
+    recover(world)
     # Damage after an opportunity to feed avoids killing a spider just before a
     # meal would have reduced its hunger. A fed spider resets its starvation clock.
     for cid in list(world.spiders):

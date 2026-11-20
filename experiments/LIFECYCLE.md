@@ -167,3 +167,79 @@ contact, lost receptivity, its own hunger/health or cooldown ends the response.
 There is no pursuit of an unseen mate. Defense and critical-health behavior
 retain their existing priority. Successful mating, nutrition costs, cooldown,
 hatching and food supplies are unchanged.
+
+## Opt-in nutrition recovery / 30% cutoff experiment
+
+Checkpoint `69ad4cd` preserves the response teacher and the first learned
+lifecycle benchmark. The new headless experiment keeps independent mate-seeking
+initiation below 10% hunger, extends the search/receptivity/engine mating cutoff
+to 30%, and enables up to 1 HP recovery at round end after actual feeding or
+while post-round hunger is below 10%. Recovery is capped at maximum HP and
+never revives a dead actor. Feeding supports recovery even when hunger is still
+above 10%; the passive, sated recovery ends at 10%. No extra food is consumed
+solely for healing.
+
+These are opt-in world/policy settings, not changed live/default rules. Existing
+episodes still have no recovery and a 20% mating cutoff. Newborns inherit the
+experiment's rule settings from the runner on their first acting turn. Health
+requirements, mating cooldown, hunger growth, prey replacement, food quantities
+and starvation damage remain unchanged.
+
+`run_nutrition_recovery.py` runs the complete twelve-seed, 1,000-turn batch with
+the response teacher and fixed learned pursuit weights. It does not retrain
+or deploy the learned lifecycle selector. `report_nutrition_recovery.py` compares
+against the checkpoint's `lifecycle-response-v1` recordings.
+
+Full 1,000-turn comparison against the checkpoint response teacher:
+
+| Outcome across twelve seeds | Checkpoint | Recovery below 10% + mating cutoff 30% |
+|---|---:|---:|
+| Runs ending with more than two living spiders | 4 | 6 |
+| Runs ending with exactly one survivor | 0 | 1 |
+| Runs that produce an egg sac | 5 | 6 |
+| Total living spiders at turn 1,000 | 160 | 216 |
+| Total egg sacs | 294 | 459 |
+
+Seeds 53, 67 and 97 gain populations, ending at 45, 31 and 23 spiders. Seed 23
+loses its previous growing population and ends at zero. Seed 109 retains one
+survivor but never reproduces. Other new final counts are 44 (42), 32 (79),
+40 (139), and zero (11, 37, 83, 127). Thus recovery and the wider window improve
+the diagnostic batch overall without guaranteeing establishment in each seed.
+Starvation still occurs; the higher aggregate death count accompanies more
+births and does not by itself demonstrate higher per-spider mortality.
+
+These combined changes cannot identify the individual contribution of healing
+versus the cutoff. They also alter later actions, encounters and random-event
+consumption. A 1,000-turn endpoint does not establish long-term equilibrium.
+The default-rule seed-42 control still produces its first egg on turn 72, matching
+the checkpoint. All 258 tests pass. No trained weights or live viewer were changed.
+
+Compact results: [nutrition-recovery-10-30-v1.json](results/nutrition-recovery-10-30-v1.json).
+Population traces, compressed decisions, manifest and comparison plot are outside
+Git at `/Users/jeff/Documents/ChatGPT/White Fang/experiments/nutrition-recovery-10-30-v1`.
+
+## Damage interrupts mating activities too
+
+Incoming damage now interrupts `seek_mate`, `approach_mate` and `court`, as well
+as the existing feeding/wrapping phases. When the attacker is identified and
+visible, the teacher immediately selects defense using the existing attack and
+movement controllers. An unidentified attack causes an alert wait; the spider
+does not accuse its mate or another bystander. Existing short threat memory and
+post-threat goal selection are retained. Hunger, injury and cooldown still
+control whether mating can resume after the threat is gone.
+
+The learned lifecycle executor tracks an attacker during those mating phases
+too, but its network still chooses its own goals. This teacher change does not
+silently override learned goal logits or retrain any weights. The running viewer
+has not been restarted.
+
+Regression checks cover each of the three mating phases, ordinary and critical
+HP, unidentified attackers, and resumption after the attacker is defeated.
+
+In the targeted seed-23 replay with the 10% recovery / 30% mating-cutoff profile,
+the female now attacks the identified Shadowbeast immediately on turn 39 instead
+of vibrating the web. She survives the encounter; the pair produces its first
+egg sac on turn 74. The full 1,000-turn run ends with 50 living spiders (peak 52)
+and 78 egg sacs, versus no reproduction and extinction before this interruption
+change. This is a single-seed regression result, not a new twelve-seed benchmark.
+[Compact replay comparison](results/mating-defense-seed23-v1.json).

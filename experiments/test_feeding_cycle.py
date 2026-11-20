@@ -160,3 +160,37 @@ def test_actual_engine_hit_is_felt_once_and_misses_do_not_trigger_defense():
     assert world.observation_for(SPIDER)['incoming_damage']==events
     world.act(SPIDER,{'action':'wait'})
     assert world.observation_for(SPIDER)['incoming_damage']==[]
+
+
+@pytest.mark.parametrize('previous_goal',['seek_mate','approach_mate','court'])
+@pytest.mark.parametrize('hp',[.9,.2])
+def test_damage_interrupts_all_mating_phases_and_resumes_when_attacker_defeated(previous_goal,hp):
+    class Hunter:
+        locomotion=None;task=SimpleNamespace(previous=None,track=None,last=None);last_plan={}
+        def choose(self,obs):return {'action':'wait'}
+    policy=FeedingPolicy(Hunter());policy.goal=previous_goal
+    obs={'self':{'hunger':.05,'hp_fraction':hp},'contacts':[
+        {'track':'mate','modality':'vision','range_ft':4,'bearing_deg':0,'conspecific':True,'mate_signal':'receptive'},
+        {'track':'threat','modality':'vision','range_ft':4,'relative_position_ft':[4,0,0]}],
+        'incoming_damage':[{'damage_hp':1,'attacker':'threat'}]}
+    assert policy.choose(obs)=={'action':'attack','target':'threat'}
+    assert policy.goal=='defend'
+    obs['incoming_damage']=[]
+    assert policy.choose(obs)=={'action':'attack','target':'threat'}
+    obs['last_result']={'target_defeated':True,'target':'threat'};obs['contacts']=obs['contacts'][:1]
+    command=policy.choose(obs)
+    if hp>=.35:assert policy.goal=='court' and command=={'action':'court','target':'mate'}
+    else:assert policy.goal=='survive'  # Injury still matters after immediate defense.
+
+
+@pytest.mark.parametrize('previous_goal',['seek_mate','approach_mate','court'])
+def test_unknown_attack_interrupts_mating_without_blaming_mate(previous_goal):
+    class Hunter:
+        locomotion=None;task=SimpleNamespace(previous=None,track=None,last=None);last_plan={}
+        def choose(self,obs):return {'action':'wait'}
+    policy=FeedingPolicy(Hunter());policy.goal=previous_goal
+    obs={'self':{'hunger':.05,'hp_fraction':1},'contacts':[
+        {'track':'mate','modality':'vision','range_ft':4,'bearing_deg':0,'conspecific':True,'mate_signal':'receptive'}],
+        'incoming_damage':[{'damage_hp':1,'attacker':None}]}
+    assert policy.choose(obs)=={'action':'wait'} and policy.goal=='defend'
+    assert policy.defense_track is None

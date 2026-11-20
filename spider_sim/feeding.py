@@ -9,6 +9,7 @@ HUNGER_PER_ROUND = .01
 RESUME_HUNTING = .6
 WRAP_TURNS = 3
 FEED_PER_TURN = .1
+INTERRUPTIBLE_GOALS = {'wrap','feed','approach_meal','seek_mate','approach_mate','court','defend'}
 
 
 def food_value(actor, body):
@@ -46,7 +47,7 @@ class FeedingPolicy:
             self.seeking_mate = False
         # Respond to an observed invitation even when not sated enough to
         # initiate a search. Keep a visible/receptive partner through approach.
-        ready=(hunger<.2 and obs['self']['hp_fraction']>=.35
+        ready=(hunger<getattr(self,'mate_hunger_limit',.2) and obs['self']['hp_fraction']>=.35
                and getattr(self,'courtship_ready',True))
         partners={}
         for c in obs['contacts']:
@@ -60,7 +61,7 @@ class FeedingPolicy:
             if response:response=partners[response['track']]
         self.mate_track=response['track'] if response else None
         incoming=obs.get('incoming_damage',[])
-        interrupted=self.goal in ('wrap','feed','approach_meal','defend')
+        interrupted=self.goal in INTERRUPTIBLE_GOALS
         if incoming and interrupted:
             known=[event for event in incoming if event.get('attacker')]
             if known:
@@ -72,7 +73,7 @@ class FeedingPolicy:
         if self.defense_track:
             self.defense_age=0 if attacker else self.defense_age+1
             if self.defense_age>4:self.defense_track=None
-        # A direct attack interrupts food handling before the critical-HP rule.
+        # A direct attack interrupts feeding or mating before the critical-HP rule.
         # No hidden attacker position is followed. Preserve the unfinished meal.
         if self.defense_track or (incoming and interrupted):
             self.goal='defend'
@@ -102,7 +103,7 @@ class FeedingPolicy:
             candidates=list(partners.values()) if ready else []
             partner=response or min(candidates,key=lambda c:c['range_ft'],default=None)
             if partner:self.mate_track=partner['track']
-            if partner and hunger<=.2:
+            if partner and hunger<=getattr(self,'mate_hunger_limit',.2):
                 if partner['modality']=='vision' and partner['range_ft']<=6:
                     self.goal='court';proposal={'action':'court','target':partner['track']}
                 else:

@@ -5,7 +5,7 @@ Missing targets produce wait commands; engine feasibility remains authoritative.
 """
 import math
 import torch
-from spider_sim.feeding import FeedingPolicy
+from spider_sim.feeding import FeedingPolicy,INTERRUPTIBLE_GOALS
 from spider_sim.lifecycle_model import LifecycleModel,FEATURE_NAMES,GOALS,features
 
 
@@ -43,7 +43,7 @@ class LearnedLifecyclePolicy(FeedingPolicy):
         # Advance learned pursuit memory once, including during non-hunt goals.
         proposal=self.hunter.choose(dict(obs,contacts=[c for c in obs['contacts'] if not c.get('conspecific')]))
         incoming=obs.get('incoming_damage',[])
-        if incoming and self.goal in ('wrap','feed','approach_meal','defend'):
+        if incoming and self.goal in INTERRUPTIBLE_GOALS:
             known=[e for e in incoming if e.get('attacker')]
             if known:self.defense_track=known[-1]['attacker'];self.defense_age=0
         feedback=obs.get('last_result') or {}

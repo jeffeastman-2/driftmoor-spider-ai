@@ -1,0 +1,62 @@
+{
+  "schema": "mating-defense-seed23-v1",
+  "change": "Damage interrupts seek_mate, approach_mate and court in authored teacher; shared attacker bookkeeping supports learned executor without overriding its actor.",
+  "rules": "1 HP nutrition recovery after feeding or below10% hunger; search starts below10%, cutoff30%; all other settings unchanged",
+  "before": {
+    "seed": 23,
+    "turns": 1000,
+    "first_egg_turn": null,
+    "living_spiders": 0,
+    "peak_spiders": 2,
+    "actors": 2,
+    "events": {
+      "shadowbeast_replaced": 4,
+      "nutrition_recovery": 25
+    },
+    "healed_hp": 25,
+    "food_consumed": 11.324999999999976,
+    "goals": {
+      "hunt": 134,
+      "wrap": 45,
+      "feed": 114,
+      "seek_mate": 586,
+      "approach_mate": 2,
+      "survive": 4,
+      "approach_meal": 137,
+      "defend": 17
+    },
+    "seconds": 3.7043778749998637
+  },
+  "after": {
+    "seed": 23,
+    "turns": 1000,
+    "first_egg_turn": 74,
+    "living_spiders": 50,
+    "peak_spiders": 52,
+    "actors": 154,
+    "events": {
+      "shadowbeast_replaced": 77,
+      "nutrition_recovery": 769,
+      "egg_sac_laid": 78,
+      "egg_sac_hatched": 76,
+      "starvation_damage": 2952,
+      "starvation_death": 104
+    },
+    "healed_hp": 769,
+    "food_consumed": 273.72499999999377,
+    "goals": {
+      "hunt": 18609,
+      "wrap": 942,
+      "feed": 2738,
+      "seek_mate": 2861,
+      "approach_mate": 560,
+      "defend": 331,
+      "approach_meal": 3537,
+      "court": 281,
+      "survive": 1016
+    },
+    "seconds": 108.21396512499996
+  },
+  "verified_event": "Female immediately attacks identified Shadowbeast on turn39 instead of vibrating web; first egg turn74.",
+  "limitations": "Single-seed diagnostic replay; not a repeat of the complete twelve-seed cohort. No neural retraining or live viewer restart."
+}
