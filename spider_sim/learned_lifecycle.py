@@ -6,14 +6,19 @@ Missing targets produce wait commands; engine feasibility remains authoritative.
 import math
 import torch
 from spider_sim.feeding import FeedingPolicy,INTERRUPTIBLE_GOALS
-from spider_sim.lifecycle_model import LifecycleModel,FEATURE_NAMES,GOALS,features
+from spider_sim.meal_target import select_meal
+
+_UNSELECTED=object()
+from spider_sim.lifecycle_model import LifecycleModel,FEATURE_NAMES,FEATURE_NAMES_V2,FEATURE_NAMES_V3,GOALS,encode_observation
 
 
 def load(path):
     saved=torch.load(path,map_location='cpu',weights_only=False)
-    if tuple(saved['features'])!=FEATURE_NAMES or tuple(saved['goals'])!=GOALS:
+    names=tuple(saved['features'])
+    version='v1' if names==FEATURE_NAMES else 'v2' if names==FEATURE_NAMES_V2 else 'v3' if names==FEATURE_NAMES_V3 else None
+    if version is None or tuple(saved['goals'])!=GOALS:
         raise ValueError('Lifecycle feature/goal schema mismatch')
-    model=LifecycleModel(saved['recurrent']);model.load_state_dict(saved['state_dict']);return model.eval()
+    model=LifecycleModel(saved['recurrent'],feature_version=version);model.load_state_dict(saved['state_dict']);return model.eval()
 
 
 class LearnedLifecyclePolicy(FeedingPolicy):
@@ -26,11 +31,12 @@ class LearnedLifecyclePolicy(FeedingPolicy):
 
     @torch.no_grad()
     def choose(self,obs):
-        private=dict(obs,self={**obs['self'],**self.proprioception()})
-        logits,self.hidden=self.model.step(torch.tensor(features(private),dtype=torch.float32)[None,None],self.hidden)
+        meal=select_meal(obs,self.meal)
+        private=dict(obs,self={**obs['self'],**self.proprioception(),'last_goal':self.goal},selected_meal=meal)
+        logits,self.hidden=self.model.step(torch.tensor(encode_observation(private,getattr(self.model,'feature_version','v1')),dtype=torch.float32)[None,None],self.hidden)
         self.last_probabilities=logits[0,0].softmax(-1).tolist()
         selected=GOALS[int(logits[0,0].argmax())]
-        command=self.execute(selected,obs)
+        command=self.execute(selected,obs,meal=meal)
         self.goal=selected
         self.hunter.task.previous=command
         if selected!='hunt':self.hunter.task.track=None;self.hunter.task.last=None
@@ -39,7 +45,7 @@ class LearnedLifecyclePolicy(FeedingPolicy):
             lifecycle_probabilities=dict(zip(GOALS,self.last_probabilities)))
         return command
 
-    def execute(self,goal,obs):
+    def execute(self,goal,obs,*,meal=_UNSELECTED):
         # Advance learned pursuit memory once, including during non-hunt goals.
         proposal=self.hunter.choose(dict(obs,contacts=[c for c in obs['contacts'] if not c.get('conspecific')]))
         incoming=obs.get('incoming_damage',[])
@@ -59,8 +65,8 @@ class LearnedLifecyclePolicy(FeedingPolicy):
             invitations=[c for c in contacts.values() if c.get('courtship_signal')]
             partner=min(invitations or list(contacts.values()),key=lambda c:c['range_ft'],default=None)
         self.mate_track=partner['track'] if partner else None
-        meals=obs.get('food_in_view',[])
-        meal=next((m for m in meals if m['track']==self.meal),None) or min(meals,key=lambda c:c['range_ft'],default=None)
+        if meal is _UNSELECTED:meal=select_meal(obs,self.meal)
+        # Explicit None is a frozen absence, not permission to reselect.
         def move(contact,speed,stop=4):
             vector=contact.get('relative_position_ft')
             if vector:x,y,*_=vector

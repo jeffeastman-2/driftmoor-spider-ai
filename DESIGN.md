@@ -20,6 +20,10 @@ The next [closed-loop experiment](experiments/LEARNED_LIFECYCLE.md) retrains thi
 selector and lets it choose goals in actual engine encounters; its copying score
 is high, but independent survival still falls short of the teacher.
 
+The [recovery-learning follow-up](experiments/LEARNED_LIFECYCLE.md#recovery-learning-revised-experiment) adds a versioned 145-input lifecycle encoder with explicit engine feedback and own previous intent. It keeps 99-input checkpoints loadable and remains separate from the installed pursuit motor.
+
+The next [selected-meal binding fix](experiments/LEARNED_LIFECYCLE.md#selected-meal-binding-v3) adds seven measurements of the exact meal the motor will use, for 152 lifecycle inputs. The actor and executor share one target snapshot; this is a separate, versioned model, not a change to the installed pursuit model.
+
 ## The mental model
 
 ```text

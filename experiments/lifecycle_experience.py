@@ -12,12 +12,16 @@ GOALS=('hunt','approach_meal','wrap','feed','seek_mate','approach_mate','court',
 FOOD_GOALS={'approach_meal','wrap','feed'}
 
 
-def private_observation(world,actor,observation):
+def private_observation(world,actor,observation,policy=None):
     result=deepcopy(observation)
     own=result['self']
     # These are proprioception, not another creature's hidden world state.
     remaining=max(0,world.mate_cooldown.get(actor,0)-world.elapsed_seconds)
     own.update(sex=world.spiders[actor],mate_cooldown_turns=math.ceil(remaining/6))
+    if policy is not None and hasattr(policy,'meal'):
+        from spider_sim.meal_target import select_meal
+        own['last_goal']=policy.goal
+        result['selected_meal']=select_meal(result,policy.meal)
     return result
 
 
@@ -33,7 +37,7 @@ class ExperienceRecorder:
             if actor not in self.world.spiders or actor in self.wrapped:continue
             choose=policy.choose
             def capture(observation,actor=actor,choose=choose):
-                self.captured[actor]=private_observation(self.world,actor,observation)
+                self.captured[actor]=private_observation(self.world,actor,observation,self.policies[actor])
                 return choose(observation)
             policy.choose=capture
             self.wrapped.add(actor)

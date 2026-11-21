@@ -2,7 +2,8 @@
 import argparse,json,random
 from pathlib import Path
 import torch
-from spider_sim.lifecycle_model import LifecycleModel,LatentPredictor,action_features
+from spider_sim.lifecycle_model import LatentPredictor,action_features
+from spider_sim.learned_lifecycle import load as load_actor
 from experiments.train_lifecycle_model import load_corpus,batches
 
 
@@ -46,8 +47,8 @@ def metrics(model,data,scale):
 def main():
     p=argparse.ArgumentParser();p.add_argument('corpus',type=Path);p.add_argument('actor',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--epochs',type=int,default=30);a=p.parse_args()
     torch.set_num_threads(1);torch.manual_seed(2026);random.seed(2026);a.output.mkdir(parents=True,exist_ok=True)
-    ckpt=torch.load(a.actor,weights_only=False);actor=LifecycleModel(ckpt['recurrent']);actor.load_state_dict(ckpt['state_dict']);actor.eval()
-    data={k:transitions(actor,v) for k,v in load_corpus(a.corpus).items()}
+    actor=load_actor(a.actor)
+    data={k:transitions(actor,v) for k,v in load_corpus(a.corpus,actor.feature_version).items()}
     train=data['train'];scale=train[2][train[3]].std(0).clamp_min(.02);scale[64:]=.1
     result={'schema':'lifecycle-frozen-predictor-v1','actor':str(a.actor),
         'target':'next causal GRU context delta where next observation exists; after-round own HP/hunger delta on every recorded decision',

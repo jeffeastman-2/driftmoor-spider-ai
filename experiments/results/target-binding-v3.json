@@ -1,0 +1,1990 @@
+{
+  "schema": "meal-target-binding-v3",
+  "plan": {
+    "scope": "Bind selected perceived meal before inference; actor and executor share that snapshot. Retain target preference and unmasked goals.",
+    "features": "152 (v2 145 prefix + seven actual selected-meal measurements); original MLP/GRU sizes unchanged; v1/v2 remain loadable.",
+    "training": "Same teacher and correction corpora as v2, same seed2026 and30epochs, validation macroF1 selection, correction repeat4; held-out copying test deferred.",
+    "sources": [
+      "recovery-teacher-corpus-v2",
+      "student-recovery-corpus-v2"
+    ],
+    "baseline_model": "recovery-corrected-v2/gru.pt",
+    "candidate": "target-bound-model-v3/gru.pt",
+    "diagnostic": "Known seed263 from prior evaluation, used only as target-binding regression, not fresh evidence.",
+    "fresh_seeds": [
+      383,
+      397,
+      419,
+      433,
+      449,
+      461
+    ],
+    "conditions": [
+      "teacher",
+      "previous",
+      "bound"
+    ],
+    "turns": 1000,
+    "rules": "Same current healing10%, mating cutoff30%, mating damage interruption. No teacher fallback, no feasibility mask, no deployment.",
+    "limitations": "One training initialization and six seeds; input shape changes the parameter initialization stream even with the same seed."
+  },
+  "offline": {
+    "model_sha256": "45c031f0b8cdbcec158ce70e528dc2935958c6aa18b8da0307666200603265ea",
+    "feature_count": 152,
+    "test": {
+      "accuracy": 0.9768762910259353,
+      "macro_f1_present": 0.9190773001186111,
+      "balanced_accuracy_present": 0.9533379011087959,
+      "per_goal": {
+        "hunt": {
+          "support": 21687,
+          "precision": 0.9986418134132634,
+          "recall": 0.9832157513717895,
+          "f1": 0.9908687469504402
+        },
+        "approach_meal": {
+          "support": 4331,
+          "precision": 0.9892221180880975,
+          "recall": 0.9748326021703995,
+          "f1": 0.9819746482149089
+        },
+        "wrap": {
+          "support": 1110,
+          "precision": 0.9872958257713249,
+          "recall": 0.9801801801801802,
+          "f1": 0.9837251356238698
+        },
+        "feed": {
+          "support": 3109,
+          "precision": 0.9777634547212375,
+          "recall": 0.975876487616597,
+          "f1": 0.9768190598840953
+        },
+        "seek_mate": {
+          "support": 2483,
+          "precision": 0.9176015473887814,
+          "recall": 0.9552960128876359,
+          "f1": 0.9360694554064719
+        },
+        "approach_mate": {
+          "support": 517,
+          "precision": 0.8244274809160306,
+          "recall": 0.8355899419729207,
+          "f1": 0.829971181556196
+        },
+        "court": {
+          "support": 248,
+          "precision": 0.5842105263157895,
+          "recall": 0.8951612903225806,
+          "f1": 0.7070063694267517
+        },
+        "defend": {
+          "support": 414,
+          "precision": 0.8855291576673866,
+          "recall": 0.9903381642512077,
+          "f1": 0.9350057012542758
+        },
+        "survive": {
+          "support": 957,
+          "precision": 0.8776645041705282,
+          "recall": 0.9895506792058516,
+          "f1": 0.9302554027504912
+        }
+      },
+      "confusion_true_rows_predicted_columns": [
+        [
+          21323,
+          0,
+          1,
+          0,
+          110,
+          63,
+          74,
+          11,
+          105
+        ],
+        [
+          0,
+          4222,
+          10,
+          12,
+          43,
+          2,
+          14,
+          12,
+          16
+        ],
+        [
+          0,
+          8,
+          1088,
+          0,
+          4,
+          1,
+          1,
+          3,
+          5
+        ],
+        [
+          0,
+          12,
+          0,
+          3034,
+          13,
+          9,
+          21,
+          16,
+          4
+        ],
+        [
+          17,
+          18,
+          2,
+          39,
+          2372,
+          12,
+          16,
+          7,
+          0
+        ],
+        [
+          5,
+          2,
+          0,
+          6,
+          39,
+          432,
+          32,
+          1,
+          0
+        ],
+        [
+          4,
+          1,
+          0,
+          11,
+          4,
+          5,
+          222,
+          1,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          410,
+          2
+        ],
+        [
+          1,
+          5,
+          1,
+          1,
+          0,
+          0,
+          0,
+          2,
+          947
+        ]
+      ],
+      "per_seed": {
+        "139": {
+          "accuracy": 0.9769322512144748,
+          "macro_f1_present": 0.9183086410272053,
+          "balanced_accuracy_present": 0.9535397536393826,
+          "per_goal": {
+            "hunt": {
+              "support": 21482,
+              "precision": 0.9986287119349347,
+              "recall": 0.9831021320175031,
+              "f1": 0.9908045977011494
+            },
+            "approach_meal": {
+              "support": 4316,
+              "precision": 0.9905838041431262,
+              "recall": 0.9749768303985171,
+              "f1": 0.982718355908454
+            },
+            "wrap": {
+              "support": 1073,
+              "precision": 0.9887111947318908,
+              "recall": 0.9794967381174278,
+              "f1": 0.9840823970037452
+            },
+            "feed": {
+              "support": 3065,
+              "precision": 0.9780902550686723,
+              "recall": 0.9758564437194127,
+              "f1": 0.9769720725134738
+            },
+            "seek_mate": {
+              "support": 2397,
+              "precision": 0.9161341853035144,
+              "recall": 0.9570296203587818,
+              "f1": 0.9361354825545807
+            },
+            "approach_mate": {
+              "support": 517,
+              "precision": 0.8244274809160306,
+              "recall": 0.8355899419729207,
+              "f1": 0.829971181556196
+            },
+            "court": {
+              "support": 248,
+              "precision": 0.5842105263157895,
+              "recall": 0.8951612903225806,
+              "f1": 0.7070063694267517
+            },
+            "defend": {
+              "support": 384,
+              "precision": 0.8775981524249422,
+              "recall": 0.9895833333333334,
+              "f1": 0.9302325581395349
+            },
+            "survive": {
+              "support": 895,
+              "precision": 0.8704612365063789,
+              "recall": 0.9910614525139665,
+              "f1": 0.9268547544409614
+            }
+          },
+          "confusion_true_rows_predicted_columns": [
+            [
+              21119,
+              0,
+              1,
+              0,
+              109,
+              63,
+              74,
+              11,
+              105
+            ],
+            [
+              0,
+              4208,
+              10,
+              12,
+              42,
+              2,
+              14,
+              12,
+              16
+            ],
+            [
+              0,
+              8,
+              1051,
+              0,
+              4,
+              1,
+              1,
+              3,
+              5
+            ],
+            [
+              0,
+              12,
+              0,
+              2991,
+              12,
+              9,
+              21,
+              16,
+              4
+            ],
+            [
+              17,
+              13,
+              1,
+              37,
+              2294,
+              12,
+              16,
+              7,
+              0
+            ],
+            [
+              5,
+              2,
+              0,
+              6,
+              39,
+              432,
+              32,
+              1,
+              0
+            ],
+            [
+              4,
+              1,
+              0,
+              11,
+              4,
+              5,
+              222,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              380,
+              2
+            ],
+            [
+              1,
+              4,
+              0,
+              1,
+              0,
+              0,
+              0,
+              2,
+              887
+            ]
+          ]
+        },
+        "127": {
+          "accuracy": 0.9728601252609603,
+          "macro_f1_present": 0.9507528073552444,
+          "balanced_accuracy_present": 0.9686352416422128,
+          "per_goal": {
+            "hunt": {
+              "support": 205,
+              "precision": 1.0,
+              "recall": 0.9951219512195122,
+              "f1": 0.9975550122249389
+            },
+            "approach_meal": {
+              "support": 15,
+              "precision": 0.7,
+              "recall": 0.9333333333333333,
+              "f1": 0.8
+            },
+            "wrap": {
+              "support": 37,
+              "precision": 0.9487179487179487,
+              "recall": 1.0,
+              "f1": 0.9736842105263158
+            },
+            "feed": {
+              "support": 44,
+              "precision": 0.9555555555555556,
+              "recall": 0.9772727272727273,
+              "f1": 0.9662921348314608
+            },
+            "seek_mate": {
+              "support": 86,
+              "precision": 0.9629629629629629,
+              "recall": 0.9069767441860465,
+              "f1": 0.934131736526946
+            },
+            "approach_mate": {
+              "support": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "court": {
+              "support": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "defend": {
+              "support": 30,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "survive": {
+              "support": 62,
+              "precision": 1.0,
+              "recall": 0.967741935483871,
+              "f1": 0.9836065573770492
+            }
+          },
+          "confusion_true_rows_predicted_columns": [
+            [
+              204,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              14,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              37,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              43,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              5,
+              1,
+              2,
+              78,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              30,
+              0
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              60
+            ]
+          ]
+        }
+      }
+    },
+    "causally_checked_heldout_food_commands": 4219
+  },
+  "known_failure_probe": {
+    "source": "recovery-closed-loop-v2/recovery-263 (previous corrected model actual trajectory)",
+    "seed": 263,
+    "actor": "freight_spider",
+    "turn": 51,
+    "old_goal": "wrap",
+    "selected_meal_ft": 29.531341437492504,
+    "nearest_meal_ft": 4.999999999999992,
+    "v3_goal": "approach_meal",
+    "v3_probabilities": {
+      "hunt": 0.0029736573342233896,
+      "approach_meal": 0.8970770835876465,
+      "wrap": 0.0016282732831314206,
+      "feed": 0.00013734369713347405,
+      "seek_mate": 0.03354848548769951,
+      "approach_mate": 2.832604877767153e-05,
+      "court": 3.4085473998857196e-06,
+      "defend": 0.023938177153468132,
+      "survive": 0.04066525027155876
+    },
+    "context_range_60ft": 0.4921890199184418,
+    "interpretation": "Frozen model on previous corrected model recorded trajectory; diagnostic, not an executed counterfactual or new-seed outcome.",
+    "selected_target_swap_probe": {
+      "original_goal": "approach_meal",
+      "near_meal_goal": "wrap",
+      "near_meal_probabilities": {
+        "hunt": 0.0031722208950668573,
+        "approach_meal": 0.0019555885810405016,
+        "wrap": 0.970978319644928,
+        "feed": 0.00043210203875787556,
+        "seek_mate": 0.007146382704377174,
+        "approach_mate": 8.792023436399177e-05,
+        "court": 6.921432941453531e-06,
+        "defend": 0.007583898026496172,
+        "survive": 0.008636635728180408
+      },
+      "interpretation": "Only seven selected-meal fields swapped; identical other inputs and pre-step GRU state. Input probe, not an engine rollout."
+    }
+  },
+  "manifest": {
+    "seeds": [
+      383,
+      397,
+      419,
+      433,
+      449,
+      461
+    ],
+    "turns": 1000,
+    "models": {
+      "previous": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/recovery-corrected-v2/gru.pt",
+      "bound": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/target-bound-model-v3/gru.pt"
+    },
+    "pursuit": "/Users/jeff/Documents/ChatGPT/White Fang/experiments/pursuit-imitation-v1/spider.pt",
+    "current_rules": true,
+    "selection": "argmax learned lifecycle logits, no teacher goal fallback; identical motor/engine rules",
+    "newborns": "same learned weights, separate fresh GRU state",
+    "origin": "prospective seed comparison",
+    "model_sha256": {
+      "previous": "09034b8accdab0ca7dffc09f84060f33d3b3a2d2bdd53da85f4e83b5798f2e27",
+      "bound": "45c031f0b8cdbcec158ce70e528dc2935958c6aa18b8da0307666200603265ea"
+    },
+    "logging_history": [
+      "gzip compression level1"
+    ],
+    "workers": 6
+  },
+  "totals": {
+    "teacher": {
+      "runs": 6,
+      "groups_above_pair": 3,
+      "any_survivors": 3,
+      "reproducing_runs": 3,
+      "living_spiders": 101,
+      "egg_sacs": 253,
+      "mean_last200_per_seed": 17.249166666666667,
+      "decisions": 110417,
+      "food_refusals": 0,
+      "lifecycle_refusals_per1000": 0.1539617993606057,
+      "food_refusals_per1000": 0.0,
+      "mean_seed_food_refusals_per1000": 0.0,
+      "waits_per1000": 3.0520662579131836,
+      "unexecutable_goals": 0,
+      "longest_wait_streak": 47,
+      "longest_hungry_food_wait_streak": 47,
+      "longest_same_target_refusal_streak": 1,
+      "far_retained_with_nearer_food": 0,
+      "far_retained_outside_nearest_two": 0,
+      "snapshot_motor_target_disagreements": 0,
+      "food_commands_checked": 12484,
+      "statuses": {
+        "moved": 90104,
+        "hit": 1864,
+        "miss": 773,
+        "wrapping": 2093,
+        "wrapped": 1043,
+        "fed": 9348,
+        "courtship_vibration": 2027,
+        "blocked": 1494,
+        "waited": 337,
+        "outside_attack_arc": 366,
+        "courting": 647,
+        "courtship_accepted": 253,
+        "not_receptive": 17,
+        "out_of_range_or_unarmed": 51
+      }
+    },
+    "previous": {
+      "runs": 6,
+      "groups_above_pair": 4,
+      "any_survivors": 4,
+      "reproducing_runs": 4,
+      "living_spiders": 172,
+      "egg_sacs": 314,
+      "mean_last200_per_seed": 24.82166666666667,
+      "decisions": 120791,
+      "food_refusals": 152,
+      "lifecycle_refusals_per1000": 5.0334875942744075,
+      "food_refusals_per1000": 1.2583718985686019,
+      "mean_seed_food_refusals_per1000": 0.8882106271843165,
+      "waits_per1000": 7.177687079335381,
+      "unexecutable_goals": 94,
+      "longest_wait_streak": 47,
+      "longest_hungry_food_wait_streak": 47,
+      "longest_same_target_refusal_streak": 34,
+      "far_retained_with_nearer_food": 128,
+      "far_retained_outside_nearest_two": 31,
+      "snapshot_motor_target_disagreements": 0,
+      "food_commands_checked": 14265,
+      "statuses": {
+        "moved": 96640,
+        "hit": 2007,
+        "miss": 791,
+        "wrapping": 2296,
+        "wrapped": 1163,
+        "fed": 10654,
+        "waited": 867,
+        "courtship_vibration": 2902,
+        "blocked": 1544,
+        "too_hungry_to_mate": 149,
+        "courting": 835,
+        "courtship_accepted": 314,
+        "food_not_reachable": 145,
+        "mate_not_reachable": 230,
+        "out_of_range_or_unarmed": 26,
+        "not_receptive": 77,
+        "outside_attack_arc": 144,
+        "food_not_wrapped": 7
+      }
+    },
+    "bound": {
+      "runs": 6,
+      "groups_above_pair": 3,
+      "any_survivors": 4,
+      "reproducing_runs": 3,
+      "living_spiders": 102,
+      "egg_sacs": 210,
+      "mean_last200_per_seed": 21.090833333333332,
+      "decisions": 95340,
+      "food_refusals": 72,
+      "lifecycle_refusals_per1000": 3.9857352632683027,
+      "food_refusals_per1000": 0.7551919446192574,
+      "mean_seed_food_refusals_per1000": 1.0912019865384475,
+      "waits_per1000": 9.628697293895533,
+      "unexecutable_goals": 53,
+      "longest_wait_streak": 34,
+      "longest_hungry_food_wait_streak": 31,
+      "longest_same_target_refusal_streak": 13,
+      "far_retained_with_nearer_food": 0,
+      "far_retained_outside_nearest_two": 0,
+      "snapshot_motor_target_disagreements": 0,
+      "food_commands_checked": 11089,
+      "statuses": {
+        "moved": 75531,
+        "hit": 1550,
+        "miss": 603,
+        "wrapping": 1750,
+        "wrapped": 877,
+        "fed": 8390,
+        "waited": 918,
+        "courtship_vibration": 2765,
+        "blocked": 1597,
+        "too_hungry_to_mate": 127,
+        "courting": 627,
+        "courtship_accepted": 210,
+        "not_receptive": 53,
+        "mate_not_reachable": 128,
+        "out_of_range_or_unarmed": 15,
+        "outside_attack_arc": 127,
+        "food_not_reachable": 59,
+        "food_not_wrapped": 13
+      }
+    }
+  },
+  "runs": [
+    {
+      "current_profile": true,
+      "seed": 383,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 27504,
+      "living_spiders": 34,
+      "peak_spiders": 53,
+      "first_egg_turn": 177,
+      "eggs": 66,
+      "hatches": 64,
+      "deaths": 96,
+      "starvation_deaths": 95,
+      "food_consumed": 237.92499999999086,
+      "goals": {
+        "hunt": 14812,
+        "wrap": 804,
+        "defend": 518,
+        "feed": 2442,
+        "seek_mate": 4088,
+        "approach_mate": 569,
+        "approach_meal": 2926,
+        "court": 330,
+        "survive": 1015
+      },
+      "statuses": {
+        "moved": 21843,
+        "hit": 442,
+        "miss": 163,
+        "wrapping": 531,
+        "wrapped": 265,
+        "fed": 2436,
+        "waited": 240,
+        "courtship_vibration": 828,
+        "blocked": 410,
+        "too_hungry_to_mate": 34,
+        "courting": 186,
+        "courtship_accepted": 66,
+        "not_receptive": 10,
+        "mate_not_reachable": 28,
+        "out_of_range_or_unarmed": 5,
+        "outside_attack_arc": 5,
+        "food_not_reachable": 12
+      },
+      "events": {
+        "shadowbeast_replaced": 64,
+        "nutrition_recovery": 523,
+        "egg_sac_laid": 66,
+        "egg_sac_hatched": 64,
+        "starvation_damage": 2605,
+        "starvation_death": 95
+      },
+      "unexecutable_goals": 8,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 14,
+        "died": 5,
+        "right_censored": 3
+      },
+      "seconds": 529.301584290999,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 3,
+        "longest_same_target_refusal_streak": 4,
+        "longest_wait_streak": 34,
+        "waited_hungry_with_visible_food_no_new_damage": 125,
+        "longest_hungry_food_wait_streak": 31,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3244,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 33.12
+    },
+    {
+      "current_profile": true,
+      "seed": 383,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 26594,
+      "living_spiders": 42,
+      "peak_spiders": 56,
+      "first_egg_turn": 177,
+      "eggs": 71,
+      "hatches": 71,
+      "deaths": 102,
+      "starvation_deaths": 101,
+      "food_consumed": 222.32499999999158,
+      "goals": {
+        "hunt": 14656,
+        "wrap": 814,
+        "defend": 353,
+        "feed": 2374,
+        "approach_meal": 2939,
+        "seek_mate": 3316,
+        "approach_mate": 625,
+        "court": 415,
+        "survive": 1102
+      },
+      "statuses": {
+        "moved": 21239,
+        "hit": 434,
+        "miss": 179,
+        "wrapping": 532,
+        "wrapped": 267,
+        "fed": 2297,
+        "waited": 191,
+        "courtship_vibration": 666,
+        "blocked": 278,
+        "too_hungry_to_mate": 37,
+        "courting": 194,
+        "courtship_accepted": 71,
+        "food_not_reachable": 92,
+        "mate_not_reachable": 75,
+        "out_of_range_or_unarmed": 5,
+        "not_receptive": 19,
+        "outside_attack_arc": 18
+      },
+      "events": {
+        "shadowbeast_replaced": 57,
+        "nutrition_recovery": 444,
+        "egg_sac_laid": 71,
+        "egg_sac_hatched": 71,
+        "starvation_damage": 2716,
+        "starvation_death": 101
+      },
+      "unexecutable_goals": 22,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 13,
+        "died": 2,
+        "right_censored": 2
+      },
+      "seconds": 536.635523459001,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 6,
+        "longest_same_target_refusal_streak": 34,
+        "longest_wait_streak": 33,
+        "waited_hungry_with_visible_food_no_new_damage": 63,
+        "longest_hungry_food_wait_streak": 12,
+        "far_retained_meal_with_nearer_reachable_food": 88,
+        "far_retained_meal_not_in_nearest_two": 30,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3188,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 40.23
+    },
+    {
+      "current_profile": true,
+      "seed": 383,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 430,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 1,
+      "food_consumed": 4.300000000000001,
+      "goals": {
+        "hunt": 42,
+        "wrap": 25,
+        "defend": 72,
+        "feed": 43,
+        "seek_mate": 143,
+        "approach_meal": 19,
+        "approach_mate": 2,
+        "survive": 84
+      },
+      "statuses": {
+        "moved": 247,
+        "hit": 36,
+        "miss": 17,
+        "wrapping": 17,
+        "wrapped": 8,
+        "fed": 43,
+        "courtship_vibration": 30,
+        "blocked": 30,
+        "waited": 2
+      },
+      "events": {
+        "shadowbeast_replaced": 8,
+        "nutrition_recovery": 34,
+        "starvation_damage": 7,
+        "starvation_death": 1
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 4,
+        "died": 1
+      },
+      "seconds": 3.6677095419981924,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 0,
+        "longest_wait_streak": 2,
+        "waited_hungry_with_visible_food_no_new_damage": 2,
+        "longest_hungry_food_wait_streak": 2,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 68,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 397,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 265,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 2,
+      "food_consumed": 1.9500000000000013,
+      "goals": {
+        "hunt": 28,
+        "wrap": 14,
+        "feed": 21,
+        "defend": 140,
+        "survive": 11,
+        "seek_mate": 51
+      },
+      "statuses": {
+        "moved": 87,
+        "miss": 6,
+        "hit": 17,
+        "wrapping": 10,
+        "wrapped": 4,
+        "fed": 21,
+        "waited": 3,
+        "courtship_vibration": 11,
+        "blocked": 106
+      },
+      "events": {
+        "shadowbeast_replaced": 3,
+        "starvation_damage": 30,
+        "starvation_death": 2,
+        "nutrition_recovery": 12
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 2
+      },
+      "seconds": 5.675073375001375,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 0,
+        "longest_wait_streak": 3,
+        "waited_hungry_with_visible_food_no_new_damage": 3,
+        "longest_hungry_food_wait_streak": 3,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 35,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 397,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 411,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 2,
+      "food_consumed": 3.610000000000003,
+      "goals": {
+        "hunt": 30,
+        "wrap": 20,
+        "feed": 40,
+        "defend": 71,
+        "survive": 58,
+        "seek_mate": 179,
+        "approach_meal": 13
+      },
+      "statuses": {
+        "moved": 217,
+        "miss": 15,
+        "hit": 28,
+        "wrapping": 14,
+        "wrapped": 6,
+        "fed": 40,
+        "waited": 54,
+        "courtship_vibration": 36,
+        "blocked": 1
+      },
+      "events": {
+        "shadowbeast_replaced": 7,
+        "starvation_damage": 10,
+        "starvation_death": 2,
+        "nutrition_recovery": 25
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "died": 1,
+        "returned_to_food": 2
+      },
+      "seconds": 4.159348916000454,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 0,
+        "longest_wait_streak": 47,
+        "waited_hungry_with_visible_food_no_new_damage": 54,
+        "longest_hungry_food_wait_streak": 47,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 60,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 397,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 483,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 2,
+      "food_consumed": 4.300000000000001,
+      "goals": {
+        "hunt": 71,
+        "wrap": 34,
+        "feed": 43,
+        "defend": 82,
+        "survive": 83,
+        "seek_mate": 146,
+        "approach_meal": 24
+      },
+      "statuses": {
+        "moved": 247,
+        "miss": 12,
+        "hit": 37,
+        "wrapping": 24,
+        "wrapped": 10,
+        "fed": 43,
+        "waited": 76,
+        "courtship_vibration": 30,
+        "blocked": 4
+      },
+      "events": {
+        "shadowbeast_replaced": 8,
+        "starvation_damage": 13,
+        "starvation_death": 2,
+        "nutrition_recovery": 49
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 4
+      },
+      "seconds": 4.323666832999152,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 0,
+        "longest_wait_streak": 47,
+        "waited_hungry_with_visible_food_no_new_damage": 76,
+        "longest_hungry_food_wait_streak": 47,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 77,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 419,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 865,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 1,
+      "food_consumed": 8.79499999999999,
+      "goals": {
+        "hunt": 59,
+        "wrap": 29,
+        "feed": 107,
+        "defend": 93,
+        "seek_mate": 474,
+        "approach_meal": 36,
+        "approach_mate": 47,
+        "court": 6,
+        "survive": 14
+      },
+      "statuses": {
+        "moved": 528,
+        "hit": 38,
+        "miss": 16,
+        "wrapping": 18,
+        "wrapped": 11,
+        "fed": 106,
+        "courtship_vibration": 94,
+        "too_hungry_to_mate": 3,
+        "courting": 2,
+        "waited": 37,
+        "blocked": 11,
+        "food_not_reachable": 1
+      },
+      "events": {
+        "shadowbeast_replaced": 8,
+        "nutrition_recovery": 30,
+        "starvation_damage": 12,
+        "starvation_death": 1
+      },
+      "unexecutable_goals": 1,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 1,
+        "died": 2
+      },
+      "seconds": 7.772462334000011,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 30,
+        "waited_hungry_with_visible_food_no_new_damage": 36,
+        "longest_hungry_food_wait_streak": 30,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 136,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 419,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 34192,
+      "living_spiders": 42,
+      "peak_spiders": 71,
+      "first_egg_turn": 93,
+      "eggs": 97,
+      "hatches": 94,
+      "deaths": 148,
+      "starvation_deaths": 148,
+      "food_consumed": 284.7249999999961,
+      "goals": {
+        "hunt": 19404,
+        "wrap": 907,
+        "feed": 2952,
+        "defend": 418,
+        "survive": 1670,
+        "seek_mate": 3861,
+        "approach_meal": 3566,
+        "approach_mate": 904,
+        "court": 510
+      },
+      "statuses": {
+        "moved": 27605,
+        "hit": 538,
+        "miss": 206,
+        "wrapping": 596,
+        "wrapped": 297,
+        "fed": 2927,
+        "courtship_vibration": 774,
+        "waited": 223,
+        "blocked": 486,
+        "mate_not_reachable": 72,
+        "too_hungry_to_mate": 36,
+        "courting": 254,
+        "courtship_accepted": 97,
+        "food_not_reachable": 35,
+        "food_not_wrapped": 2,
+        "outside_attack_arc": 8,
+        "not_receptive": 27,
+        "out_of_range_or_unarmed": 9
+      },
+      "events": {
+        "shadowbeast_replaced": 81,
+        "nutrition_recovery": 572,
+        "egg_sac_laid": 97,
+        "egg_sac_hatched": 94,
+        "starvation_damage": 3910,
+        "starvation_death": 148
+      },
+      "unexecutable_goals": 29,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 19,
+        "died": 7
+      },
+      "seconds": 879.8504198330011,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 7,
+        "longest_same_target_refusal_streak": 21,
+        "longest_wait_streak": 32,
+        "waited_hungry_with_visible_food_no_new_damage": 68,
+        "longest_hungry_food_wait_streak": 12,
+        "far_retained_meal_with_nearer_reachable_food": 28,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3857,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 36.465
+    },
+    {
+      "current_profile": true,
+      "seed": 419,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 528,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 2,
+      "food_consumed": 4.4,
+      "goals": {
+        "hunt": 121,
+        "wrap": 30,
+        "feed": 44,
+        "defend": 14,
+        "seek_mate": 199,
+        "approach_meal": 102,
+        "survive": 18
+      },
+      "statuses": {
+        "moved": 203,
+        "hit": 17,
+        "miss": 9,
+        "wrapping": 20,
+        "wrapped": 10,
+        "fed": 44,
+        "courtship_vibration": 40,
+        "blocked": 94,
+        "waited": 9,
+        "outside_attack_arc": 82
+      },
+      "events": {
+        "shadowbeast_replaced": 3,
+        "nutrition_recovery": 15,
+        "starvation_damage": 48,
+        "starvation_death": 2
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 1
+      },
+      "seconds": 4.527467250001791,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 0,
+        "longest_wait_streak": 7,
+        "waited_hungry_with_visible_food_no_new_damage": 7,
+        "longest_hungry_food_wait_streak": 7,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 74,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 433,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 36213,
+      "living_spiders": 28,
+      "peak_spiders": 61,
+      "first_egg_turn": 68,
+      "eggs": 68,
+      "hatches": 67,
+      "deaths": 108,
+      "starvation_deaths": 106,
+      "food_consumed": 313.52500000000293,
+      "goals": {
+        "hunt": 21218,
+        "wrap": 982,
+        "feed": 3208,
+        "approach_meal": 4178,
+        "defend": 564,
+        "court": 410,
+        "seek_mate": 3750,
+        "approach_mate": 702,
+        "survive": 1201
+      },
+      "statuses": {
+        "moved": 29190,
+        "hit": 593,
+        "wrapping": 646,
+        "wrapped": 326,
+        "fed": 3195,
+        "miss": 231,
+        "courting": 218,
+        "courtship_accepted": 68,
+        "courtship_vibration": 758,
+        "blocked": 511,
+        "too_hungry_to_mate": 37,
+        "food_not_reachable": 23,
+        "waited": 327,
+        "mate_not_reachable": 46,
+        "not_receptive": 23,
+        "out_of_range_or_unarmed": 7,
+        "outside_attack_arc": 14
+      },
+      "events": {
+        "shadowbeast_replaced": 89,
+        "nutrition_recovery": 692,
+        "egg_sac_laid": 68,
+        "egg_sac_hatched": 67,
+        "starvation_damage": 2986,
+        "starvation_death": 106
+      },
+      "unexecutable_goals": 18,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 14,
+        "died": 7,
+        "right_censored": 1
+      },
+      "seconds": 922.5565996669975,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 3,
+        "longest_same_target_refusal_streak": 4,
+        "longest_wait_streak": 28,
+        "waited_hungry_with_visible_food_no_new_damage": 123,
+        "longest_hungry_food_wait_streak": 19,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 4190,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 39.515
+    },
+    {
+      "current_profile": true,
+      "seed": 433,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 30998,
+      "living_spiders": 41,
+      "peak_spiders": 61,
+      "first_egg_turn": 70,
+      "eggs": 73,
+      "hatches": 72,
+      "deaths": 105,
+      "starvation_deaths": 103,
+      "food_consumed": 273.7249999999939,
+      "goals": {
+        "hunt": 17460,
+        "wrap": 896,
+        "feed": 2833,
+        "approach_meal": 3711,
+        "defend": 489,
+        "approach_mate": 666,
+        "court": 354,
+        "seek_mate": 3380,
+        "survive": 1209
+      },
+      "statuses": {
+        "moved": 24890,
+        "hit": 517,
+        "wrapping": 588,
+        "wrapped": 303,
+        "fed": 2828,
+        "miss": 205,
+        "courting": 181,
+        "courtship_accepted": 73,
+        "courtship_vibration": 672,
+        "blocked": 400,
+        "mate_not_reachable": 38,
+        "waited": 232,
+        "food_not_wrapped": 3,
+        "too_hungry_to_mate": 31,
+        "not_receptive": 10,
+        "outside_attack_arc": 15,
+        "out_of_range_or_unarmed": 6,
+        "food_not_reachable": 6
+      },
+      "events": {
+        "shadowbeast_replaced": 75,
+        "nutrition_recovery": 718,
+        "egg_sac_laid": 73,
+        "egg_sac_hatched": 72,
+        "starvation_damage": 2875,
+        "starvation_death": 103
+      },
+      "unexecutable_goals": 23,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 26,
+        "died": 6,
+        "right_censored": 2
+      },
+      "seconds": 688.2621767919991,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 1,
+        "longest_same_target_refusal_streak": 3,
+        "longest_wait_streak": 27,
+        "waited_hungry_with_visible_food_no_new_damage": 79,
+        "longest_hungry_food_wait_streak": 18,
+        "far_retained_meal_with_nearer_reachable_food": 3,
+        "far_retained_meal_not_in_nearest_two": 1,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3728,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 32.715
+    },
+    {
+      "current_profile": true,
+      "seed": 433,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 35836,
+      "living_spiders": 40,
+      "peak_spiders": 72,
+      "first_egg_turn": 69,
+      "eggs": 87,
+      "hatches": 86,
+      "deaths": 134,
+      "starvation_deaths": 133,
+      "food_consumed": 306.5250000000012,
+      "goals": {
+        "hunt": 23034,
+        "wrap": 1031,
+        "feed": 3066,
+        "approach_meal": 3430,
+        "defend": 308,
+        "court": 308,
+        "seek_mate": 2806,
+        "approach_mate": 566,
+        "survive": 1287
+      },
+      "statuses": {
+        "moved": 29502,
+        "hit": 601,
+        "wrapping": 688,
+        "wrapped": 343,
+        "fed": 3066,
+        "miss": 232,
+        "courting": 218,
+        "courtship_accepted": 87,
+        "blocked": 438,
+        "courtship_vibration": 561,
+        "waited": 70,
+        "not_receptive": 3,
+        "out_of_range_or_unarmed": 18,
+        "outside_attack_arc": 9
+      },
+      "events": {
+        "shadowbeast_replaced": 83,
+        "nutrition_recovery": 880,
+        "egg_sac_laid": 87,
+        "egg_sac_hatched": 86,
+        "starvation_damage": 3760,
+        "starvation_death": 133
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 16,
+        "died": 4
+      },
+      "seconds": 849.5498214159998,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 4,
+        "waited_hungry_with_visible_food_no_new_damage": 33,
+        "longest_hungry_food_wait_streak": 4,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 4097,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 38.95
+    },
+    {
+      "current_profile": true,
+      "seed": 449,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 1240,
+      "living_spiders": 1,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 1,
+      "starvation_deaths": 1,
+      "food_consumed": 12.15999999999998,
+      "goals": {
+        "hunt": 202,
+        "wrap": 57,
+        "approach_meal": 36,
+        "feed": 145,
+        "defend": 33,
+        "seek_mate": 739,
+        "approach_mate": 15,
+        "court": 4,
+        "survive": 9
+      },
+      "statuses": {
+        "moved": 696,
+        "hit": 27,
+        "wrapping": 37,
+        "wrapped": 18,
+        "fed": 143,
+        "courtship_vibration": 148,
+        "waited": 10,
+        "food_not_reachable": 4,
+        "blocked": 63,
+        "too_hungry_to_mate": 4,
+        "miss": 7,
+        "outside_attack_arc": 83
+      },
+      "events": {
+        "shadowbeast_replaced": 3,
+        "nutrition_recovery": 22,
+        "starvation_damage": 25,
+        "starvation_death": 1
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 2
+      },
+      "seconds": 25.614560333000554,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 10,
+        "waited_hungry_with_visible_food_no_new_damage": 0,
+        "longest_hungry_food_wait_streak": 0,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 202,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 1.0
+    },
+    {
+      "current_profile": true,
+      "seed": 449,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 28148,
+      "living_spiders": 47,
+      "peak_spiders": 50,
+      "first_egg_turn": 135,
+      "eggs": 73,
+      "hatches": 71,
+      "deaths": 97,
+      "starvation_deaths": 97,
+      "food_consumed": 245.12499999999042,
+      "goals": {
+        "hunt": 15651,
+        "wrap": 837,
+        "approach_meal": 2872,
+        "feed": 2527,
+        "defend": 412,
+        "seek_mate": 3661,
+        "approach_mate": 677,
+        "court": 407,
+        "survive": 1104
+      },
+      "statuses": {
+        "moved": 22423,
+        "hit": 463,
+        "wrapping": 546,
+        "wrapped": 281,
+        "fed": 2521,
+        "courtship_vibration": 736,
+        "blocked": 379,
+        "too_hungry_to_mate": 44,
+        "courting": 206,
+        "courtship_accepted": 73,
+        "out_of_range_or_unarmed": 6,
+        "not_receptive": 21,
+        "outside_attack_arc": 103,
+        "miss": 175,
+        "waited": 112,
+        "food_not_reachable": 12,
+        "mate_not_reachable": 45,
+        "food_not_wrapped": 2
+      },
+      "events": {
+        "shadowbeast_replaced": 66,
+        "nutrition_recovery": 519,
+        "egg_sac_laid": 73,
+        "egg_sac_hatched": 71,
+        "starvation_damage": 2648,
+        "starvation_death": 97
+      },
+      "unexecutable_goals": 20,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 28,
+        "died": 2
+      },
+      "seconds": 649.012744874999,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 3,
+        "longest_same_target_refusal_streak": 3,
+        "longest_wait_streak": 8,
+        "waited_hungry_with_visible_food_no_new_damage": 39,
+        "longest_hungry_food_wait_streak": 6,
+        "far_retained_meal_with_nearer_reachable_food": 9,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3362,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 39.52
+    },
+    {
+      "current_profile": true,
+      "seed": 449,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 37021,
+      "living_spiders": 26,
+      "peak_spiders": 74,
+      "first_egg_turn": 67,
+      "eggs": 71,
+      "hatches": 70,
+      "deaths": 116,
+      "starvation_deaths": 115,
+      "food_consumed": 326.1250000000057,
+      "goals": {
+        "hunt": 22707,
+        "wrap": 1077,
+        "approach_meal": 3943,
+        "feed": 3262,
+        "defend": 365,
+        "seek_mate": 3859,
+        "approach_mate": 403,
+        "court": 268,
+        "survive": 1137
+      },
+      "statuses": {
+        "moved": 30157,
+        "hit": 619,
+        "wrapping": 718,
+        "wrapped": 359,
+        "fed": 3262,
+        "courtship_vibration": 768,
+        "courting": 190,
+        "courtship_accepted": 71,
+        "miss": 259,
+        "blocked": 471,
+        "waited": 105,
+        "not_receptive": 7,
+        "outside_attack_arc": 19,
+        "out_of_range_or_unarmed": 16
+      },
+      "events": {
+        "shadowbeast_replaced": 89,
+        "nutrition_recovery": 807,
+        "egg_sac_laid": 71,
+        "egg_sac_hatched": 70,
+        "starvation_damage": 3241,
+        "starvation_death": 115
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 28,
+        "died": 4
+      },
+      "seconds": 700.4116678339997,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 14,
+        "waited_hungry_with_visible_food_no_new_damage": 56,
+        "longest_hungry_food_wait_streak": 4,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 4339,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 33.77
+    },
+    {
+      "current_profile": true,
+      "seed": 461,
+      "mode": "bound",
+      "turns": 1000,
+      "decisions": 29253,
+      "living_spiders": 39,
+      "peak_spiders": 76,
+      "first_egg_turn": 255,
+      "eggs": 76,
+      "hatches": 75,
+      "deaths": 113,
+      "starvation_deaths": 112,
+      "food_consumed": 242.0349999999906,
+      "goals": {
+        "hunt": 14996,
+        "wrap": 768,
+        "feed": 2514,
+        "approach_meal": 3087,
+        "seek_mate": 4562,
+        "court": 446,
+        "defend": 598,
+        "approach_mate": 1052,
+        "survive": 1230
+      },
+      "statuses": {
+        "moved": 23187,
+        "hit": 433,
+        "wrapping": 508,
+        "wrapped": 253,
+        "fed": 2489,
+        "miss": 180,
+        "courtship_vibration": 926,
+        "too_hungry_to_mate": 49,
+        "blocked": 496,
+        "courting": 221,
+        "waited": 301,
+        "courtship_accepted": 76,
+        "mate_not_reachable": 54,
+        "food_not_wrapped": 13,
+        "not_receptive": 20,
+        "food_not_reachable": 19,
+        "outside_attack_arc": 25,
+        "out_of_range_or_unarmed": 3
+      },
+      "events": {
+        "shadowbeast_replaced": 68,
+        "nutrition_recovery": 577,
+        "egg_sac_laid": 76,
+        "egg_sac_hatched": 75,
+        "starvation_damage": 3162,
+        "starvation_death": 112
+      },
+      "unexecutable_goals": 26,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 19,
+        "died": 5
+      },
+      "seconds": 381.0759465420015,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 3,
+        "longest_same_target_refusal_streak": 13,
+        "longest_wait_streak": 27,
+        "waited_hungry_with_visible_food_no_new_damage": 116,
+        "longest_hungry_food_wait_streak": 24,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3282,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 52.91
+    },
+    {
+      "current_profile": true,
+      "seed": 461,
+      "mode": "previous",
+      "turns": 1000,
+      "decisions": 448,
+      "living_spiders": 0,
+      "peak_spiders": 2,
+      "first_egg_turn": null,
+      "eggs": 0,
+      "hatches": 0,
+      "deaths": 2,
+      "starvation_deaths": 2,
+      "food_consumed": 3.800000000000004,
+      "goals": {
+        "hunt": 72,
+        "wrap": 29,
+        "feed": 41,
+        "approach_meal": 14,
+        "seek_mate": 89,
+        "court": 1,
+        "defend": 54,
+        "approach_mate": 16,
+        "survive": 132
+      },
+      "statuses": {
+        "moved": 266,
+        "hit": 27,
+        "wrapping": 20,
+        "wrapped": 9,
+        "fed": 41,
+        "miss": 11,
+        "courtship_vibration": 18,
+        "too_hungry_to_mate": 1,
+        "waited": 55
+      },
+      "events": {
+        "shadowbeast_replaced": 5,
+        "nutrition_recovery": 18,
+        "starvation_damage": 28,
+        "starvation_death": 2
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": true,
+      "interrupted_meals": {
+        "returned_to_food": 1,
+        "died": 1
+      },
+      "seconds": 18.57355691599878,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 42,
+        "waited_hungry_with_visible_food_no_new_damage": 52,
+        "longest_hungry_food_wait_streak": 42,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 70,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 0.0
+    },
+    {
+      "current_profile": true,
+      "seed": 461,
+      "mode": "teacher",
+      "turns": 1000,
+      "decisions": 36119,
+      "living_spiders": 35,
+      "peak_spiders": 73,
+      "first_egg_turn": 48,
+      "eggs": 95,
+      "hatches": 95,
+      "deaths": 157,
+      "starvation_deaths": 156,
+      "food_consumed": 288.9249999999972,
+      "goals": {
+        "hunt": 22441,
+        "wrap": 939,
+        "feed": 2890,
+        "approach_meal": 4196,
+        "seek_mate": 2971,
+        "court": 341,
+        "defend": 338,
+        "approach_mate": 604,
+        "survive": 1399
+      },
+      "statuses": {
+        "moved": 29748,
+        "hit": 554,
+        "wrapping": 626,
+        "wrapped": 313,
+        "fed": 2890,
+        "miss": 244,
+        "courtship_vibration": 598,
+        "courting": 239,
+        "courtship_accepted": 95,
+        "blocked": 457,
+        "outside_attack_arc": 256,
+        "waited": 75,
+        "not_receptive": 7,
+        "out_of_range_or_unarmed": 17
+      },
+      "events": {
+        "egg_sac_laid": 95,
+        "egg_sac_hatched": 95,
+        "shadowbeast_replaced": 81,
+        "nutrition_recovery": 822,
+        "starvation_damage": 4329,
+        "starvation_death": 156
+      },
+      "unexecutable_goals": 0,
+      "all_spider_policies_learned": null,
+      "interrupted_meals": {
+        "returned_to_food": 24,
+        "died": 9
+      },
+      "seconds": 533.2403864590015,
+      "refusal_audit": {
+        "three_or_more_repeat_segments": 0,
+        "longest_same_target_refusal_streak": 1,
+        "longest_wait_streak": 4,
+        "waited_hungry_with_visible_food_no_new_damage": 42,
+        "longest_hungry_food_wait_streak": 4,
+        "far_retained_meal_with_nearer_reachable_food": 0,
+        "far_retained_meal_not_in_nearest_two": 0,
+        "numerical_food_boundary_refusals": 0
+      },
+      "binding_audit": {
+        "food_commands_checked": 3829,
+        "snapshot_motor_target_disagreements": 0
+      },
+      "mean_last200": 30.775
+    }
+  ],
+  "limitations": [
+    "Six seeds and one training initialization; descriptive, not a statistical architecture ranking.",
+    "Same training corpus/recipe/seed, but changed input shape changes parameter initialization stream.",
+    "Snapshot consistency is an interface guarantee, not a feasibility mask or guarantee that goals are correct.",
+    "Both learned modes log selected-meal snapshots; only the v3 actor encodes that snapshot.",
+    "Meal preference remains authored and only currently perceived meals are selected; mate/attacker binding is outside this fix.",
+    "No live viewer restart, online training, new planner or automatic deployment."
+  ]
+}

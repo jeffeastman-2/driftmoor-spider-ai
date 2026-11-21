@@ -71,6 +71,63 @@ def features(obs,*,names=False):
 
 
 FEATURE_NAMES=tuple(features({},names=True))
+STATUS_FEATURES=('food_not_reachable','mate_not_reachable','too_hungry_to_mate',
+    'not_receptive','food_not_wrapped','incompatible_mate','not_touching_web',
+    'blocked','outside_attack_arc','out_of_range_or_unarmed','fed','wrapped',
+    'wrapping','courting','courtship_accepted','hit','miss','moved','waited','courtship_vibration')
+
+
+def features_v2(obs,*,names=False):
+    values=features(obs);labels=list(FEATURE_NAMES);last=obs.get('last_result') or {}
+    def add(name,value):labels.append(name);values.append(float(value))
+    for goal in GOALS:add('previous_intent_'+goal,obs.get('self',{}).get('last_goal','hunt')==goal)
+    for status in STATUS_FEATURES:add('last_status_'+status,last.get('status')==status)
+    add('last_target_defeated',last.get('target_defeated',False))
+    add('no_last_status',not last.get('status'))
+    add('other_last_status',bool(last.get('status') and last['status'] not in STATUS_FEATURES))
+    contacts=_contacts(obs)
+    mates=sorted((c for c in contacts if c.get('conspecific')),key=lambda c:(c.get('mate_signal')!='receptive',c['range_ft']))
+    meals=sorted(obs.get('food_in_view',[]),key=lambda c:c['range_ft'])
+    for kind,items in [('meal',meals),('mate',mates)]:
+        for slot in range(2):
+            add(f'{kind}_{slot}_interaction_margin_6ft',_bounded((6-items[slot]['range_ft'])/6) if slot<len(items) else 0.)
+    known=[e['attacker'] for e in obs.get('incoming_damage',[]) if e.get('attacker')]
+    attacker=next((c for c in contacts if known and c['track']==known[-1]),None)
+    for i,v in enumerate(_contact(attacker,obs.get('self',{}).get('heading_deg',0))):add(f'incoming_attacker_{i}',v)
+    return labels if names else values
+
+
+FEATURE_NAMES_V2=tuple(features_v2({},names=True))
+
+
+def features_v3(obs,*,names=False):
+    if not names and 'selected_meal' not in obs:
+        raise ValueError('v3 requires the shared selected-meal observation')
+    values=features_v2(obs);labels=list(FEATURE_NAMES_V2)
+    meal=obs.get('selected_meal');heading=obs.get('self',{}).get('heading_deg',0)
+    if meal:
+        x,y,*_=meal['relative_position_ft'];angle=math.atan2(y,x)-math.radians(heading)
+        selected=[1.,_bounded(meal['range_ft'],60),math.sin(angle),math.cos(angle),
+            float(meal['wrapped']),_bounded(meal['remaining'],3),_bounded((6-meal['range_ft'])/6)]
+    else:selected=[0.]*7
+    for name,value in zip(('present','range_60ft','bearing_sin','bearing_cos','wrapped','food_3units','interaction_margin_6ft'),selected):
+        labels.append('selected_meal_'+name);values.append(float(value))
+    return labels if names else values
+
+
+FEATURE_NAMES_V3=tuple(features_v3({},names=True))
+
+
+def feature_names(version='v1'):
+    versions={'v1':FEATURE_NAMES,'v2':FEATURE_NAMES_V2,'v3':FEATURE_NAMES_V3}
+    if version not in versions:raise ValueError('Unknown lifecycle feature version')
+    return versions[version]
+
+
+def encode_observation(obs,version='v1'):
+    feature_names(version)
+    return {'v1':features,'v2':features_v2,'v3':features_v3}[version](obs)
+
 
 
 def action_features(obs,command):
@@ -88,9 +145,9 @@ ACTION_SIZE=len(ACTIONS)+3+10+2
 
 
 class LifecycleModel(nn.Module):
-    def __init__(self,recurrent=True,hidden=64):
-        super().__init__();self.recurrent=recurrent;self.hidden=hidden
-        self.encoder=nn.Sequential(nn.Linear(len(FEATURE_NAMES),128),nn.ReLU(),nn.Linear(128,hidden),nn.ReLU())
+    def __init__(self,recurrent=True,hidden=64,feature_version='v1'):
+        super().__init__();self.recurrent=recurrent;self.hidden=hidden;self.feature_version=feature_version
+        self.encoder=nn.Sequential(nn.Linear(len(feature_names(feature_version)),128),nn.ReLU(),nn.Linear(128,hidden),nn.ReLU())
         self.memory=nn.GRU(hidden,hidden,batch_first=True) if recurrent else None
         self.actor=nn.Sequential(nn.Linear(hidden,64),nn.ReLU(),nn.Linear(64,len(GOALS)))
 

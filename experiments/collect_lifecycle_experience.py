@@ -18,12 +18,12 @@ from spider_sim.ecology import ecology_round
 SPLITS={'train':[11,23,37,42,53,67,79,83],'validation':[97,109],'test':[127,139]}
 
 
-def collect_one(output,weights,seed,turns,split):
+def collect_one(output,weights,seed,turns,split,current_rules=False):
     output=Path(output);weights=Path(weights);summary_path=output/'summary.json'
     model_hash=hashlib.sha256(weights.read_bytes()).hexdigest()
     if summary_path.exists():
         saved=json.loads(summary_path.read_text())
-        if saved['completed'] and saved['seed']==seed and saved['turns']==turns and saved['model_sha256']==model_hash and saved['split']==split:
+        if saved['completed'] and saved['seed']==seed and saved['turns']==turns and saved['model_sha256']==model_hash and saved['split']==split and saved.get('current_rules',False)==current_rules:
             return saved
         raise ValueError('Existing corpus parameters differ: '+str(output))
     torch.set_num_threads(1)
@@ -35,7 +35,11 @@ def collect_one(output,weights,seed,turns,split):
     started=time.monotonic();decisions=0;goals=Counter();events=Counter();actors={}
     with gzip.open(output/'decisions.jsonl.gz','wt',encoding='utf-8') as log, (output/'population.jsonl').open('w') as population:
         for turn in range(turns):
-            run.set_hunger_rate(turn);recorder.prepare()
+            if current_rules:
+                from experiments.lifecycle_rules import current_rules as apply_rules
+                apply_rules(run,turn)
+            else:run.set_hunger_rate(turn)
+            recorder.prepare()
             alive_before=set(world.active)&set(world.spiders)
             records=ecology_round(world,run.policies,turn)
             data=recorder.decisions(seed,turn+1,records)
@@ -61,7 +65,7 @@ def collect_one(output,weights,seed,turns,split):
         for key in list(coverage.defenses):coverage.finish_defense(key,'right_censored',turns)
     (output/'coverage.json').write_text(json.dumps(coverage.report(),indent=2)+'\n')
     (output/'actors.json').write_text(json.dumps(actors,indent=2)+'\n')
-    summary={'schema':SCHEMA,'completed':True,'seed':seed,'split':split,'turns':turns,
+    summary={'current_rules':current_rules,'schema':SCHEMA,'completed':True,'seed':seed,'split':split,'turns':turns,
         'decisions':decisions,'actors':len(actors),'living_spiders':len(alive),
         'goals':dict(goals),'events':dict(events),'model_sha256':model_hash,
         'elapsed_seconds':time.monotonic()-started,
@@ -77,6 +81,7 @@ def main():
     parser.add_argument('--spider-model',type=Path,required=True)
     parser.add_argument('--turns',type=int,default=1000)
     parser.add_argument('--workers',type=int,default=3)
+    parser.add_argument('--current-rules',action='store_true')
     args=parser.parse_args()
     if args.turns<1 or args.workers<1:parser.error('positive turns and workers required')
     args.output.mkdir(parents=True,exist_ok=True)
@@ -87,12 +92,15 @@ def main():
         'teacher':'authored lifecycle goals with fixed learned pursuit motor',
         'sequence_key':['seed','actor'],'holdout_unit':'whole seed',
         'terminal_handling':'actors.json records death separately; living sequence ends are right-censored'}
+    if args.current_rules:
+        from experiments.lifecycle_rules import RULES
+        manifest['current_rules']=RULES
     path=args.output/'manifest.json'
     if path.exists() and json.loads(path.read_text())!=manifest:raise ValueError('Corpus manifest mismatch')
     path.write_text(json.dumps(manifest,indent=2)+'\n')
     results=[]
     with ProcessPoolExecutor(max_workers=args.workers,mp_context=multiprocessing.get_context('spawn')) as pool:
-        futures={pool.submit(collect_one,str(args.output/f'seed-{seed}'),str(args.spider_model),seed,args.turns,split):seed for split,seeds in SPLITS.items() for seed in seeds}
+        futures={pool.submit(collect_one,str(args.output/f'seed-{seed}'),str(args.spider_model),seed,args.turns,split,args.current_rules):seed for split,seeds in SPLITS.items() for seed in seeds}
         for future in as_completed(futures):
             result=future.result();results.append(result)
             print(json.dumps({'finished_seed':result['seed'],'split':result['split'],'decisions':result['decisions'],'living_spiders':result['living_spiders'],'elapsed_seconds':round(result['elapsed_seconds'],1)}),flush=True)
